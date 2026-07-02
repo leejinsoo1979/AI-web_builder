@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.webable.example.com/site-spec.schema.json",
+  "title": "WEBABLE AI SiteSpec",
+  "type": "object",
+  "required": ["schemaVersion", "site", "pages"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "site": {
+      "type": "object",
+      "required": ["name", "slug", "industry", "brandVoice", "theme"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 80},
+        "slug": {"type": "string", "pattern": "^[a-z0-9-]{3,64}$"},
+        "industry": {"type": "string"},
+        "targetAudience": {"type": "string"},
+        "brandVoice": {
+          "type": "string",
+          "enum": ["minimal", "friendly", "premium", "playful", "professional", "bold"]
+        },
+        "theme": {
+          "type": "object",
+          "required": ["primaryColor", "fontPairing", "radius"],
+          "properties": {
+            "primaryColor": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+            "secondaryColor": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+            "fontPairing": {"type": "string"},
+            "radius": {"type": "string", "enum": ["none", "small", "medium", "large", "pill"]}
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "title", "sections"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^/.*$"},
+          "title": {"type": "string", "minLength": 1, "maxLength": 100},
+          "seo": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string", "maxLength": 70},
+              "description": {"type": "string", "maxLength": 160},
+              "keywords": {"type": "array", "items": {"type": "string"}},
+              "ogImagePrompt": {"type": "string"}
+            }
+          },
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["type", "props"],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "examples": ["hero.split", "feature.grid", "product.list", "faq.accordion", "contact.form"]
+                },
+                "props": {"type": "object"},
+                "responsive": {
+                  "type": "object",
+                  "properties": {
+                    "tablet": {"type": "object"},
+                    "mobile": {"type": "object"}
+                  }
+                },
+                "blocks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["type", "props"],
+                    "properties": {
+                      "type": {"type": "string"},
+                      "props": {"type": "object"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "aiMetadata": {
+      "type": "object",
+      "properties": {
+        "prompt": {"type": "string"},
+        "model": {"type": "string"},
+        "createdAt": {"type": "string", "format": "date-time"},
+        "safetyChecks": {"type": "array", "items": {"type": "string"}},
+        "estimatedCost": {"type": "number"}
+      }
+    }
+  }
+}

@@ -1,0 +1,335 @@
+openapi: 3.1.0
+info:
+  title: WEBABLE Public API
+  version: 0.1.0
+  description: |
+    WEBABLE SaaS website builder API draft. 실제 구현 전 인증, 권한, idempotency, rate limit, audit logging 정책을 확정해야 한다.
+servers:
+  - url: https://api.webable.example.com
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    SiteId:
+      name: siteId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PageId:
+      name: pageId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    Site:
+      type: object
+      required: [id, orgId, name, slug, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, suspended]
+    PageDraft:
+      type: object
+      required: [id, siteId, path, title, schemaVersion, sections]
+      properties:
+        id:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        path:
+          type: string
+        title:
+          type: string
+        schemaVersion:
+          type: integer
+        seo:
+          type: object
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Section'
+    Section:
+      type: object
+      required: [id, type, props]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        props:
+          type: object
+        blocks:
+          type: array
+          items:
+            type: object
+    AIJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        status:
+          type: string
+          enum: [queued, running, needs_approval, applied, failed, cancelled]
+        inputScope:
+          type: object
+        outputDiff:
+          type: object
+        cost:
+          type: number
+    Product:
+      type: object
+      required: [id, siteId, name, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, hidden, sold_out, archived]
+        price:
+          type: number
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        siteId:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        paymentStatus:
+          type: string
+        fulfillmentStatus:
+          type: string
+        totalAmount:
+          type: number
+paths:
+  /v1/sites:
+    post:
+      summary: Create a new site
+      tags: [Sites]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orgId, name]
+              properties:
+                orgId:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+                templateId:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+  /v1/sites/{siteId}:
+    get:
+      summary: Get site
+      tags: [Sites]
+      parameters:
+        - $ref: '#/components/parameters/SiteId'
+      responses:
+        '200':
+          description: Site
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+  /v1/sites/{siteId}/publish:
+    post:
+      summary: Publish site snapshot
+      tags: [Publishing]
+      parameters:
+        - $ref: '#/components/parameters/SiteId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+      responses:
+        '202':
+          description: Publish job accepted
+  /v1/pages/{pageId}/draft:
+    get:
+      summary: Get page draft
+      tags: [Builder]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      responses:
+        '200':
+          description: Page draft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDraft'
+    put:
+      summary: Replace page draft
+      tags: [Builder]
+      parameters:
+        - $ref: '#/components/parameters/PageId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageDraft'
+      responses:
+        '200':
+          description: Updated draft
+  /v1/ai/site-generate:
+    post:
+      summary: Generate a site draft from onboarding prompt
+      tags: [AI]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orgId, prompt]
+              properties:
+                orgId:
+                  type: string
+                  format: uuid
+                prompt:
+                  type: string
+                industry:
+                  type: string
+                tone:
+                  type: string
+                targetAudience:
+                  type: string
+      responses:
+        '202':
+          description: AI job queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIJob'
+  /v1/ai/edit:
+    post:
+      summary: Request natural-language edit for a page or site
+      tags: [AI]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [siteId, instruction]
+              properties:
+                siteId:
+                  type: string
+                  format: uuid
+                pageId:
+                  type: string
+                  format: uuid
+                instruction:
+                  type: string
+      responses:
+        '202':
+          description: AI edit job queued
+  /v1/ai/jobs/{jobId}:
+    get:
+      summary: Get AI job status/result
+      tags: [AI]
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: AI job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIJob'
+  /v1/products:
+    post:
+      summary: Create product
+      tags: [Commerce]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created product
+  /v1/orders/{orderId}/status:
+    patch:
+      summary: Update order status
+      tags: [Commerce]
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [statusType, status]
+              properties:
+                statusType:
+                  type: string
+                  enum: [payment, fulfillment, return, settlement]
+                status:
+                  type: string
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Updated order

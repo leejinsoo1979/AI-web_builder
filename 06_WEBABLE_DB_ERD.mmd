@@ -1,0 +1,96 @@
+erDiagram
+  ORGANIZATIONS ||--o{ SITES : owns
+  ORGANIZATIONS ||--o{ MEMBERSHIPS : has
+  USERS ||--o{ MEMBERSHIPS : joins
+  SITES ||--o{ PAGES : contains
+  SITES ||--o{ ASSETS : stores
+  SITES ||--o{ PRODUCTS : sells
+  SITES ||--o{ CUSTOMERS : serves
+  SITES ||--o{ AI_JOBS : runs
+  PAGES ||--o{ SECTIONS : has
+  SECTIONS ||--o{ BLOCKS : has
+  PRODUCTS ||--o{ PRODUCT_VARIANTS : has
+  CUSTOMERS ||--o{ ORDERS : places
+  ORDERS ||--o{ ORDER_ITEMS : contains
+  ORDERS ||--o{ PAYMENTS : paid_by
+  ORDERS ||--o{ FULFILLMENTS : ships_by
+  CUSTOMERS ||--o{ CUSTOMER_EVENTS : emits
+  SITES ||--o{ BOOKINGS : schedules
+
+  ORGANIZATIONS {
+    uuid id PK
+    string name
+    uuid plan_id
+    string billing_customer_id
+    string status
+  }
+  USERS {
+    uuid id PK
+    string email
+    string name
+    boolean mfa_enabled
+    string status
+  }
+  MEMBERSHIPS {
+    uuid org_id FK
+    uuid user_id FK
+    string role
+    json permissions
+  }
+  SITES {
+    uuid id PK
+    uuid org_id FK
+    string name
+    string slug
+    string locale
+    uuid theme_id
+    string status
+  }
+  PAGES {
+    uuid id PK
+    uuid site_id FK
+    string path
+    string title
+    json seo_json
+    int schema_version
+    string status
+  }
+  SECTIONS {
+    uuid id PK
+    uuid page_id FK
+    string type
+    int sort_order
+    json props_json
+  }
+  BLOCKS {
+    uuid id PK
+    uuid section_id FK
+    string type
+    json props_json
+    json responsive_json
+  }
+  PRODUCTS {
+    uuid id PK
+    uuid site_id FK
+    string name
+    string status
+    decimal price
+  }
+  ORDERS {
+    uuid id PK
+    uuid site_id FK
+    uuid customer_id FK
+    string payment_status
+    string fulfillment_status
+    decimal total_amount
+  }
+  AI_JOBS {
+    uuid id PK
+    uuid site_id FK
+    uuid user_id FK
+    string type
+    string status
+    decimal cost
+    json input_scope
+    json output_diff
+  }

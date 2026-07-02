@@ -1,0 +1,59 @@
+flowchart LR
+  subgraph Clients
+    Admin[관리자 콘솔\nBuilder/Admin]
+    Storefront[방문자 사이트\nStorefront]
+    Mobile[모바일 앱/웹]
+  end
+
+  Clients --> Gateway[API Gateway\nBFF / Rate Limit]
+
+  subgraph Core[Core Services]
+    Tenant[Tenant/Auth/RBAC]
+    Builder[Builder Engine]
+    Render[Render & Publish]
+    Commerce[Commerce]
+    Booking[Booking]
+    CRM[CRM/Marketing]
+    Billing[Billing]
+    Analytics[Analytics]
+    AI[AI Orchestrator]
+  end
+
+  Gateway --> Tenant
+  Gateway --> Builder
+  Gateway --> Render
+  Gateway --> Commerce
+  Gateway --> Booking
+  Gateway --> CRM
+  Gateway --> Billing
+  Gateway --> Analytics
+  Gateway --> AI
+
+  subgraph DataInfra[Data & Infra]
+    PG[(PostgreSQL\nRLS/Tenant)]
+    Redis[(Redis/Cache)]
+    Object[(Object Storage)]
+    Search[(Search Index)]
+    Queue[(Queue/Event Bus)]
+    CDN[CDN/DNS/SSL]
+    Obs[Logs/Metrics/Trace]
+    KMS[KMS/Secrets]
+  end
+
+  Tenant --> PG
+  Builder --> PG
+  Builder --> Object
+  Render --> CDN
+  Commerce --> PG
+  Commerce --> Queue
+  Booking --> PG
+  CRM --> PG
+  CRM --> Queue
+  Billing --> PG
+  Analytics --> PG
+  Analytics --> Search
+  AI --> PG
+  AI --> Queue
+  AI --> Object
+  Gateway --> KMS
+  AI --> Obs

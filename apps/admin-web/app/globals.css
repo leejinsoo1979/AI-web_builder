@@ -1,0 +1,4749 @@
+:root {
+  --bg: #ededed;
+  --surface: #ffffff;
+  --surface-2: #f5f5f5;
+  --surface-3: #eeeeee;
+  --ink: #111111;
+  --muted: #666666;
+  --line: #d8d8d8;
+  --line-strong: #b8b8b8;
+  --brand: #111111;
+  --brand-2: #111111;
+  --accent: #111111;
+  --danger: #111111;
+  --rail: #0d0d0d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  background: #ededed;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.appShell {
+  display: grid;
+  grid-template-columns: 60px 286px minmax(0, 1fr) 326px;
+  gap: 0;
+  min-height: 100vh;
+}
+
+.rail {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100vh;
+  padding: 12px 8px;
+  color: #dbe4f0;
+  background: var(--rail);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.railLogo,
+.railButton,
+.iconButton,
+.deviceSwitch button {
+  display: grid;
+  place-items: center;
+}
+
+.railLogo {
+  width: 44px;
+  height: 44px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  border-radius: 8px;
+}
+
+.rail nav {
+  display: grid;
+  gap: 8px;
+}
+
+.railButton {
+  width: 44px;
+  height: 42px;
+  color: #b8c4d5;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.railButton:hover,
+.railButton.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.leftPanel,
+.inspector {
+  min-width: 0;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.leftPanel {
+  padding: 16px;
+  border-right: 1px solid var(--line);
+}
+
+.inspector {
+  padding: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.mainStage {
+  min-width: 0;
+  height: 100vh;
+  overflow: auto;
+  padding: 16px;
+}
+
+.projectHeader,
+.commandBar,
+.inspectorHeader,
+.previewNav,
+.publishRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.projectHeader {
+  margin-bottom: 16px;
+}
+
+.projectHeader h1,
+.inspectorHeader h2 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.projectHeader h1 {
+  font-size: 1.18rem;
+  line-height: 1.15;
+}
+
+.inspectorHeader h2 {
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 780;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  margin-bottom: 18px;
+  padding: 0 12px;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+.panelStack {
+  display: grid;
+  gap: 14px;
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.panelTitle svg {
+  color: var(--brand);
+}
+
+.panelTitle div {
+  display: grid;
+  gap: 2px;
+}
+
+.panelTitle strong {
+  font-size: 0.92rem;
+}
+
+.panelTitle span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.sectionList {
+  display: grid;
+  gap: 8px;
+}
+
+.sectionTab,
+.pageRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 10px;
+  color: #263142;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.pageRow {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  padding: 12px;
+}
+
+.sectionTab span,
+.pageRow span {
+  color: var(--brand-2);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.74rem;
+  font-weight: 760;
+}
+
+.sectionTab strong,
+.pageRow strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sectionTab.active,
+.pageRow.active {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.sectionTab.active span,
+.sectionTab.active svg,
+.pageRow.active span {
+  color: #93c5fd;
+}
+
+.presetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.presetGrid button,
+.addButton,
+.toolButton,
+.primaryButton,
+.publishButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border-radius: 8px;
+  font-weight: 780;
+}
+
+.presetGrid button,
+.addButton,
+.toolButton {
+  color: #253044;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.presetGrid button {
+  justify-content: flex-start;
+  padding: 0 10px;
+}
+
+.addButton {
+  width: 100%;
+}
+
+.primaryButton,
+.publishButton {
+  color: #ffffff;
+  background: var(--brand);
+  border: 0;
+}
+
+.primaryButton {
+  width: 100%;
+}
+
+.publishButton {
+  min-width: 116px;
+  padding: 0 14px;
+  background: #172033;
+}
+
+.iconButton {
+  width: 38px;
+  height: 38px;
+  color: #263142;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.iconButton.dark {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.iconButton.danger {
+  color: var(--danger);
+}
+
+.iconRow,
+.commandActions,
+.crumbs,
+.previewActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.commandBar {
+  min-height: 52px;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  backdrop-filter: blur(18px);
+}
+
+.crumbs {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.crumbs strong {
+  color: var(--ink);
+}
+
+.deviceSwitch {
+  display: grid;
+  grid-template-columns: repeat(3, 36px);
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.deviceSwitch button {
+  height: 32px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+}
+
+.deviceSwitch button.active {
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.statusTile,
+.metricLine,
+.dataRow,
+.activityItem,
+.reviewBox,
+.serpCard {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.statusTile {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  padding: 10px;
+  min-height: 62px;
+}
+
+.statusTile svg {
+  grid-row: span 2;
+  color: var(--brand);
+}
+
+.statusTile span,
+.metricLine span,
+.dataRow span,
+.activityItem span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.statusTile strong {
+  font-size: 1rem;
+}
+
+.designToolDock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  margin: 0 auto 12px;
+  padding: 5px;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.designToolDock button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  color: #475569;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 780;
+}
+
+.designToolDock button.active,
+.designToolDock button:hover {
+  color: #ffffff;
+  background: #172033;
+}
+
+.designToolDock span {
+  padding: 0 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.canvasFrame {
+  display: grid;
+  justify-content: center;
+  min-height: calc(100vh - 158px);
+  padding: 14px;
+  background:
+    linear-gradient(90deg, rgba(203, 213, 225, 0.5) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(203, 213, 225, 0.5) 1px, transparent 1px),
+    #dfe5ee;
+  background-size: 28px 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.canvasFrame.desktop .sitePreview {
+  width: min(100%, 1060px);
+}
+
+.canvasFrame.tablet .sitePreview {
+  width: min(100%, 740px);
+}
+
+.canvasFrame.mobile .sitePreview {
+  width: min(100%, 390px);
+}
+
+.sitePreview {
+  --preview-primary: #111827;
+  --preview-secondary: #f8fafc;
+  --preview-accent: #0f766e;
+  align-self: start;
+  min-height: 680px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
+}
+
+.previewNav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 16px 24px;
+  color: var(--preview-primary);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(14px);
+}
+
+.previewNav span {
+  font-weight: 920;
+}
+
+.previewNav div {
+  display: flex;
+  gap: 17px;
+  color: #4b5563;
+  font-size: 0.84rem;
+}
+
+.previewHero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(240px, 0.72fr);
+  align-items: center;
+  gap: 18px;
+  padding: 54px 36px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--preview-primary) 90%, black), color-mix(in srgb, var(--preview-accent) 70%, black)),
+    var(--preview-primary);
+  cursor: pointer;
+}
+
+.previewHero.selected,
+.previewBand.selected {
+  outline: 3px solid #60a5fa;
+  outline-offset: -3px;
+}
+
+.previewHero.align-center,
+.previewBand.align-center {
+  text-align: center;
+}
+
+.previewBand.align-left {
+  justify-items: start;
+  text-align: left;
+}
+
+.previewBand.align-right {
+  justify-items: end;
+  text-align: right;
+}
+
+.previewBand.valign-top {
+  align-content: start;
+}
+
+.previewBand.valign-middle {
+  align-content: center;
+}
+
+.previewBand.valign-bottom {
+  align-content: end;
+}
+
+.previewHero.align-center {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
+.previewHero.align-left,
+.previewHero.media-none {
+  grid-template-columns: 1fr;
+}
+
+.previewBand.width-wide,
+.previewHero.width-wide {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.previewBand.width-full,
+.previewHero.width-full {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+.previewBand.bg-dark,
+.previewBand.bg-brand {
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--preview-primary) 88%, black), color-mix(in srgb, var(--preview-accent) 72%, black)),
+    var(--preview-primary);
+}
+
+.previewBand.bg-soft {
+  background: color-mix(in srgb, var(--preview-secondary) 82%, #ffffff);
+}
+
+.previewBand.bg-image {
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(15, 118, 110, 0.62)),
+    repeating-linear-gradient(135deg, #dbeafe 0, #dbeafe 12px, #fef3c7 12px, #fef3c7 24px);
+  color: #ffffff;
+}
+
+.previewBand.bg-dark h3,
+.previewBand.bg-brand h3,
+.previewBand.bg-image h3,
+.previewBand.bg-dark > span,
+.previewBand.bg-brand > span,
+.previewBand.bg-image > span {
+  color: #ffffff;
+}
+
+.previewHero p,
+.previewBand p {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.sectionCopy {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.previewHero h2 {
+  max-width: 800px;
+  margin: 0;
+  font-size: clamp(2rem, 1.4rem + 1.6vw, 3.35rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.previewHero span {
+  max-width: 650px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.98rem;
+  line-height: 1.58;
+}
+
+.previewActions button,
+.previewCta {
+  min-height: 42px;
+  padding: 0 16px;
+  color: #111827;
+  background: #ffffff;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 850;
+}
+
+.previewActions a {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.previewMedia {
+  display: grid;
+  gap: 12px;
+  min-height: 250px;
+  padding: 18px;
+  align-content: end;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.34), transparent 24%),
+    rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.previewMedia span {
+  width: 70%;
+  aspect-ratio: 1.12;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.2)),
+    linear-gradient(90deg, var(--preview-accent), transparent);
+}
+
+.previewMedia.mockup span {
+  width: 100%;
+  aspect-ratio: 1.7;
+  border: 10px solid rgba(255, 255, 255, 0.28);
+}
+
+.previewMedia.pattern span {
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.9) 0 10px, rgba(255, 255, 255, 0.25) 10px 20px);
+}
+
+.previewMedia strong,
+.previewMedia p {
+  margin: 0;
+}
+
+.previewBand {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  height: var(--section-min-height, auto);
+  min-height: 180px;
+  padding: 38px 36px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  overflow: auto;
+}
+
+.previewHero,
+.previewBand {
+  --section-min-height: 320px;
+  --section-container-width: 9999px;
+  --section-content-width: 820px;
+  --section-offset-x: 0px;
+  width: min(100%, var(--section-container-width));
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateX(var(--section-offset-x));
+}
+
+.previewHero {
+  height: var(--section-min-height, auto);
+  min-height: 180px;
+  overflow: auto;
+}
+
+.previewBand > p,
+.previewBand > h3,
+.previewBand > span,
+.previewBand > .previewItems,
+.previewBand > .metricGrid,
+.previewBand > .productGrid,
+.previewBand > .galleryGrid,
+.previewBand > .reviewGrid,
+.previewBand > .faqList {
+  width: 100%;
+  max-width: var(--section-content-width, 820px);
+}
+
+.previewBand.align-center > p,
+.previewBand.align-center > h3,
+.previewBand.align-center > span,
+.previewBand.align-center > .previewItems,
+.previewBand.align-center > .metricGrid,
+.previewBand.align-center > .productGrid,
+.previewBand.align-center > .galleryGrid,
+.previewBand.align-center > .reviewGrid,
+.previewBand.align-center > .faqList {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.previewBand.align-right > p,
+.previewBand.align-right > h3,
+.previewBand.align-right > span,
+.previewBand.align-right > .previewItems,
+.previewBand.align-right > .metricGrid,
+.previewBand.align-right > .productGrid,
+.previewBand.align-right > .galleryGrid,
+.previewBand.align-right > .reviewGrid,
+.previewBand.align-right > .faqList {
+  margin-left: auto;
+}
+
+.previewHero .sectionCopy {
+  max-width: var(--section-content-width, 820px);
+}
+
+.resizeOverlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.resizeHandle {
+  pointer-events: auto;
+  position: absolute;
+  display: block;
+  padding: 0;
+  background: #2563eb;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.canvasResizeRange {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 4;
+  height: 24px;
+  padding: 0;
+  accent-color: #2563eb;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(37, 99, 235, 0.38);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+}
+
+.canvasResizeRange.widthRange {
+  top: 10px;
+  left: 50%;
+  width: min(280px, calc(100% - 74px));
+  transform: translateX(-50%);
+}
+
+.canvasResizeRange.heightRange {
+  top: 50%;
+  left: 10px;
+  width: min(220px, calc(100% - 90px));
+  transform: translate(-50%, -50%) rotate(-90deg);
+  transform-origin: center;
+}
+
+.canvasResizeStepper {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 5;
+  display: inline-grid;
+  grid-template-columns: 30px auto 30px;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 3px;
+  color: #172033;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(37, 99, 235, 0.42);
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+}
+
+.canvasResizeStepper.widthStepper {
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.canvasResizeStepper button {
+  width: 30px;
+  height: 26px;
+  color: #ffffff;
+  background: #2563eb;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 900;
+}
+
+.canvasResizeStepper span {
+  min-width: 58px;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 820;
+}
+
+.resizeHandle.east {
+  top: 50%;
+  right: 8px;
+  width: 16px;
+  height: 56px;
+  cursor: ew-resize;
+  transform: translateY(-50%);
+}
+
+.resizeHandle.south {
+  bottom: 8px;
+  left: 50%;
+  width: 56px;
+  height: 16px;
+  cursor: ns-resize;
+  transform: translateX(-50%);
+}
+
+.resizeHandle.southeast {
+  right: 8px;
+  bottom: 8px;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+}
+
+.is-resizing-section {
+  cursor: nwse-resize;
+  user-select: none;
+}
+
+.previewBand:nth-child(odd) {
+  background: var(--preview-secondary);
+}
+
+.previewBand p {
+  color: var(--preview-accent);
+}
+
+.previewBand h3 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--preview-primary);
+  font-size: clamp(1.24rem, 1rem + 0.7vw, 1.9rem);
+  line-height: 1.14;
+}
+
+.previewBand > span {
+  max-width: 680px;
+  color: #4b5563;
+  line-height: 1.65;
+}
+
+.previewItems,
+.metricGrid,
+.productGrid,
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.previewItem,
+.metricTile {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+  min-height: 138px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+}
+
+.previewItem svg {
+  color: var(--preview-accent);
+}
+
+.previewItem span {
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.metricTile {
+  min-height: 112px;
+  align-content: center;
+}
+
+.metricTile strong {
+  color: var(--preview-primary);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.productCard,
+.galleryTile,
+.reviewGrid blockquote,
+.faqList details,
+.formMock {
+  background: #ffffff;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+}
+
+.productCard {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+}
+
+.productImage {
+  min-height: 112px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 72% 24%, rgba(255, 255, 255, 0.8), transparent 22%),
+    linear-gradient(135deg, var(--preview-accent), var(--preview-primary));
+}
+
+.productCard span,
+.reviewGrid footer span {
+  color: var(--preview-accent);
+  font-size: 0.76rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.productCard p,
+.reviewGrid p,
+.faqList p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.productCard b {
+  font-size: 1.1rem;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  grid-auto-rows: 136px;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.galleryTile {
+  display: grid;
+  align-content: end;
+  gap: 6px;
+  padding: 16px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.76)),
+    linear-gradient(135deg, var(--preview-primary), var(--preview-accent));
+}
+
+.galleryTile.tile1 {
+  grid-row: span 2;
+}
+
+.galleryTile span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.reviewGrid blockquote {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 17px;
+}
+
+.reviewGrid footer {
+  display: grid;
+  gap: 4px;
+}
+
+.faqList {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.faqList details {
+  padding: 14px 16px;
+}
+
+.faqList summary {
+  cursor: pointer;
+  font-weight: 820;
+}
+
+.faqList p {
+  margin-top: 10px;
+}
+
+.contactPreview {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(240px, 0.72fr);
+  align-items: center;
+}
+
+.formMock {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.formMock span {
+  min-height: 42px;
+  padding: 11px;
+  color: #94a3b8;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.formMock button {
+  min-height: 42px;
+  color: #ffffff;
+  background: var(--preview-primary);
+  border: 0;
+  border-radius: 8px;
+  font-weight: 820;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: #263142;
+  font-size: 0.83rem;
+  font-weight: 760;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  outline: none;
+}
+
+input,
+select {
+  height: 40px;
+  padding: 0 11px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 86px;
+  padding: 11px;
+  line-height: 1.45;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--brand-2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.generatorForm,
+.sectionEditor {
+  display: grid;
+  gap: 13px;
+}
+
+.fieldPair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(118px, 0.72fr);
+  gap: 9px;
+}
+
+.inspectorHeader {
+  margin-bottom: 14px;
+}
+
+.tabList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-bottom: 14px;
+  padding: 4px;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.tabList button {
+  height: 34px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 760;
+  text-transform: capitalize;
+}
+
+.tabList button.active {
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.editorTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand);
+  font-size: 0.86rem;
+}
+
+.reviewBox {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 13px;
+}
+
+.reviewBox div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reviewBox svg {
+  color: var(--brand);
+}
+
+.reviewBox p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.controlGroup {
+  display: grid;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.rangeField {
+  display: grid;
+  gap: 7px;
+}
+
+.rangeField label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rangeField label span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.rangeField label b {
+  font-size: 0.76rem;
+}
+
+.rangeField input[type="range"] {
+  height: 28px;
+  padding: 0;
+  accent-color: #2563eb;
+  border: 0;
+}
+
+.controlGroup > strong {
+  font-size: 0.86rem;
+}
+
+.segmentedField {
+  display: grid;
+  gap: 7px;
+}
+
+.segmentedField > span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.segmentedField div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.nudgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.nudgeGrid button {
+  min-height: 32px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 0.76rem;
+  font-weight: 780;
+}
+
+.nudgeGrid button:hover {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.segmentedField button {
+  min-height: 30px;
+  padding: 0 9px;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.segmentedField button.active {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.publishChecklist {
+  display: grid;
+  gap: 7px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.publishChecklist li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #7f1d1d;
+  font-size: 0.82rem;
+  font-weight: 720;
+}
+
+.publishChecklist li svg {
+  color: #cbd5e1;
+}
+
+.publishChecklist li.passed {
+  color: #166534;
+}
+
+.publishChecklist li.passed svg {
+  color: #16a34a;
+}
+
+.metricLine,
+.dataRow,
+.activityItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 12px;
+}
+
+.dataRow div {
+  display: grid;
+  gap: 3px;
+}
+
+.dataRow div:last-child {
+  text-align: right;
+}
+
+.activityList {
+  display: grid;
+  gap: 8px;
+}
+
+.activityItem {
+  justify-content: start;
+}
+
+.activityItem svg {
+  color: var(--brand-2);
+}
+
+.activityItem strong {
+  flex: 1;
+  min-width: 0;
+}
+
+.swatchGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.swatchGrid button {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  height: 48px;
+  padding: 5px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.swatchGrid button.active {
+  border-color: var(--brand-2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
+.swatchGrid span {
+  border-radius: 5px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.serpCard {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+}
+
+.serpCard span {
+  color: var(--brand);
+  font-size: 0.78rem;
+}
+
+.serpCard strong {
+  color: #1d4ed8;
+  line-height: 1.25;
+}
+
+.serpCard p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.spin {
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1100px) {
+  .appShell {
+    grid-template-columns: 64px 300px minmax(480px, 1fr);
+  }
+
+  .inspector {
+    grid-column: 2 / -1;
+    height: auto;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 920px) {
+  .appShell {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .leftPanel {
+    height: auto;
+  }
+
+  .mainStage,
+  .inspector {
+    grid-column: 2 / -1;
+    height: auto;
+  }
+
+  .commandBar,
+  .projectHeader,
+  .previewNav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .statusGrid,
+  .previewItems,
+  .metricGrid,
+  .productGrid,
+  .reviewGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .appShell {
+    grid-template-columns: 1fr;
+  }
+
+  .rail {
+    position: static;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+  }
+
+  .rail nav {
+    grid-auto-flow: column;
+    overflow-x: auto;
+  }
+
+  .leftPanel,
+  .mainStage,
+  .inspector {
+    grid-column: 1;
+    height: auto;
+  }
+
+  .leftPanel {
+    max-height: 78vh;
+    overflow: auto;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .presetGrid {
+    max-height: 238px;
+  }
+
+  .statusGrid,
+  .presetGrid,
+  .fieldPair,
+  .previewItems,
+  .metricGrid,
+  .productGrid,
+  .reviewGrid,
+  .galleryGrid,
+  .contactPreview,
+  .previewHero {
+    grid-template-columns: 1fr;
+  }
+
+  .canvasFrame {
+    padding: 10px;
+  }
+
+  .previewHero,
+  .previewBand {
+    padding: 36px 20px;
+  }
+
+  .previewHero h2 {
+    font-size: 2.1rem;
+  }
+}
+
+/* Builder tools should behave like Figma/Wix: keep the workspace structure instead of collapsing into a mobile page. */
+body {
+  overflow: auto;
+}
+
+.appShell {
+  min-width: 1280px;
+  grid-template-columns: 60px 286px minmax(608px, 1fr) 326px;
+}
+
+.rail {
+  position: sticky;
+  top: 0;
+  flex-direction: column;
+  width: auto;
+  height: 100vh;
+}
+
+.rail nav {
+  grid-auto-flow: row;
+  overflow: visible;
+}
+
+.leftPanel,
+.mainStage,
+.inspector {
+  grid-column: auto;
+  height: 100vh;
+  max-height: none;
+}
+
+.inspector {
+  border-top: 0;
+  border-left: 1px solid var(--line);
+}
+
+.leftPanel {
+  border-bottom: 0;
+}
+
+.statusGrid {
+  grid-template-columns: repeat(5, minmax(104px, 1fr));
+}
+
+.commandBar,
+.projectHeader,
+.previewNav {
+  align-items: center;
+  flex-direction: row;
+}
+
+.presetGrid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.freeformShell {
+  display: grid;
+  grid-template-columns: 54px 260px minmax(676px, 1fr) 300px;
+  min-width: 1294px;
+  height: 100vh;
+  color: #1f2937;
+  background: #dde3eb;
+}
+
+.ffToolRail {
+  display: grid;
+  grid-template-rows: 42px repeat(5, 38px) 1fr 38px;
+  gap: 6px;
+  height: 100vh;
+  padding: 8px;
+  background: #0f172a;
+  border-right: 1px solid #111827;
+}
+
+.ffRailBrand,
+.ffToolRail button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.ffRailBrand {
+  color: #ffffff;
+  background: #2563eb;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.ffToolRail button:hover,
+.ffToolRail button.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.ffToolRail span {
+  min-height: 1px;
+}
+
+.ffPanel {
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+  background: #f6f8fb;
+  border-color: #cfd7e3;
+}
+
+.ffPanelResizeHandle {
+  position: absolute;
+  top: 0;
+  z-index: 20;
+  width: 7px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+}
+
+.ffPanelResizeHandle.left {
+  left: -4px;
+}
+
+.ffPanelResizeHandle.right {
+  right: -4px;
+}
+
+.ffPanelResizeHandle:hover,
+.freeformShell.resizingPanels .ffPanelResizeHandle {
+  background: rgba(37, 99, 235, 0.14);
+}
+
+.freeformShell.resizingPanels {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.ffLayers {
+  border-right: 1px solid #cfd7e3;
+  padding: 12px;
+}
+
+.ffInspector {
+  border-left: 1px solid #cfd7e3;
+  padding: 12px;
+}
+
+.ffPanelHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin-bottom: 10px;
+}
+
+.ffPanelHeader svg {
+  color: #2563eb;
+}
+
+.ffPanelHeader div {
+  display: grid;
+  gap: 1px;
+}
+
+.ffPanelHeader strong {
+  font-size: 0.88rem;
+  letter-spacing: 0;
+}
+
+.ffPanelHeader span {
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 680;
+}
+
+.ffPanelTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin-bottom: 10px;
+  padding: 3px;
+  background: #edf1f6;
+  border: 1px solid #dbe2ec;
+  border-radius: 7px;
+}
+
+.ffPanelTabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  color: #64748b;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  font-size: 0.74rem;
+  font-weight: 760;
+}
+
+.ffPanelTabs button.active {
+  color: #172033;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.ffAddGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ffWidgetSearch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  margin-bottom: 8px;
+  padding: 0 9px;
+  color: #666666;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+}
+
+.ffWidgetSearch input {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  color: #111111;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.ffWidgetCategories {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ffWidgetCategories::-webkit-scrollbar {
+  display: none;
+}
+
+.ffWidgetCategories button {
+  flex: 0 0 auto;
+  height: 28px;
+  padding: 0 9px;
+  color: #555555;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 820;
+}
+
+.ffWidgetCategories button.active {
+  color: #ffffff;
+  background: #111111;
+  border-color: #111111;
+}
+
+.ffPages {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ffPagesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ffPagesHeader span {
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ffPagesHeader button {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+}
+
+.ffPageList {
+  display: grid;
+  gap: 4px;
+}
+
+.ffPageRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 26px 26px;
+  gap: 3px;
+  align-items: center;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.ffPageRow.active {
+  background: #eef4ff;
+  border-color: #bfdbfe;
+  box-shadow: none;
+}
+
+.ffPageSelect,
+.ffPageIcon {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  height: 28px;
+  color: #334155;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+}
+
+.ffPageSelect {
+  justify-content: flex-start;
+  gap: 7px;
+  padding: 0 7px;
+}
+
+.ffPageSelect span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.78rem;
+  font-weight: 760;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffPageSelect em {
+  color: #94a3b8;
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ffPageIcon {
+  justify-content: center;
+  padding: 0;
+}
+
+.ffPageSelect:hover,
+.ffPageIcon:hover,
+.ffPagesHeader button:hover {
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.ffMiniToolbar {
+  display: grid;
+  grid-template-columns: repeat(3, 32px) 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ffMiniToolbar button {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+}
+
+.ffMiniToolbar button:hover:not(:disabled) {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.ffMiniToolbar button:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.ffMiniToolbar span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+  color: #2563eb;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ffAddGrid button,
+.ffUploadButton,
+.ffReplaceImage,
+.ffActions button,
+.ffAlignGrid button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 740;
+}
+
+.ffAddGrid .ffWidgetCard {
+  display: grid;
+  grid-template-rows: 54px auto auto;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 6px;
+  min-height: 112px;
+  padding: 7px;
+  text-align: left;
+}
+
+.ffWidgetCard > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ffWidgetCard strong {
+  overflow: hidden;
+  color: #111111;
+  font-size: 0.74rem;
+  font-weight: 860;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffWidgetCard em {
+  color: #777777;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.ffWidgetPreview {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  height: 54px;
+  padding: 6px;
+  overflow: hidden;
+  background: #f2f2f2;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+}
+
+.ffWidgetPreview span {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  background: #111111;
+  border-radius: 3px;
+}
+
+.ffWidgetPreview.text span:first-child,
+.ffWidgetPreview.button span:first-child,
+.ffWidgetPreview.nav span,
+.ffWidgetPreview.footer span,
+.ffWidgetPreview.header span {
+  height: 5px;
+}
+
+.ffWidgetPreview.header,
+.ffWidgetPreview.footer {
+  grid-template-columns: 1.2fr 0.7fr 0.7fr;
+  align-content: center;
+}
+
+.ffWidgetPreview.hero,
+.ffWidgetPreview.slider,
+.ffWidgetPreview.video {
+  background: #111111;
+}
+
+.ffWidgetPreview.hero span,
+.ffWidgetPreview.slider span,
+.ffWidgetPreview.video span {
+  background: #ffffff;
+}
+
+.ffWidgetPreview.hero span:first-child,
+.ffWidgetPreview.slider span:first-child {
+  width: 58%;
+  height: 8px;
+}
+
+.ffWidgetPreview.hero span:nth-child(2),
+.ffWidgetPreview.slider span:nth-child(2) {
+  width: 42%;
+  height: 5px;
+}
+
+.ffWidgetPreview.products,
+.ffWidgetPreview.gallery,
+.ffWidgetPreview.pricing {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ffWidgetPreview.form {
+  grid-template-rows: 8px 1fr 1fr 1fr;
+}
+
+.ffWidgetPreview.map {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    #f2f2f2;
+  background-size: 12px 12px;
+}
+
+.ffWidgetPreview.map span:first-child,
+.ffWidgetPreview.image span:first-child {
+  width: 22px;
+  aspect-ratio: 1;
+  margin: auto;
+  border-radius: 999px;
+}
+
+.ffUploadButton,
+.ffReplaceImage {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.ffHiddenInput {
+  display: none;
+}
+
+.ffAssetsPanel {
+  display: grid;
+  gap: 10px;
+  min-height: 0;
+}
+
+.ffLayerList {
+  display: grid;
+  gap: 4px;
+}
+
+.ffLayerTree {
+  display: grid;
+  align-content: start;
+  gap: 0;
+  min-height: 0;
+  padding: 4px 0;
+  overflow: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.ffLayerTreeRoot {
+  display: grid;
+  grid-template-columns: 16px 16px minmax(0, 1fr) auto;
+  gap: 5px;
+  align-items: center;
+  height: 26px;
+  padding: 0 8px;
+  color: #333333;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.ffTreeToggle {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  color: #333333;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  transition: transform 120ms ease;
+}
+
+.ffTreeToggle:hover {
+  background: #e9e9e9;
+}
+
+.ffTreeToggle.collapsed {
+  transform: rotate(-90deg);
+}
+
+.ffLayerTreeRoot span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffLayerTreeRoot em {
+  color: #64748b;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 780;
+}
+
+.ffLayerGroup {
+  display: grid;
+  gap: 0;
+}
+
+.ffLayerRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 26px 26px;
+  gap: 0;
+  align-items: center;
+  min-width: 0;
+  padding: 0 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.ffLayerRow.tree {
+  position: relative;
+  min-height: 26px;
+  padding: 0 4px;
+  background: transparent;
+}
+
+.ffLayerRow.tree.child {
+  margin-left: 18px;
+}
+
+.ffLayerRow.tree.child::before {
+  position: absolute;
+  top: -5px;
+  bottom: 14px;
+  left: 5px;
+  width: 1px;
+  content: "";
+  background: #d8dee8;
+}
+
+.ffLayerRow.tree.group {
+  margin-top: 1px;
+}
+
+.ffLayerRow.active {
+  background: #dbeafe;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ffLayerSelect,
+.ffLayerIcon {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  height: 24px;
+  color: #334155;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+}
+
+.ffLayerSelect {
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 0 5px;
+  font-size: 0.75rem;
+  font-weight: 620;
+}
+
+.ffLayerRow.tree .ffLayerSelect {
+  gap: 5px;
+  padding: 0 5px;
+  font-size: 0.75rem;
+  font-weight: 620;
+}
+
+.ffLayerRow.tree.group .ffLayerSelect {
+  font-weight: 700;
+}
+
+.ffLayerIcon {
+  justify-content: center;
+  padding: 0;
+  opacity: 0;
+}
+
+.ffLayerRow.active .ffLayerSelect,
+.ffLayerRow.active .ffLayerIcon {
+  color: #111111;
+  opacity: 1;
+}
+
+.ffLayerSelect:hover,
+.ffLayerIcon:hover,
+.ffLayerRow:hover {
+  color: #111111;
+  background: #eeeeee;
+}
+
+.ffLayerRow.active .ffLayerSelect:hover,
+.ffLayerRow.active .ffLayerIcon:hover {
+  color: #111111;
+  background: transparent;
+}
+
+.ffLayerRow:hover .ffLayerIcon {
+  opacity: 1;
+}
+
+.ffLayerSelect span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffLayerNameInput {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  padding: 0 4px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #1495ff;
+  border-radius: 3px;
+  font: inherit;
+  outline: none;
+}
+
+.ffLayerSelect em {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  color: #666666;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ffTreeIndent {
+  display: inline-block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 1px;
+  background: #d8dee8;
+}
+
+.ffTreeIndent.compact {
+  flex-basis: 6px;
+  width: 6px;
+  background: transparent;
+}
+
+.ffLayerRow.active .ffLayerSelect em {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.ffCanvasWrap {
+  display: grid;
+  grid-template-rows: 48px 1fr;
+  min-width: 0;
+  min-height: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ffToolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 12px;
+  overflow: hidden;
+  background: #ffffff;
+  border-bottom: 1px solid #cfd7e3;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+}
+
+.ffModeSwitch,
+.ffDeviceSwitch,
+.ffCanvasSizeControl {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+  padding: 3px;
+  background: #edf1f6;
+  border: 1px solid #dbe2ec;
+  border-radius: 7px;
+}
+
+.ffModeSwitch button,
+.ffDeviceSwitch button,
+.ffPublishButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  color: #475569;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  font-size: 0.74rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.ffCanvasSizeControl {
+  gap: 5px;
+  height: 36px;
+  padding: 3px 6px;
+}
+
+.ffCanvasSizeControl span {
+  color: #666666;
+  font-size: 0.68rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.ffCanvasSizeControl label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #666666;
+  font-size: 0.68rem;
+  font-weight: 820;
+}
+
+.ffCanvasSizeControl input {
+  width: 62px;
+  height: 26px;
+  padding: 0 5px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 780;
+}
+
+.ffModeSwitch button {
+  padding: 0 9px;
+}
+
+.ffDeviceSwitch button {
+  width: 30px;
+}
+
+.ffModeSwitch button.active,
+.ffDeviceSwitch button.active {
+  color: #111827;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.ffPublishButton {
+  flex: 0 0 auto;
+  padding: 0 11px;
+  color: #ffffff;
+  background: #111827;
+}
+
+.ffPublishButton:disabled {
+  color: #cbd5e1;
+  background: #334155;
+}
+
+.ffToolbar > span {
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.ffToolbar strong {
+  min-width: 96px;
+  max-width: 150px;
+  overflow: hidden;
+  font-size: 0.86rem;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffPageCrumb {
+  flex: 0 0 auto;
+  color: #2563eb;
+  font-size: 0.7rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.ffToolbar em {
+  margin-left: auto;
+  min-width: 0;
+  overflow: hidden;
+  color: #64748b;
+  font-style: normal;
+  font-size: 0.74rem;
+  font-weight: 680;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffCanvas {
+  position: relative;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: none;
+  height: 100%;
+  min-height: 0;
+  background: #dbe2eb;
+  cursor: grab;
+}
+
+.ffCanvas.panning {
+  cursor: grabbing;
+}
+
+.ffCanvas.preview {
+  cursor: default;
+}
+
+.ffCanvas.code {
+  padding: 0;
+  background: #1e1e1e;
+  cursor: default;
+  overflow: hidden;
+}
+
+.ffCodeWorkspace {
+  display: grid;
+  grid-template-columns: 48px 286px minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  color: #cccccc;
+  background: #1e1e1e;
+}
+
+.ffCodeActivityBar {
+  display: grid;
+  grid-auto-rows: 48px;
+  align-content: start;
+  min-height: 0;
+  background: #333333;
+  border-right: 1px solid #252526;
+}
+
+.ffCodeActivityBar button {
+  display: grid;
+  place-items: center;
+  color: #bdbdbd;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+}
+
+.ffCodeActivityBar button.active {
+  color: #ffffff;
+  border-left-color: #ffffff;
+}
+
+.ffCodeSidebar {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: #181818;
+  border-right: 1px solid #2b2b2b;
+}
+
+.ffCodeHeader,
+.ffCodeEditorTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0 12px;
+  background: #181818;
+  border-bottom: 1px solid #2b2b2b;
+}
+
+.ffCodeHeader strong,
+.ffCodeEditorTop span {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffCodeHeader strong {
+  color: #bbbbbb;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ffCodeHeader button {
+  height: 24px;
+  padding: 0 8px;
+  color: #d8d8d8;
+  background: #242424;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ffOpenEditors {
+  padding-bottom: 6px;
+  border-bottom: 1px solid #242424;
+}
+
+.ffCodeSectionLabel {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 12px;
+  color: #bbbbbb;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ffCodeOpenFile {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  height: 26px;
+  padding: 0 14px;
+  color: #cccccc;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 12px;
+}
+
+.ffCodeSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  color: #a3a3a3;
+  border-bottom: 1px solid #242424;
+  font-size: 11px;
+}
+
+.ffCodeSummary span {
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.ffCodeSummary em,
+.ffCodeEditorTop em,
+.ffCodeFile em {
+  color: #8b8b8b;
+  font-style: normal;
+}
+
+.ffCodeFileList {
+  display: grid;
+  padding: 2px 0 8px;
+}
+
+.ffCodeFolder summary {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  color: #cccccc;
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+}
+
+.ffCodeFolder summary::-webkit-details-marker {
+  display: none;
+}
+
+.ffCodeFolder summary:hover {
+  background: #222222;
+}
+
+.ffCodeFolder > div {
+  padding-left: 14px;
+}
+
+.ffCodeFile {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  width: 100%;
+  padding: 0 7px;
+  color: #cccccc;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 12px;
+}
+
+.ffCodeFile:hover {
+  background: #222222;
+}
+
+.ffCodeFile.active {
+  color: #ffffff;
+  background: #2a2a2a;
+}
+
+.ffCodeFile span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffCodeEmpty {
+  padding: 14px 12px;
+  color: #a3a3a3;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ffCodeEditor {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) 22px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.ffCodeTabs {
+  display: flex;
+  align-items: end;
+  height: 35px;
+  overflow: hidden;
+  background: #181818;
+  border-bottom: 1px solid #252526;
+}
+
+.ffCodeTabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 260px;
+  height: 35px;
+  padding: 0 12px;
+  color: #cccccc;
+  background: #1e1e1e;
+  border: 0;
+  border-right: 1px solid #252526;
+  border-radius: 0;
+  font-size: 12px;
+}
+
+.ffCodeTabs button.active {
+  color: #ffffff;
+  background: #1e1e1e;
+  box-shadow: inset 0 1px 0 #007acc;
+}
+
+.ffCodeEditor pre {
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 6px 0 40px;
+  overflow: auto;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.62;
+}
+
+.ffCodeEditor code {
+  display: grid;
+  grid-template-columns: 64px max-content;
+  min-height: 20px;
+  padding-right: 32px;
+  color: #d4d4d4;
+  white-space: pre;
+}
+
+.ffCodeEditor code:hover {
+  background: #242424;
+}
+
+.ffCodeLineNumber {
+  padding-right: 18px;
+  color: #858585;
+  text-align: right;
+  user-select: none;
+}
+
+.ffCodeLineText {
+  min-width: 0;
+}
+
+.tok-comment {
+  color: #6a9955;
+}
+
+.tok-keyword {
+  color: #569cd6;
+}
+
+.tok-string {
+  color: #ce9178;
+}
+
+.tok-tag {
+  color: #4ec9b0;
+}
+
+.ffCodeStatusBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  height: 22px;
+  padding: 0 12px;
+  color: #ffffff;
+  background: #007acc;
+  font-size: 11px;
+}
+
+.ffArtboardStage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.ffFrameLabel {
+  position: absolute;
+  top: -23px;
+  left: 0;
+  z-index: 3;
+  max-width: 220px;
+  overflow: hidden;
+  color: #2563eb;
+  cursor: grab;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.ffFrameLabel:active {
+  cursor: grabbing;
+}
+
+.ffArtboard {
+  position: relative;
+  width: 1440px;
+  height: 1600px;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.2);
+  cursor: grab;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.ffArtboard.draggingFrame {
+  cursor: grabbing;
+}
+
+.ffPixelGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9000;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(17, 24, 39, 0.13) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(17, 24, 39, 0.13) 1px, transparent 1px);
+  background-position: 0 0;
+  opacity: 0.38;
+  transform-origin: top left;
+}
+
+.ffCanvas.preview .ffArtboard {
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.ffNode {
+  position: relative;
+  outline: 1px solid transparent;
+  cursor: move;
+  touch-action: none;
+}
+
+.ffNode:hover {
+  outline: 1px solid rgba(20, 149, 255, 0.55);
+}
+
+.ffNode.selected {
+  outline: 1px solid #1495ff;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.ffNode.selected::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+  border: 0;
+}
+
+.ffPreviewNode {
+  position: absolute;
+}
+
+.ffSelectionBounds {
+  position: absolute;
+  z-index: 10001;
+  pointer-events: none;
+  background: rgba(20, 149, 255, 0.035);
+  border: 1px solid #1495ff;
+  box-shadow: none;
+}
+
+.ffSizeBadge {
+  position: absolute;
+  z-index: 10003;
+  display: inline-grid;
+  place-items: center;
+  min-width: 58px;
+  height: 24px;
+  padding: 0 8px;
+  color: #ffffff;
+  pointer-events: none;
+  background: #1495ff;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(20, 149, 255, 0.22);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  transform-origin: top center;
+  white-space: nowrap;
+}
+
+.ffFloatingBar {
+  position: absolute;
+  z-index: 10002;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 360px;
+  height: 32px;
+  padding: 3px;
+  color: #f8fafc;
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+}
+
+.ffFloatingBar span {
+  max-width: 128px;
+  overflow: hidden;
+  padding: 0 8px;
+  color: #e5e7eb;
+  font-size: 0.72rem;
+  font-weight: 760;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffFloatingBar button {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  color: #d1d5db;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+}
+
+.ffFloatingBar button:hover:not(:disabled) {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.ffFloatingBar button:disabled {
+  cursor: not-allowed;
+  color: #64748b;
+}
+
+.ffFloatingBar .danger:hover {
+  color: #ffffff;
+  background: #dc2626;
+}
+
+.ffCanvasHud {
+  position: fixed;
+  right: 316px;
+  bottom: 16px;
+  z-index: 12000;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 34px;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+}
+
+.ffCanvasHud button {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #334155;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+}
+
+.ffCanvasHud button:hover {
+  color: #111827;
+  background: #f1f5f9;
+}
+
+.ffCanvasHud span {
+  min-width: 44px;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 820;
+  text-align: center;
+}
+
+.ffMarquee {
+  position: absolute;
+  z-index: 10000;
+  pointer-events: none;
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid #2563eb;
+}
+
+.ffSmartGuide {
+  position: absolute;
+  z-index: 10003;
+  pointer-events: none;
+  background: #111111;
+  opacity: 0.72;
+}
+
+.ffSmartGuide.vertical {
+  top: 0;
+  width: 1px;
+  height: 100%;
+}
+
+.ffSmartGuide.horizontal {
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.ffContextMenu {
+  position: fixed;
+  z-index: 20000;
+  display: grid;
+  gap: 2px;
+  width: 176px;
+  padding: 6px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #cfcfcf;
+  border-radius: 7px;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
+.ffContextMenu strong {
+  padding: 5px 7px 6px;
+  color: #666666;
+  font-size: 0.68rem;
+  font-weight: 820;
+  text-transform: uppercase;
+}
+
+.ffContextMenu button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: 30px;
+  padding: 0 8px;
+  color: #111111;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.ffContextMenu button:hover {
+  color: #ffffff;
+  background: #111111;
+}
+
+.ffContextMenu .danger {
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0 0 5px 5px;
+}
+
+.ffTextNode,
+.ffButtonNode,
+.ffImageNode,
+.ffFrameNode {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ffTextNode {
+  display: flex;
+  align-items: center;
+  line-height: 1.08;
+}
+
+.ffButtonNode {
+  display: grid;
+  place-items: center;
+}
+
+.ffTextNode.editing,
+.ffButtonNode.editing {
+  cursor: text;
+  outline: 1px solid rgba(17, 17, 17, 0.46);
+  outline-offset: -2px;
+  user-select: text;
+}
+
+.ffTextNode.editing {
+  white-space: pre-wrap;
+}
+
+.ffTextNode.editing:focus,
+.ffButtonNode.editing:focus {
+  outline: 1px solid rgba(17, 17, 17, 0.72);
+}
+
+.ffImageNode {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7), transparent 22%),
+    linear-gradient(135deg, #f8c6a3, #f4d7bc);
+}
+
+.ffImageNode span {
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.ffImageNode img,
+.publishedImageNode img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ffHeaderWidget,
+.ffNavWidget,
+.ffGalleryWidget,
+.ffSliderWidget,
+.ffHeroWidget,
+.ffProductsWidget,
+.ffFormWidget,
+.ffMapWidget,
+.ffVideoWidget,
+.ffTestimonialWidget,
+.ffPricingWidget,
+.ffFooterWidget {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ffHeaderWidget {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto auto;
+  align-items: center;
+  gap: 22px;
+}
+
+.ffHeaderWidget strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffHeaderWidget nav,
+.ffNavWidget {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  overflow: visible;
+}
+
+.ffHeaderWidget nav .ffNavItem,
+.ffNavWidget .ffNavItem {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+  font-size: 0.82rem;
+  font-weight: 780;
+  white-space: nowrap;
+}
+
+.ffNavItem b {
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ffDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 30;
+  display: grid;
+  gap: 2px;
+  min-width: 128px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 7px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.ffNavItem.hasDropdown:hover .ffDropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.ffDropdown em {
+  display: block;
+  padding: 7px 9px;
+  color: #111111;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 760;
+}
+
+.ffDropdown em:hover {
+  color: #ffffff;
+  background: #111111;
+}
+
+.ffHeaderWidget button {
+  display: inline-grid;
+  place-items: center;
+  min-width: 78px;
+  height: 34px;
+  color: #ffffff;
+  background: #111111;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 840;
+}
+
+.ffNavWidget {
+  justify-content: center;
+}
+
+.ffGalleryWidget {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 10px;
+}
+
+.ffGalleryWidget span {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  background:
+    linear-gradient(135deg, #f2f2f2 0 25%, #dedede 25% 50%, #f7f7f7 50% 75%, #d4d4d4 75%),
+    #e5e5e5;
+  background-size: 28px 28px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+}
+
+.ffGalleryWidget em {
+  width: 34%;
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+}
+
+.ffSliderWidget {
+  position: relative;
+  display: grid;
+  align-content: end;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.52)),
+    repeating-linear-gradient(135deg, #181818 0 18px, #2a2a2a 18px 36px);
+}
+
+.ffSliderWidget > div {
+  display: grid;
+  gap: 8px;
+  max-width: 68%;
+}
+
+.ffSliderWidget strong {
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.05;
+}
+
+.ffSliderWidget span {
+  color: #d8d8d8;
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.ffSliderWidget section {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  left: 18px;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.ffSliderWidget button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.ffSliderWidget footer {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.ffSliderWidget i {
+  width: 7px;
+  height: 7px;
+  background: #ffffff;
+  border-radius: 999px;
+  opacity: 0.92;
+}
+
+.ffHeroWidget {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(180px, 0.9fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.ffHeroWidget section {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.ffHeroWidget section span,
+.ffTestimonialWidget span {
+  color: #cfcfcf;
+  font-size: 0.72rem;
+  font-weight: 860;
+  text-transform: uppercase;
+}
+
+.ffHeroWidget strong {
+  color: inherit;
+  font-size: inherit;
+  line-height: 1.02;
+}
+
+.ffHeroWidget p {
+  max-width: 420px;
+  margin: 0;
+  color: #d8d8d8;
+  font-size: 0.94rem;
+  font-weight: 560;
+  line-height: 1.45;
+}
+
+.ffHeroWidget button,
+.ffFormWidget button,
+.ffPricingWidget button {
+  width: max-content;
+  min-width: 96px;
+  height: 38px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 840;
+}
+
+.ffHeroWidget aside,
+.ffVideoWidget {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  height: 100%;
+  background:
+    linear-gradient(135deg, #f4f4f4 0 25%, #d8d8d8 25% 50%, #eeeeee 50% 75%, #cfcfcf 75%),
+    #e5e5e5;
+  background-size: 34px 34px;
+  border-radius: 10px;
+}
+
+.ffHeroWidget aside i {
+  width: 42%;
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+}
+
+.ffProductsWidget,
+.ffPricingWidget {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ffProductsWidget article,
+.ffPricingWidget article {
+  display: grid;
+  align-content: end;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  background: #f7f7f7;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+}
+
+.ffProductsWidget article span {
+  align-self: start;
+  min-height: 124px;
+  background:
+    linear-gradient(135deg, #ececec 0 25%, #d7d7d7 25% 50%, #f4f4f4 50% 75%, #d0d0d0 75%),
+    #e5e5e5;
+  background-size: 26px 26px;
+  border-radius: 6px;
+}
+
+.ffProductsWidget strong,
+.ffPricingWidget strong {
+  color: #111111;
+  font-size: 0.95rem;
+}
+
+.ffProductsWidget em,
+.ffPricingWidget span {
+  color: #555555;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.ffFormWidget {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.ffFormWidget strong {
+  margin-bottom: 4px;
+  color: inherit;
+  font-size: inherit;
+}
+
+.ffFormWidget span {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 12px;
+  color: #666666;
+  background: #f4f4f4;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 760;
+}
+
+.ffFormWidget span:nth-of-type(3) {
+  min-height: 96px;
+  align-items: flex-start;
+  padding-top: 12px;
+}
+
+.ffMapWidget {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px),
+    #eeeeee;
+  background-size: 34px 34px;
+}
+
+.ffMapWidget span {
+  width: 34px;
+  height: 34px;
+  background: #111111;
+  border: 6px solid #ffffff;
+  border-radius: 999px 999px 999px 0;
+  transform: rotate(-45deg);
+}
+
+.ffMapWidget strong {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  color: #111111;
+  font-size: 0.92rem;
+}
+
+.ffVideoWidget {
+  gap: 12px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.52)),
+    #111111;
+}
+
+.ffVideoWidget button {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+
+.ffVideoWidget strong {
+  color: inherit;
+  font-size: inherit;
+}
+
+.ffTestimonialWidget {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.ffTestimonialWidget strong {
+  height: 38px;
+  color: #111111;
+  font-size: 4rem;
+  line-height: 0.8;
+}
+
+.ffTestimonialWidget p {
+  margin: 0;
+  color: #111111;
+  font-size: inherit;
+  line-height: 1.45;
+}
+
+.ffTestimonialWidget span {
+  color: #666666;
+}
+
+.ffPricingWidget article {
+  align-content: start;
+}
+
+.ffPricingWidget span {
+  color: #111111;
+  font-size: 1.6rem;
+}
+
+.ffPricingWidget em {
+  display: block;
+  height: 76px;
+  background:
+    linear-gradient(#d8d8d8 0 0) 0 16px / 100% 1px no-repeat,
+    linear-gradient(#d8d8d8 0 0) 0 38px / 78% 1px no-repeat,
+    linear-gradient(#d8d8d8 0 0) 0 60px / 88% 1px no-repeat;
+}
+
+.ffPricingWidget button {
+  width: 100%;
+  color: #ffffff;
+  background: #111111;
+}
+
+.ffFooterWidget {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 22px;
+  color: #ffffff;
+}
+
+.ffFooterWidget strong {
+  color: inherit;
+  font-size: 1rem;
+}
+
+.ffFooterWidget span {
+  color: #d8d8d8;
+  font-size: 0.82rem;
+  font-weight: 760;
+}
+
+.ffField {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 9px;
+}
+
+.ffInspectorSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 8px;
+  color: #111111;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ffInspectorSectionTitle::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #d8d8d8;
+}
+
+.ffPublishCard + .ffInspectorSectionTitle {
+  margin-top: 10px;
+}
+
+.ffField span {
+  color: #64748b;
+  font-size: 0.66rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.ffField input,
+.ffField textarea {
+  width: 100%;
+  min-width: 0;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.82rem;
+}
+
+.ffField input {
+  height: 32px;
+  padding: 0 8px;
+}
+
+.ffColorControl {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 7px;
+  align-items: center;
+}
+
+.ffColorSwatchButton {
+  width: 38px;
+  height: 32px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 3px #ffffff;
+  cursor: pointer;
+}
+
+.ffColorControl input[type="text"] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  text-transform: uppercase;
+}
+
+.ffColorPopover {
+  position: fixed;
+  z-index: 50000;
+  display: grid;
+  gap: 8px;
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0 10px 10px;
+  overflow: auto;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #dedede;
+  border-radius: 14px;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.18);
+  overscroll-behavior: contain;
+}
+
+.ffColorPopoverHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto auto 1fr 26px 26px;
+  gap: 5px;
+  align-items: center;
+  min-height: 44px;
+  padding-top: 6px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ffColorPopoverHeader button {
+  height: 26px;
+  color: #767676;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.ffColorPopoverHeader button.active {
+  color: #111111;
+  background: #f3f3f3;
+}
+
+.ffColorPopoverHeader button:nth-last-child(-n + 2) {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #111111;
+  font-size: 1.18rem;
+  font-weight: 300;
+}
+
+.ffColorModeRow {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+
+.ffColorModeRow button {
+  display: grid;
+  place-items: center;
+  height: 24px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+.ffColorModeRow button.active,
+.ffColorModeRow button:hover {
+  background: #f3f3f3;
+}
+
+.ffColorPlane {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border: 1px solid #d0d0d0;
+  border-radius: 9px;
+  cursor: crosshair;
+  background-image:
+    linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0)),
+    linear-gradient(0deg, #000000, rgba(0, 0, 0, 0));
+  touch-action: none;
+}
+
+.ffColorPlane span {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 4px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.24);
+  transform: translate(-50%, -50%);
+}
+
+.ffColorSliderRow {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.ffColorSliderRow button,
+.ffColorSliderRow > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: #111111;
+  background: transparent;
+  border: 0;
+  font-size: 1rem;
+}
+
+.ffHueSlider,
+.ffAlphaSlider {
+  width: 100%;
+  height: 20px;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+}
+
+.ffHueSlider::-webkit-slider-runnable-track,
+.ffAlphaSlider::-webkit-slider-runnable-track {
+  height: 20px;
+  border: 1px solid #d0d0d0;
+  border-radius: 999px;
+}
+
+.ffHueSlider::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, red, #ff0, #0f0, #0ff, #00f, #f0f, red);
+}
+
+.ffAlphaSlider::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(90deg, transparent, var(--alpha-color)),
+    linear-gradient(45deg, #d8d8d8 25%, transparent 25% 75%, #d8d8d8 75%),
+    linear-gradient(45deg, #d8d8d8 25%, transparent 25% 75%, #d8d8d8 75%);
+  background-position: 0 0, 0 0, 8px 8px;
+  background-size: auto, 16px 16px, 16px 16px;
+}
+
+.ffHueSlider::-webkit-slider-thumb,
+.ffAlphaSlider::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -1px;
+  appearance: none;
+  background: #ffffff;
+  border: 4px solid #28c76f;
+  border-radius: 999px;
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.18);
+}
+
+.ffColorValueRow {
+  display: grid;
+  grid-template-columns: 68px 1fr 56px 16px;
+  gap: 0;
+  align-items: center;
+}
+
+.ffColorValueRow button,
+.ffColorValueRow input,
+.ffColorValueRow em {
+  height: 32px;
+  color: #111111;
+  background: #f4f4f4;
+  border: 0;
+  border-right: 1px solid #ffffff;
+  border-radius: 0;
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 520;
+}
+
+.ffColorValueRow button {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.ffColorValueRow input {
+  padding: 0 8px;
+  font-family: inherit;
+  text-transform: uppercase;
+}
+
+.ffColorValueRow input[type="number"] {
+  text-align: right;
+}
+
+.ffColorValueRow em {
+  display: grid;
+  place-items: center;
+  color: #777777;
+  border-radius: 0 8px 8px 0;
+}
+
+.ffColorScope {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.ffColorScope > span {
+  display: none;
+}
+
+.ffColorScope select {
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 520;
+}
+
+.ffColorSwatchGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 7px 8px;
+  padding-bottom: 2px;
+}
+
+.ffColorSwatchGrid button {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.ffField textarea {
+  min-height: 72px;
+  padding: 8px;
+  resize: vertical;
+}
+
+.ffQuad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.ffAlignGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.ffBatchGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.ffBatchGrid button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 760;
+}
+
+.ffPresetButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.ffPresetButtons button {
+  min-height: 30px;
+  color: #333333;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.ffAlignGrid button:hover,
+.ffActions button:hover,
+.ffBatchGrid button:hover,
+.ffPresetButtons button:hover {
+  color: #ffffff;
+  background: #172033;
+  border-color: #172033;
+}
+
+.ffActions {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ffActions button:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+  background: #f1f5f9;
+  border-color: #d8dee8;
+}
+
+.ffActions .danger {
+  color: #dc2626;
+}
+
+.ffActions .danger:hover {
+  color: #ffffff;
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.ffEmptyInspector {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 190px;
+  padding: 18px;
+  color: #64748b;
+  text-align: center;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+}
+
+.ffEmptyInspector strong {
+  color: #111827;
+  font-size: 0.88rem;
+}
+
+.ffEmptyInspector span {
+  max-width: 220px;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.ffMultiInspector {
+  display: grid;
+  gap: 10px;
+}
+
+.ffMultiSummary {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+}
+
+.ffMultiSummary strong {
+  color: #1d4ed8;
+  font-size: 0.84rem;
+}
+
+.ffMultiSummary span {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 720;
+}
+
+.ffPublishCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+}
+
+.ffPublishCard div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ffPublishCard span {
+  color: #64748b;
+  font-size: 0.66rem;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.ffPublishCard strong {
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.ffPublishCard a,
+.ffPublishCard button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 66px;
+  height: 30px;
+  color: #ffffff;
+  text-decoration: none;
+  background: #111827;
+  border: 0;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 820;
+}
+
+.ffPublishCard.published {
+  background: #ecfdf5;
+  border-color: #99f6e4;
+}
+
+.ffPublishCard.published strong {
+  color: #047857;
+}
+
+.ffPublishCard.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.ffPublishCard.error strong {
+  color: #dc2626;
+}
+
+.publishedPage {
+  min-height: 100vh;
+  overflow: auto;
+  background: #f1f5f9;
+}
+
+.publishedNav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid #d8dee8;
+  backdrop-filter: blur(12px);
+}
+
+.publishedNav a {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  color: #334155;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 820;
+}
+
+.publishedNav a:hover {
+  color: #111827;
+  background: #f1f5f9;
+}
+
+.publishedArtboard {
+  position: relative;
+  width: 1440px;
+  height: 1600px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.publishedNode {
+  position: absolute;
+}
+
+.publishedTextNode,
+.publishedButtonNode,
+.publishedImageNode,
+.publishedFrameNode {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.publishedTextNode {
+  display: flex;
+  align-items: center;
+  line-height: 1.08;
+}
+
+.publishedButtonNode {
+  display: grid;
+  place-items: center;
+}
+
+.publishedImageNode {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7), transparent 22%),
+    linear-gradient(135deg, #f8c6a3, #f4d7bc);
+}
+
+.publishedImageNode span {
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.publishedMissing {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  background: #f1f5f9;
+}
+
+.publishedMissing div {
+  display: grid;
+  gap: 10px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 8px;
+}
+
+.publishedMissing p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* Freeform editor monochrome theme. Keep the editor chrome strict black/white/gray. */
+.freeformShell {
+  color: #111111;
+  background: #dcdcdc;
+}
+
+.ffToolRail {
+  background: #0a0a0a;
+  border-right-color: #000000;
+}
+
+.ffRailBrand {
+  color: #0a0a0a;
+  background: #ffffff;
+}
+
+.ffToolRail button {
+  color: #cfcfcf;
+}
+
+.ffToolRail button:hover,
+.ffToolRail button.active {
+  color: #ffffff;
+  background: #242424;
+  border-color: #3a3a3a;
+}
+
+.ffPanel {
+  background: #f4f4f4;
+  border-color: #cfcfcf;
+}
+
+.ffLayers {
+  border-right-color: #cfcfcf;
+}
+
+.ffInspector {
+  border-left-color: #cfcfcf;
+}
+
+.ffPanelHeader svg,
+.ffToolbar > span,
+.ffPageCrumb,
+.ffMiniToolbar span,
+.ffPanelHeader span,
+.ffPagesHeader span,
+.ffPageSelect em,
+.ffField span,
+.ffPublishCard span,
+.ffEmptyInspector span,
+.publishedMissing p {
+  color: #666666;
+}
+
+.ffPanelTabs,
+.ffModeSwitch,
+.ffDeviceSwitch {
+  background: #e7e7e7;
+  border-color: #d2d2d2;
+}
+
+.ffPanelTabs button,
+.ffModeSwitch button,
+.ffDeviceSwitch button,
+.ffToolbar em,
+.ffLayerSelect,
+.ffLayerIcon,
+.ffPageSelect,
+.ffPageIcon,
+.ffBatchGrid button,
+.ffPresetButtons button,
+.ffWidgetCategories button,
+.ffAddGrid button,
+.ffUploadButton,
+.ffReplaceImage,
+.ffActions button,
+.ffAlignGrid button,
+.ffMiniToolbar button,
+.ffCanvasHud button,
+.publishedNav a {
+  color: #333333;
+}
+
+.ffPanelTabs button.active,
+.ffModeSwitch button.active,
+.ffDeviceSwitch button.active,
+.ffPageRow,
+.ffField input,
+.ffField textarea,
+.ffWidgetSearch,
+.ffPublishCard,
+.ffEmptyInspector,
+.ffCanvasHud,
+.publishedMissing div {
+  color: #111111;
+  background: #ffffff;
+  border-color: #d4d4d4;
+}
+
+.ffPageRow.active,
+.ffMultiSummary {
+  background: #111111;
+  border-color: #111111;
+}
+
+.ffPageRow.active .ffPageSelect,
+.ffPageRow.active .ffPageIcon,
+.ffMultiSummary strong,
+.ffMultiSummary span {
+  color: #ffffff;
+}
+
+.ffPageSelect:hover,
+.ffPageIcon:hover,
+.ffPagesHeader button:hover,
+.ffLayerSelect:hover,
+.ffLayerIcon:hover,
+.ffCanvasHud button:hover,
+.publishedNav a:hover {
+  color: #111111;
+  background: #e9e9e9;
+}
+
+.ffMiniToolbar button:hover:not(:disabled),
+.ffAlignGrid button:hover,
+.ffActions button:hover,
+.ffBatchGrid button:hover,
+.ffPublishButton,
+.ffPublishCard a,
+.ffPublishCard button {
+  color: #ffffff;
+  background: #111111;
+  border-color: #111111;
+}
+
+.ffMiniToolbar button:disabled,
+.ffActions button:disabled,
+.ffPublishButton:disabled {
+  color: #8b8b8b;
+  background: #eeeeee;
+  border-color: #d4d4d4;
+}
+
+.ffLayerRow.active {
+  background: #dbeafe;
+  border-color: transparent;
+}
+
+.ffLayerRow.active .ffLayerSelect,
+.ffLayerRow.active .ffLayerIcon {
+  color: #111111;
+}
+
+.ffLayerRow.active .ffLayerSelect:hover,
+.ffLayerRow.active .ffLayerIcon:hover,
+.ffFloatingBar button:hover:not(:disabled) {
+  color: #111111;
+  background: transparent;
+}
+
+.ffLayerSelect em {
+  color: #111111;
+  background: #e5e5e5;
+}
+
+.ffLayerRow.active .ffLayerSelect em {
+  color: #111111;
+  background: transparent;
+}
+
+.ffToolbar {
+  background: #ffffff;
+  border-bottom-color: #cfcfcf;
+}
+
+.ffCanvas {
+  background: #d9d9d9;
+}
+
+.ffArtboard {
+  background: #ffffff;
+  border-color: #bdbdbd;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.18);
+}
+
+.ffNode:hover {
+  outline-color: rgba(20, 149, 255, 0.55);
+}
+
+.ffNode.selected {
+  outline-color: #1495ff;
+  box-shadow: none;
+}
+
+.ffSelectionBounds {
+  background: rgba(20, 149, 255, 0.035);
+  border-color: #1495ff;
+  box-shadow: none;
+}
+
+.ffFloatingBar {
+  color: #ffffff;
+  background: #111111;
+  border-color: #303030;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+
+.ffFloatingBar span,
+.ffFloatingBar button {
+  color: #e5e5e5;
+}
+
+.ffFloatingBar .danger:hover,
+.ffActions .danger:hover {
+  color: #ffffff;
+  background: #111111;
+  border-color: #111111;
+}
+
+.ffMarquee {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: #111111;
+}
+
+.ffImageNode,
+.publishedImageNode {
+  background:
+    linear-gradient(135deg, #eeeeee 0 25%, transparent 25% 50%, #eeeeee 50% 75%, transparent 75%),
+    #d8d8d8;
+  background-size: 24px 24px;
+}
+
+.ffImageNode span,
+.publishedImageNode span {
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.ffActions .danger,
+.ffPublishCard.error strong {
+  color: #111111;
+}
+
+.ffPublishCard.published,
+.ffPublishCard.error {
+  background: #ffffff;
+  border-color: #d4d4d4;
+}
+
+.ffPublishCard.published strong,
+.ffEmptyInspector strong {
+  color: #111111;
+}
+
+.publishedPage,
+.publishedMissing {
+  background: #eeeeee;
+}
+
+.publishedNav {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom-color: #d4d4d4;
+}
+
+.freeformShell button,
+.freeformShell input,
+.freeformShell textarea {
+  border-color: #d8d8d8;
+  outline-color: #333333;
+}
+
+.freeformShell button,
+.freeformShell svg,
+.freeformShell path {
+  color: #333333;
+}
+
+.ffToolRail button {
+  color: #cfcfcf;
+  border-color: transparent;
+}
+
+.ffToolRail button svg,
+.ffToolRail button path {
+  color: inherit;
+}
+
+.ffToolRail button:hover,
+.ffToolRail button.active {
+  color: #ffffff;
+  background: #242424;
+  border-color: #3a3a3a;
+}
+
+.ffPageRow.active button,
+.ffPageRow.active svg,
+.ffPageRow.active path,
+.ffPublishButton,
+.ffPublishButton svg,
+.ffPublishButton path,
+.ffFloatingBar,
+.ffFloatingBar button,
+.ffFloatingBar svg,
+.ffFloatingBar path,
+.ffMiniToolbar button:hover:not(:disabled),
+.ffMiniToolbar button:hover:not(:disabled) svg,
+.ffMiniToolbar button:hover:not(:disabled) path,
+.ffActions button:hover,
+.ffActions button:hover svg,
+.ffActions button:hover path,
+.ffAlignGrid button:hover,
+.ffAlignGrid button:hover svg,
+.ffAlignGrid button:hover path,
+.ffBatchGrid button:hover,
+.ffPresetButtons button:hover,
+.ffBatchGrid button:hover svg,
+.ffBatchGrid button:hover path {
+  color: #ffffff;
+}
+
+.ffPageRow.active button,
+.ffLayerRow.active button {
+  border-color: transparent;
+}
+
+.ffPanelHeader svg,
+.ffPanelHeader path,
+.ffPagesHeader span,
+.ffPageSelect em,
+.ffToolbar > span,
+.ffPageCrumb,
+.ffToolbar em,
+.ffMiniToolbar span,
+.ffField span,
+.ffPublishCard span,
+.ffEmptyInspector span,
+.ffCanvasHud button,
+.ffCanvasHud svg,
+.ffCanvasHud path {
+  color: #666666;
+}
+
+.ffLayerSelect em,
+.ffLayerSelect em svg,
+.ffLayerSelect em path {
+  color: #111111;
+}
+
+.freeformShell .ffPublishButton,
+.freeformShell .ffPublishButton svg,
+.freeformShell .ffPublishButton path,
+.freeformShell .ffPublishCard a,
+.freeformShell .ffPublishCard button {
+  color: #ffffff;
+  background: #111111;
+  border-color: #111111;
+}
+
+.freeformShell .ffCanvasHud span {
+  color: #666666;
+  border-color: #666666;
+  outline-color: #666666;
+}
+
+.freeformShell .ffHeaderWidget button,
+.freeformShell .ffHeaderWidget button:hover,
+.freeformShell .ffSliderWidget button,
+.freeformShell .ffSliderWidget button:hover {
+  border-color: transparent;
+}
+
+.freeformShell .ffHeaderWidget button,
+.freeformShell .ffHeaderWidget button:hover {
+  color: #ffffff;
+  background: #111111;
+}
+
+.freeformShell .ffSliderWidget button,
+.freeformShell .ffSliderWidget button:hover {
+  color: #111111;
+  background: #ffffff;
+}
+
+.freeformShell .ffHeroWidget button,
+.freeformShell .ffHeroWidget button:hover,
+.freeformShell .ffVideoWidget button,
+.freeformShell .ffVideoWidget button:hover {
+  color: #111111;
+  background: #ffffff;
+  border-color: transparent;
+}
+
+.freeformShell .ffFormWidget button,
+.freeformShell .ffFormWidget button:hover,
+.freeformShell .ffPricingWidget button,
+.freeformShell .ffPricingWidget button:hover {
+  color: #ffffff;
+  background: #111111;
+  border-color: transparent;
+}
+
+.ffArtboard .ffHeaderWidget strong,
+.ffArtboard .ffHeaderWidget nav,
+.ffArtboard .ffNavWidget .ffNavItem,
+.ffArtboard .ffSliderWidget strong,
+.ffArtboard .ffSliderWidget span,
+.ffArtboard .ffHeroWidget section span,
+.ffArtboard .ffHeroWidget strong,
+.ffArtboard .ffHeroWidget p,
+.ffArtboard .ffProductsWidget strong,
+.ffArtboard .ffProductsWidget em,
+.ffArtboard .ffFormWidget strong,
+.ffArtboard .ffMapWidget strong,
+.ffArtboard .ffVideoWidget strong,
+.ffArtboard .ffTestimonialWidget strong,
+.ffArtboard .ffTestimonialWidget p,
+.ffArtboard .ffTestimonialWidget span,
+.ffArtboard .ffPricingWidget strong,
+.ffArtboard .ffPricingWidget span,
+.ffArtboard .ffFooterWidget strong,
+.ffArtboard .ffFooterWidget span,
+.ffArtboard .ffHeaderWidget button,
+.ffArtboard .ffHeroWidget button,
+.ffArtboard .ffFormWidget button,
+.ffArtboard .ffPricingWidget button,
+.ffArtboard .ffSliderWidget button,
+.ffArtboard .ffVideoWidget button,
+.publishedNode .ffHeaderWidget strong,
+.publishedNode .ffHeaderWidget nav,
+.publishedNode .ffNavWidget .ffNavItem,
+.publishedNode .ffSliderWidget strong,
+.publishedNode .ffSliderWidget span,
+.publishedNode .ffHeroWidget section span,
+.publishedNode .ffHeroWidget strong,
+.publishedNode .ffHeroWidget p,
+.publishedNode .ffProductsWidget strong,
+.publishedNode .ffProductsWidget em,
+.publishedNode .ffFormWidget strong,
+.publishedNode .ffMapWidget strong,
+.publishedNode .ffVideoWidget strong,
+.publishedNode .ffTestimonialWidget strong,
+.publishedNode .ffTestimonialWidget p,
+.publishedNode .ffTestimonialWidget span,
+.publishedNode .ffPricingWidget strong,
+.publishedNode .ffPricingWidget span,
+.publishedNode .ffFooterWidget strong,
+.publishedNode .ffFooterWidget span,
+.publishedNode .ffHeaderWidget button,
+.publishedNode .ffHeroWidget button,
+.publishedNode .ffFormWidget button,
+.publishedNode .ffPricingWidget button,
+.publishedNode .ffSliderWidget button,
+.publishedNode .ffVideoWidget button {
+  color: inherit;
+}
