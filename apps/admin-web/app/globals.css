@@ -2616,8 +2616,8 @@ body {
   min-width: 0;
   min-height: 0;
   overflow: auto;
-  background: #181818;
-  border-right: 1px solid #2b2b2b;
+  background: #252526;
+  border-right: 1px solid #1a1a1a;
 }
 
 .ffCodeHeader,
@@ -2626,10 +2626,10 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  min-height: 38px;
-  padding: 0 12px;
-  background: #181818;
-  border-bottom: 1px solid #2b2b2b;
+  min-height: 35px;
+  padding: 0 8px 0 20px;
+  background: #252526;
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .ffCodeHeader strong,
@@ -2736,9 +2736,8 @@ body {
 }
 
 .ffCodeFileList {
-  display: grid;
-  gap: 1px;
-  padding: 4px 6px 10px;
+  display: block;
+  padding: 2px 0 12px;
 }
 
 .ffCodeFolder summary {
@@ -2746,15 +2745,15 @@ body {
   grid-template-columns: 16px minmax(0, 1fr);
   align-items: center;
   gap: 4px;
-  min-height: 26px;
-  padding: 0 8px;
-  color: #ededed;
+  min-height: 22px;
+  padding: 0 12px;
+  color: #cccccc;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 650;
+  font-size: 13px;
+  font-weight: 400;
   list-style: none;
-  background: #202020;
-  border-radius: 4px;
+  background: transparent;
+  border-radius: 0;
 }
 
 .ffCodeFolder summary::-webkit-details-marker {
@@ -2763,42 +2762,40 @@ body {
 
 .ffCodeFolder summary:hover {
   color: #ffffff;
-  background: #303033;
+  background: #2a2d2e;
 }
 
 .ffCodeFolder > div {
-  display: grid;
-  gap: 1px;
+  display: block;
   padding-left: 12px;
-  padding-top: 1px;
 }
 
 .ffCodeFile {
   display: grid;
-  grid-template-columns: 16px minmax(0, 1fr) auto;
+  grid-template-columns: 16px minmax(0, 1fr);
   align-items: center;
   gap: 6px;
-  min-height: 28px;
+  min-height: 22px;
   width: 100%;
-  padding: 0 8px;
-  color: #eeeeee;
+  padding: 0 12px;
+  color: #cccccc;
   text-align: left;
-  background: #202020;
+  background: transparent;
   border: 0;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 520;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .ffCodeFile:hover {
   color: #ffffff;
-  background: #303033;
+  background: #2a2d2e;
 }
 
 .ffCodeFile.active {
   color: #ffffff;
   background: #094771;
-  box-shadow: inset 2px 0 0 #4fb8ff;
+  box-shadow: none;
 }
 
 .ffCodeFile svg,
@@ -3733,10 +3730,26 @@ body {
 }
 
 .ffGalleryWidget {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
   gap: 10px;
+}
+
+.ffGalleryWidget.masonry {
+  grid-template-columns: 1.15fr 0.85fr 1fr;
+  grid-template-rows: 0.85fr 1.15fr;
+}
+
+.ffGalleryWidget.masonry span:first-child,
+.ffGalleryWidget.masonry button:first-child {
+  grid-row: span 2;
+}
+
+.ffGalleryWidget.carousel {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 }
 
 .ffGalleryWidget span,
@@ -3832,6 +3845,53 @@ body {
   background: #ffffff;
   border-radius: 999px;
   opacity: 0.92;
+}
+
+.ffGalleryWidget footer {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.ffGalleryWidget footer i {
+  width: 7px;
+  height: 7px;
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.18);
+  cursor: pointer;
+  opacity: 0.42;
+}
+
+.ffGalleryWidget footer i.active {
+  opacity: 1;
+  transform: scaleX(1.7);
+}
+
+.wpGalleryControls {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  left: 14px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.wpGalleryControls button {
+  width: 34px;
+  height: 34px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.16);
+  font-size: 20px;
+  font-weight: 850;
+  pointer-events: auto;
 }
 
 .ffHeroWidget {
@@ -7065,6 +7125,10 @@ body {
   animation: wpSlideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.wpSlider.fade .wpSlideText {
+  animation-name: wpSlideFade;
+}
+
 @keyframes wpSlideIn {
   from {
     opacity: 0;
@@ -7073,6 +7137,12 @@ body {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes wpSlideFade {
+  from {
+    opacity: 0;
   }
 }
 

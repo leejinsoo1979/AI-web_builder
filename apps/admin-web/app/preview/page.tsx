@@ -49,6 +49,12 @@ type PreviewNode = {
     imageScale?: number;
     imageUrl?: string;
     mapUrl?: string;
+    mediaAutoplay?: boolean;
+    mediaGalleryMode?: "carousel" | "grid" | "masonry";
+    mediaInterval?: number;
+    mediaShowControls?: boolean;
+    mediaShowDots?: boolean;
+    mediaTransition?: "fade" | "slide";
     padding?: number;
     radius?: number;
     text?: string;
@@ -385,11 +391,21 @@ function PreviewNodeRenderer({ goToPage, node, showToast }: { goToPage: (label: 
   }
 
   if (node.type === "gallery") {
-    return <MediaGalleryWidget style={style} />;
+    return <MediaGalleryWidget galleryMode={node.style?.mediaGalleryMode} showControls={node.style?.mediaShowControls} showDots={node.style?.mediaShowDots} style={style} />;
   }
 
   if (node.type === "slider") {
-    return <MediaSliderWidget style={style} text={node.style?.text} />;
+    return (
+      <MediaSliderWidget
+        autoplay={node.style?.mediaAutoplay}
+        interval={node.style?.mediaInterval}
+        showControls={node.style?.mediaShowControls}
+        showDots={node.style?.mediaShowDots}
+        style={style}
+        text={node.style?.text}
+        transition={node.style?.mediaTransition}
+      />
+    );
   }
 
   if (node.type === "hero") {

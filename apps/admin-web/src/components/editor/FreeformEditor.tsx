@@ -317,6 +317,12 @@ type EditorNode = {
     imageOffsetY?: number;
     imageScale?: number;
     mapUrl?: string;
+    mediaAutoplay?: boolean;
+    mediaGalleryMode?: "carousel" | "grid" | "masonry";
+    mediaInterval?: number;
+    mediaShowControls?: boolean;
+    mediaShowDots?: boolean;
+    mediaTransition?: "fade" | "slide";
     videoUrl?: string;
   };
 };
@@ -4727,6 +4733,62 @@ export function FreeformEditor() {
               <input checked={false} onChange={() => undefined} type="checkbox" />
               <span>넘친 콘텐츠 숨기기</span>
             </label>
+            {selectedNode.type === "slider" ? (
+              <>
+                <InspectorSectionTitle label="슬라이더" />
+                <InspectorField label="슬라이드">
+                  <textarea value={selectedNode.style.text || ""} onChange={(event) => updateStyle(selectedNode.id, { text: event.target.value })} />
+                </InspectorField>
+                <div className="ffInspectorRow">
+                  <InspectorField label="전환">
+                    <select value={selectedNode.style.mediaTransition || "slide"} onChange={(event) => updateStyle(selectedNode.id, { mediaTransition: event.target.value === "fade" ? "fade" : "slide" })}>
+                      <option value="slide">슬라이드</option>
+                      <option value="fade">페이드</option>
+                    </select>
+                  </InspectorField>
+                  <NumberField label="ms" min={900} step={100} value={selectedNode.style.mediaInterval || 3200} onChange={(value) => updateStyle(selectedNode.id, { mediaInterval: Math.round(value) })} />
+                </div>
+                <label className="ffInspectorCheckbox">
+                  <input checked={selectedNode.style.mediaAutoplay !== false} onChange={(event) => updateStyle(selectedNode.id, { mediaAutoplay: event.target.checked })} type="checkbox" />
+                  <span>자동 재생</span>
+                </label>
+                <label className="ffInspectorCheckbox">
+                  <input checked={selectedNode.style.mediaShowControls !== false} onChange={(event) => updateStyle(selectedNode.id, { mediaShowControls: event.target.checked })} type="checkbox" />
+                  <span>이전/다음 버튼 표시</span>
+                </label>
+                <label className="ffInspectorCheckbox">
+                  <input checked={selectedNode.style.mediaShowDots !== false} onChange={(event) => updateStyle(selectedNode.id, { mediaShowDots: event.target.checked })} type="checkbox" />
+                  <span>페이지 도트 표시</span>
+                </label>
+              </>
+            ) : null}
+            {selectedNode.type === "gallery" ? (
+              <>
+                <InspectorSectionTitle label="갤러리" />
+                <InspectorField label="모드">
+                  <select
+                    value={selectedNode.style.mediaGalleryMode || "grid"}
+                    onChange={(event) =>
+                      updateStyle(selectedNode.id, {
+                        mediaGalleryMode: event.target.value === "carousel" ? "carousel" : event.target.value === "masonry" ? "masonry" : "grid"
+                      })
+                    }
+                  >
+                    <option value="grid">그리드</option>
+                    <option value="masonry">메이슨리</option>
+                    <option value="carousel">캐러셀</option>
+                  </select>
+                </InspectorField>
+                <label className="ffInspectorCheckbox">
+                  <input checked={selectedNode.style.mediaShowControls !== false} onChange={(event) => updateStyle(selectedNode.id, { mediaShowControls: event.target.checked })} type="checkbox" />
+                  <span>이전/다음 버튼 표시</span>
+                </label>
+                <label className="ffInspectorCheckbox">
+                  <input checked={selectedNode.style.mediaShowDots !== false} onChange={(event) => updateStyle(selectedNode.id, { mediaShowDots: event.target.checked })} type="checkbox" />
+                  <span>페이지 도트 표시</span>
+                </label>
+              </>
+            ) : null}
             <InspectorSectionTitle label="페이지 표시" />
             <label className="ffInspectorCheckbox">
               <input checked={selectedNode.scope === "site"} onChange={(event) => toggleNodeSiteScope(selectedNode, event.target.checked)} type="checkbox" />
@@ -5081,34 +5143,54 @@ function RenderNode({
   }
 
   if (node.type === "gallery") {
+    const galleryMode = node.style.mediaGalleryMode || "grid";
+    const previewItems = galleryMode === "carousel" ? [0] : Array.from({ length: 6 }, (_, index) => index);
+
     return (
-      <div className="ffGalleryWidget" style={style}>
-        {Array.from({ length: 6 }).map((_, index) => (
+      <div className={`ffGalleryWidget ${galleryMode}`} style={style}>
+        {previewItems.map((index) => (
           <span key={index}>
             <em />
           </span>
         ))}
+        {galleryMode === "carousel" && node.style.mediaShowControls !== false ? (
+          <section className="wpGalleryControls">
+            <button type="button">‹</button>
+            <button type="button">›</button>
+          </section>
+        ) : null}
+        {galleryMode === "carousel" && node.style.mediaShowDots !== false ? (
+          <footer>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <i className={index === 0 ? "active" : ""} key={index} />
+            ))}
+          </footer>
+        ) : null}
       </div>
     );
   }
 
   if (node.type === "slider") {
-    const slider = splitContent(node.style.text, ["Featured collection", "01 / 03"]);
+    const slider = splitContent(node.style.text, ["Featured collection", "New arrivals", "Editor's pick"]);
     return (
-      <div className="ffSliderWidget" style={style}>
+      <div className={`ffSliderWidget ${node.style.mediaTransition === "fade" ? "fade" : "slide"}`} style={style}>
         <div>
           <strong>{slider[0]}</strong>
-          <span>{slider[1]}</span>
+          <span>01 / {String(Math.max(3, slider.length)).padStart(2, "0")}</span>
         </div>
-        <section>
-          <button type="button">‹</button>
-          <button type="button">›</button>
-        </section>
-        <footer>
-          <i />
-          <i />
-          <i />
-        </footer>
+        {node.style.mediaShowControls !== false ? (
+          <section>
+            <button type="button">‹</button>
+            <button type="button">›</button>
+          </section>
+        ) : null}
+        {node.style.mediaShowDots !== false ? (
+          <footer>
+            {Array.from({ length: Math.max(3, slider.length) }).map((_, index) => (
+              <i className={index === 0 ? "active" : ""} key={index} />
+            ))}
+          </footer>
+        ) : null}
       </div>
     );
   }
@@ -6587,7 +6669,7 @@ function getWidgetDefaults(type: EditorNodeType): Pick<EditorNode, "height" | "n
       name: "Gallery",
       width: 680,
       height: 360,
-      style: { background: "#ffffff", border: "1px solid #d0d0d0", radius: 10, padding: 12 }
+      style: { background: "#ffffff", border: "1px solid #d0d0d0", mediaGalleryMode: "grid", mediaShowControls: true, mediaShowDots: true, radius: 10, padding: 12 }
     };
   }
 
@@ -6596,7 +6678,7 @@ function getWidgetDefaults(type: EditorNodeType): Pick<EditorNode, "height" | "n
       name: "Slider gallery",
       width: 760,
       height: 360,
-      style: { background: "#111111", border: "1px solid #111111", color: "#ffffff", fontSize: 26, fontWeight: 850, padding: 24, radius: 10, text: "Featured collection|01 / 03" }
+      style: { background: "#111111", border: "1px solid #111111", color: "#ffffff", fontSize: 26, fontWeight: 850, mediaAutoplay: true, mediaInterval: 3200, mediaShowControls: true, mediaShowDots: true, mediaTransition: "slide", padding: 24, radius: 10, text: "Featured collection|New arrivals|Editor's pick" }
     };
   }
 
