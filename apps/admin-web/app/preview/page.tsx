@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { bindInteractions, getAppearInteraction, runAppearAnimation, type Interaction, type InteractionContext } from "@webable/interaction-runtime";
 import { BookingWidget } from "@/components/published/BookingWidget";
+import { MediaGalleryWidget, MediaSliderWidget } from "@/components/published/MediaWidgets";
 import { ShopWidget } from "@/components/published/ShopWidget";
 
 type PreviewNodeType =
@@ -384,11 +385,11 @@ function PreviewNodeRenderer({ goToPage, node, showToast }: { goToPage: (label: 
   }
 
   if (node.type === "gallery") {
-    return <InteractiveGallery style={style} />;
+    return <MediaGalleryWidget style={style} />;
   }
 
   if (node.type === "slider") {
-    return <InteractiveSlider node={node} style={style} />;
+    return <MediaSliderWidget style={style} text={node.style?.text} />;
   }
 
   if (node.type === "hero") {

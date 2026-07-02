@@ -3,6 +3,7 @@ import path from "node:path";
 import Link from "next/link";
 import { PublishedFormWidget } from "@/components/published/PublishedFormWidget";
 import { BookingWidget } from "@/components/published/BookingWidget";
+import { MediaGalleryWidget, MediaSliderWidget } from "@/components/published/MediaWidgets";
 import { ShopWidget } from "@/components/published/ShopWidget";
 import { PublishedInteractionNode } from "@/components/published/PublishedInteractionNode";
 import type { Interaction } from "@webable/interaction-runtime";
@@ -255,36 +256,11 @@ function RenderPublishedNode({ node }: { node: PublishedNode }) {
   }
 
   if (node.type === "gallery") {
-    return (
-      <div className="ffGalleryWidget" style={style}>
-        {Array.from({ length: 6 }).map((_, index) => (
-          <span key={index}>
-            <em />
-          </span>
-        ))}
-      </div>
-    );
+    return <MediaGalleryWidget style={style} />;
   }
 
   if (node.type === "slider") {
-    const slider = splitContent(node.style?.text, ["Featured collection", "01 / 03"]);
-    return (
-      <div className="ffSliderWidget" style={style}>
-        <div>
-          <strong>{slider[0]}</strong>
-          <span>{slider[1]}</span>
-        </div>
-        <section>
-          <button type="button">‹</button>
-          <button type="button">›</button>
-        </section>
-        <footer>
-          <i />
-          <i />
-          <i />
-        </footer>
-      </div>
-    );
+    return <MediaSliderWidget style={style} text={node.style?.text} />;
   }
 
   if (node.type === "hero") {

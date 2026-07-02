@@ -16,6 +16,7 @@ import {
   ChevronDown,
   ChevronUp,
   CheckCircle2,
+  Circle,
   Copy,
   CreditCard,
   Download,
@@ -43,6 +44,7 @@ import {
   Maximize2,
   Menu,
   Minimize2,
+  Minus,
   Monitor,
   MousePointer2,
   PanelLeft,
@@ -173,6 +175,23 @@ type FrameDragState = {
   originClientY: number;
   originX: number;
   originY: number;
+};
+type FrameResizeHandle = "bottom" | "bottomLeft" | "bottomRight" | "left" | "right" | "top" | "topLeft" | "topRight";
+type FrameResizeState = {
+  handle: FrameResizeHandle;
+  originClientX: number;
+  originClientY: number;
+  originHeight: number;
+  originViewportX: number;
+  originViewportY: number;
+  originWidth: number;
+};
+type NodeResizeSession = {
+  height: number;
+  id: string;
+  width: number;
+  x: number;
+  y: number;
 };
 type PanelResizeState = {
   panel: "left" | "right";
@@ -817,6 +836,7 @@ export function FreeformEditor() {
   const viewportRef = useRef<Viewport>({ scale: getFitZoom("desktop"), x: 0, y: 0 });
   const viewportRafRef = useRef(0);
   const clipboardRef = useRef<EditorNode[]>([]);
+  const resizeSessionRef = useRef<NodeResizeSession | null>(null);
   const [pages, setPages] = useState<EditorPage[]>(initialPages);
   const [selectedPageId, setSelectedPageId] = useState("home");
   const [nodes, setNodes] = useState<EditorNode[]>(initialNodes);
@@ -835,9 +855,12 @@ export function FreeformEditor() {
   const [publishMessage, setPublishMessage] = useState("아직 배포되지 않았습니다.");
   const [marquee, setMarquee] = useState<MarqueeSelection | null>(null);
   const [frameDrag, setFrameDrag] = useState<FrameDragState | null>(null);
+  const [frameResize, setFrameResize] = useState<FrameResizeState | null>(null);
   const [isSpaceDown, setIsSpaceDown] = useState(false);
-  const [activeTool, setActiveTool] = useState<"select" | "hand">("select");
-  const [toolMenu, setToolMenu] = useState<"cursor" | "image" | "widgets" | null>(null);
+  const [isShiftDown, setIsShiftDown] = useState(false);
+  const [activeResizeId, setActiveResizeId] = useState<string | null>(null);
+  const [activeTool, setActiveTool] = useState<"select" | "hand" | "zoom">("select");
+  const [toolMenu, setToolMenu] = useState<"cursor" | "frame" | "shape" | "image" | "widgets" | null>(null);
   const [leftPanelWidth, setLeftPanelWidth] = useState(260);
   const [rightPanelWidth, setRightPanelWidth] = useState(300);
   const [panelResize, setPanelResize] = useState<PanelResizeState | null>(null);
@@ -1060,6 +1083,46 @@ export function FreeformEditor() {
           setActiveTool("hand");
           return;
         }
+
+        if (event.key.toLowerCase() === "k") {
+          setActiveTool("zoom");
+          return;
+        }
+
+        if (event.key.toLowerCase() === "f") {
+          event.preventDefault();
+          setActiveTool("select");
+          addNode("container");
+          return;
+        }
+
+        if (event.key.toLowerCase() === "t") {
+          event.preventDefault();
+          setActiveTool("select");
+          addNode("text");
+          return;
+        }
+
+        if (event.key.toLowerCase() === "r") {
+          event.preventDefault();
+          setActiveTool("select");
+          addShape("rectangle");
+          return;
+        }
+
+        if (event.key.toLowerCase() === "o") {
+          event.preventDefault();
+          setActiveTool("select");
+          addShape("ellipse");
+          return;
+        }
+
+        if (event.key.toLowerCase() === "l") {
+          event.preventDefault();
+          setActiveTool("select");
+          addShape("line");
+          return;
+        }
       }
 
       const movableSelected = canvasNodes.filter((node) => selectedIds.includes(node.id) && !node.locked);
@@ -1090,8 +1153,8 @@ export function FreeformEditor() {
             selectedIds.includes(node.id) && !node.locked
               ? {
                   ...node,
-                  x: snap(node.x + delta.x),
-                  y: snap(node.y + delta.y)
+                  x: Math.round(node.x + delta.x),
+                  y: Math.round(node.y + delta.y)
                 }
               : node
           )
@@ -1101,8 +1164,8 @@ export function FreeformEditor() {
             selectedIds.includes(node.id) && !node.locked
               ? {
                   ...node,
-                  x: snap(node.x + delta.x),
-                  y: snap(node.y + delta.y)
+                  x: Math.round(node.x + delta.x),
+                  y: Math.round(node.y + delta.y)
                 }
               : node
           )
@@ -1217,6 +1280,25 @@ export function FreeformEditor() {
   }, []);
 
   useEffect(() => {
+    function syncResizeModifier(event: KeyboardEvent) {
+      setIsShiftDown(event.shiftKey);
+    }
+
+    function clearResizeModifier() {
+      setIsShiftDown(false);
+    }
+
+    window.addEventListener("keydown", syncResizeModifier);
+    window.addEventListener("keyup", syncResizeModifier);
+    window.addEventListener("blur", clearResizeModifier);
+    return () => {
+      window.removeEventListener("keydown", syncResizeModifier);
+      window.removeEventListener("keyup", syncResizeModifier);
+      window.removeEventListener("blur", clearResizeModifier);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!frameDrag) {
       return;
     }
@@ -1243,6 +1325,54 @@ export function FreeformEditor() {
       window.removeEventListener("mouseup", stopFrameDrag);
     };
   }, [frameDrag]);
+
+  useEffect(() => {
+    if (!frameResize) {
+      return;
+    }
+
+    const resize = frameResize;
+
+    function moveFrameResize(event: MouseEvent) {
+      event.preventDefault();
+      const dx = (event.clientX - resize.originClientX) / viewportRef.current.scale;
+      const dy = (event.clientY - resize.originClientY) / viewportRef.current.scale;
+      const affectsLeft = resize.handle.includes("Left") || resize.handle === "left";
+      const affectsRight = resize.handle.includes("Right") || resize.handle === "right";
+      const affectsTop = resize.handle.includes("top") || resize.handle === "top";
+      const affectsBottom = resize.handle.includes("bottom") || resize.handle === "bottom";
+      const nextWidth = clampCanvasSize(resize.originWidth + (affectsRight ? dx : 0) - (affectsLeft ? dx : 0), resize.originWidth, "width");
+      const nextHeight = clampCanvasSize(resize.originHeight + (affectsBottom ? dy : 0) - (affectsTop ? dy : 0), resize.originHeight, "height");
+      const widthDelta = nextWidth - resize.originWidth;
+      const heightDelta = nextHeight - resize.originHeight;
+
+      setCanvasSizes((current) => ({
+        ...current,
+        [deviceMode]: {
+          ...current[deviceMode],
+          height: nextHeight,
+          width: nextWidth
+        }
+      }));
+
+      applyViewport({
+        scale: viewportRef.current.scale,
+        x: resize.originViewportX - (affectsLeft ? widthDelta * viewportRef.current.scale : 0),
+        y: resize.originViewportY - (affectsTop ? heightDelta * viewportRef.current.scale : 0)
+      });
+    }
+
+    function stopFrameResize() {
+      setFrameResize(null);
+    }
+
+    window.addEventListener("mousemove", moveFrameResize);
+    window.addEventListener("mouseup", stopFrameResize);
+    return () => {
+      window.removeEventListener("mousemove", moveFrameResize);
+      window.removeEventListener("mouseup", stopFrameResize);
+    };
+  }, [deviceMode, frameResize]);
 
   useEffect(() => {
     if (!panelResize) {
@@ -1834,12 +1964,56 @@ export function FreeformEditor() {
   }
 
   function startNodeResize(node: EditorNode) {
+    resizeSessionRef.current = {
+      height: node.height,
+      id: node.id,
+      width: node.width,
+      x: node.x,
+      y: node.y
+    };
+    setActiveResizeId(node.id);
+
     if (siteNodes.some((item) => item.id === node.id)) {
       return;
     }
 
     setPast((items) => [nodes, ...items].slice(0, 40));
     setFuture([]);
+  }
+
+  function resizeNodeLive(node: EditorNode, event: MouseEvent | TouchEvent, ref: HTMLElement, position: { x: number; y: number }) {
+    const minSize = getNodeMinSize(node);
+    const session = resizeSessionRef.current?.id === node.id ? resizeSessionRef.current : null;
+    let width = Math.max(minSize.width, Math.round(ref.offsetWidth));
+    let height = Math.max(minSize.height, Math.round(ref.offsetHeight));
+    let x = Math.round(position.x);
+    let y = Math.round(position.y);
+
+    if (event.altKey && session) {
+      x = Math.round(session.x + (session.width - width) / 2);
+      y = Math.round(session.y + (session.height - height) / 2);
+    }
+
+    if (x < 0) {
+      width += x;
+      x = 0;
+    }
+
+    if (y < 0) {
+      height += y;
+      y = 0;
+    }
+
+    width = Math.max(minSize.width, Math.min(width, activeCanvasSize.width - x));
+    height = Math.max(minSize.height, Math.min(height, activeCanvasSize.height - y));
+
+    updateNodeLive(node.id, { height, width, x, y });
+  }
+
+  function stopNodeResize(node: EditorNode, event: MouseEvent | TouchEvent, ref: HTMLElement, position: { x: number; y: number }) {
+    resizeNodeLive(node, event, ref, position);
+    resizeSessionRef.current = null;
+    setActiveResizeId(null);
   }
 
   function getNodeMinSize(node: EditorNode) {
@@ -2285,6 +2459,25 @@ export function FreeformEditor() {
     setEditingLayerName("");
   }
 
+  function getPageAwareWidgetStyle(type: EditorNodeType, style: EditorNode["style"]) {
+    const pageMenuText = serializeMenuItems(getPageMenuItems(pagesForSave));
+
+    if (!pageMenuText) {
+      return style;
+    }
+
+    if (type === "nav") {
+      return { ...style, text: pageMenuText };
+    }
+
+    if (type === "header") {
+      const [brand, , action] = splitContent(style.text, ["WEBABLE", pageMenuText, "Start"]);
+      return { ...style, text: joinContentParts([brand, pageMenuText, action]) };
+    }
+
+    return style;
+  }
+
   function addNode(type: EditorNodeType) {
     const id = `${type}-${Date.now()}`;
     const nextZ = Math.max(...nodes.map((node) => node.zIndex), 0) + 1;
@@ -2298,7 +2491,33 @@ export function FreeformEditor() {
       width: widget.width,
       height: widget.height,
       zIndex: nextZ,
-      style: widget.style
+      style: getPageAwareWidgetStyle(type, widget.style)
+    };
+
+    commitNodes((current) => [...current, base]);
+    setSelectedIds([id]);
+  }
+
+  function addShape(kind: "rectangle" | "ellipse" | "line" | "section") {
+    const presets: Record<typeof kind, { name: string; width: number; height: number; style: EditorNode["style"] }> = {
+      rectangle: { name: "사각형", width: 240, height: 160, style: { background: "#d9d9d9", radius: 6 } },
+      ellipse: { name: "타원", width: 200, height: 200, style: { background: "#d9d9d9", radius: 9999 } },
+      line: { name: "선", width: 240, height: 2, style: { background: "#111111" } },
+      section: { name: "섹션", width: 1200, height: 420, style: { background: "#f5f5f5", radius: 0 } }
+    };
+    const preset = presets[kind];
+    const id = `container-${Date.now()}`;
+    const nextZ = Math.max(...nodes.map((node) => node.zIndex), 0) + 1;
+    const base: EditorNode = {
+      id,
+      name: preset.name,
+      type: "container",
+      x: snap(160 + nodes.length * 14),
+      y: snap(120 + nodes.length * 14),
+      width: preset.width,
+      height: preset.height,
+      zIndex: nextZ,
+      style: preset.style
     };
 
     commitNodes((current) => [...current, base]);
@@ -2321,7 +2540,7 @@ export function FreeformEditor() {
         width: template.size?.width ?? widget.width,
         height: template.size?.height ?? widget.height,
         zIndex: nextZ + 1,
-        style: { ...widget.style, ...template.style }
+        style: getPageAwareWidgetStyle(template.type, { ...widget.style, ...template.style })
       };
 
       commitNodes((current) => [...current, node]);
@@ -2536,8 +2755,8 @@ export function FreeformEditor() {
 
   function moveNodeSelection(node: EditorNode, nextX: number, nextY: number) {
     const snapped = getSmartSnap(node, nextX, nextY);
-    const deltaX = snap(snapped.x) - node.x;
-    const deltaY = snap(snapped.y) - node.y;
+    const deltaX = Math.round(snapped.x) - node.x;
+    const deltaY = Math.round(snapped.y) - node.y;
 
     if (deltaX === 0 && deltaY === 0) {
       setSnapGuides([]);
@@ -2556,8 +2775,8 @@ export function FreeformEditor() {
         idsToMove.includes(item.id) && !item.locked
           ? {
               ...item,
-              x: snap(item.x + deltaX),
-              y: snap(item.y + deltaY)
+              x: Math.round(item.x + deltaX),
+              y: Math.round(item.y + deltaY)
             }
           : item
       )
@@ -2567,8 +2786,8 @@ export function FreeformEditor() {
         idsToMove.includes(item.id) && !item.locked
           ? {
               ...item,
-              x: snap(item.x + deltaX),
-              y: snap(item.y + deltaY)
+              x: Math.round(item.x + deltaX),
+              y: Math.round(item.y + deltaY)
             }
           : item
       )
@@ -2673,6 +2892,27 @@ export function FreeformEditor() {
     });
   }
 
+  function startFrameResize(handle: FrameResizeHandle, event: React.MouseEvent<HTMLButtonElement>) {
+    if (canvasMode !== "design") {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    clearSelection();
+    setMarquee(null);
+    setFrameDrag(null);
+    setFrameResize({
+      handle,
+      originClientX: event.clientX,
+      originClientY: event.clientY,
+      originHeight: activeCanvasSize.height,
+      originViewportX: viewportRef.current.x,
+      originViewportY: viewportRef.current.y,
+      originWidth: activeCanvasSize.width
+    });
+  }
+
   function startPanelResize(panel: PanelResizeState["panel"], event: React.MouseEvent<HTMLDivElement>) {
     event.preventDefault();
     event.stopPropagation();
@@ -2691,6 +2931,11 @@ export function FreeformEditor() {
     if (editingImageId) {
       setEditingImageId(null);
       setImageCropDrag(null);
+    }
+
+    if (activeTool === "zoom" && event.button === 0) {
+      zoomViewportAtPoint(getSteppedZoom(viewportRef.current.scale, event.altKey ? -1 : 1), event.clientX, event.clientY);
+      return;
     }
 
     if (isSpaceDown || activeTool === "hand" || event.button === 1) {
@@ -2837,8 +3082,8 @@ export function FreeformEditor() {
   }
 
   function getSmartSnap(node: EditorNode, nextX: number, nextY: number) {
-    let x = snap(nextX);
-    let y = snap(nextY);
+    let x = Math.round(nextX);
+    let y = Math.round(nextY);
     const guides: SnapGuide[] = [];
     const sourceX = [0, activeCanvasSize.width / 2, activeCanvasSize.width];
     const sourceY = [0, activeCanvasSize.height / 2, activeCanvasSize.height];
@@ -2866,12 +3111,12 @@ export function FreeformEditor() {
     const ySnap = findClosestSnap(targetY, sourceY);
 
     if (xSnap) {
-      x = snap(xSnap.source - xSnap.offset);
+      x = Math.round(xSnap.source - xSnap.offset);
       guides.push({ axis: "x", position: xSnap.source });
     }
 
     if (ySnap) {
-      y = snap(ySnap.source - ySnap.offset);
+      y = Math.round(ySnap.source - ySnap.offset);
       guides.push({ axis: "y", position: ySnap.source });
     }
 
@@ -3078,7 +3323,7 @@ export function FreeformEditor() {
 
   return (
     <section
-      className={panelResize ? "freeformShell resizingPanels" : "freeformShell"}
+      className={`${panelResize ? "freeformShell resizingPanels" : "freeformShell"}${frameResize ? " resizingFrame" : ""}`}
       style={{ gridTemplateColumns: `64px ${leftPanelWidth}px minmax(520px, 1fr) ${rightPanelWidth}px` }}
     >
       <aside className="ffToolRail" aria-label="Tools">
@@ -3095,30 +3340,6 @@ export function FreeformEditor() {
           <button className={leftPanelMode === "assets" ? "ffRailTab active" : "ffRailTab"} onClick={() => setLeftPanelMode("assets")} type="button">
             <LayoutGrid size={17} />
             <span>에셋</span>
-          </button>
-          <button
-            className={leftPanelMode === "inbox" ? "ffRailTab active" : "ffRailTab"}
-            onClick={() => {
-              setLeftPanelMode("inbox");
-              void loadInbox();
-              void loadReservations();
-              void loadOrders();
-            }}
-            type="button"
-          >
-            <Inbox size={17} />
-            <span>접수함</span>
-          </button>
-          <button
-            className={leftPanelMode === "products" ? "ffRailTab active" : "ffRailTab"}
-            onClick={() => {
-              setLeftPanelMode("products");
-              void loadProducts();
-            }}
-            type="button"
-          >
-            <ShoppingBag size={17} />
-            <span>상품</span>
           </button>
         </div>
       </aside>
@@ -3191,10 +3412,10 @@ export function FreeformEditor() {
           </div>
         ) : (
           <div className="ffPanelHeader">
-            {leftPanelMode === "ai" ? <Sparkles size={17} /> : leftPanelMode === "inbox" ? <Inbox size={17} /> : leftPanelMode === "products" ? <ShoppingBag size={17} /> : <LayoutGrid size={17} />}
+            {leftPanelMode === "ai" ? <Sparkles size={17} /> : <LayoutGrid size={17} />}
             <div>
-              <strong>{leftPanelMode === "ai" ? "AI" : leftPanelMode === "inbox" ? "접수함" : leftPanelMode === "products" ? "상품" : "에셋"}</strong>
-              <span>{leftPanelMode === "ai" ? "사이트 초안 생성" : leftPanelMode === "inbox" ? "문의 · 예약 · 주문" : leftPanelMode === "products" ? "쇼핑몰 상품 관리" : `${filteredTemplates.length} widgets`}</span>
+              <strong>{leftPanelMode === "ai" ? "AI" : "에셋"}</strong>
+              <span>{leftPanelMode === "ai" ? "사이트 초안 생성" : `${filteredTemplates.length} widgets`}</span>
             </div>
           </div>
         )}
@@ -3279,212 +3500,6 @@ export function FreeformEditor() {
               <Upload size={15} />
               Upload image
             </button>
-          </div>
-        ) : leftPanelMode === "inbox" ? (
-          <div className="ffInboxPanel">
-            <div className="ffInboxSegment three">
-              <button className={inboxTab === "forms" ? "active" : ""} onClick={() => setInboxTab("forms")} type="button">
-                문의 {inboxItems.length}
-              </button>
-              <button
-                className={inboxTab === "reservations" ? "active" : ""}
-                onClick={() => {
-                  setInboxTab("reservations");
-                  void loadReservations();
-                }}
-                type="button"
-              >
-                예약 {reservationItems.length}
-              </button>
-              <button
-                className={inboxTab === "orders" ? "active" : ""}
-                onClick={() => {
-                  setInboxTab("orders");
-                  void loadOrders();
-                }}
-                type="button"
-              >
-                주문 {orderItems.length}
-              </button>
-            </div>
-            <div className="ffInboxToolbar">
-              <button
-                disabled={inboxState === "loading"}
-                onClick={() => {
-                  void loadInbox();
-                  void loadReservations();
-                }}
-                type="button"
-              >
-                <RotateCcw size={13} />
-                새로고침
-              </button>
-              <span>{inboxState === "loading" ? "불러오는 중..." : `${inboxItems.length}건`}</span>
-            </div>
-            {inboxState === "error" ? <p className="ffInboxError">접수함을 불러오지 못했습니다. 서버 설정(.env.local)을 확인하세요.</p> : null}
-            {inboxTab === "forms" && inboxState === "ready" && inboxItems.length === 0 ? (
-              <div className="ffInboxEmpty">
-                <Inbox size={16} />
-                <span>아직 접수된 문의가 없습니다. 게시된 사이트의 폼으로 제출하면 여기에 쌓입니다.</span>
-              </div>
-            ) : null}
-            {inboxTab === "orders" ? orderItems.map((item) => (
-              <div className={`ffInboxCard order ${item.status}`} key={item.id}>
-                <header>
-                  <strong>{item.product_name} ×{item.quantity}</strong>
-                  <em className={item.payment_method === "toss" ? "toss" : ""}>{item.payment_method === "toss" ? "토스" : "무통장"}</em>
-                </header>
-                <dl>
-                  <div>
-                    <dt>금액</dt>
-                    <dd>₩{item.amount.toLocaleString("ko-KR")}</dd>
-                  </div>
-                  <div>
-                    <dt>주문자</dt>
-                    <dd>{item.customer_name} · {item.contact}</dd>
-                  </div>
-                  {item.address ? (
-                    <div>
-                      <dt>배송지</dt>
-                      <dd>{item.address}</dd>
-                    </div>
-                  ) : null}
-                </dl>
-                <footer>
-                  <span>{new Date(item.created_at).toLocaleString("ko-KR", { day: "numeric", hour: "2-digit", minute: "2-digit", month: "short" })}</span>
-                  <div>
-                    {item.status === "pending" ? (
-                      <button className="primary" onClick={() => setOrderStatus(item.id, "paid")} type="button">
-                        입금 확인
-                      </button>
-                    ) : null}
-                    {item.status === "paid" ? (
-                      <button className="primary" onClick={() => setOrderStatus(item.id, "done")} type="button">
-                        배송 완료
-                      </button>
-                    ) : null}
-                    {item.status === "pending" || item.status === "paid" ? (
-                      <button onClick={() => setOrderStatus(item.id, "cancelled")} type="button">
-                        취소
-                      </button>
-                    ) : (
-                      <span className="ffInboxDone">{item.status === "done" ? "완료됨" : "취소됨"}</span>
-                    )}
-                  </div>
-                </footer>
-              </div>
-            )) : inboxTab === "forms" ? inboxItems.map((item) => (
-              <div className={`ffInboxCard ${item.status}`} key={item.id}>
-                <header>
-                  <strong>{item.form_title || "문의"}</strong>
-                  <em className={item.source === "preview" ? "preview" : ""}>{item.source === "preview" ? "프리뷰" : "게시"}</em>
-                </header>
-                <dl>
-                  {Object.entries(item.fields).map(([fieldName, fieldValue]) => (
-                    <div key={fieldName}>
-                      <dt>{fieldName}</dt>
-                      <dd>{fieldValue || "-"}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <footer>
-                  <span>{new Date(item.created_at).toLocaleString("ko-KR", { day: "numeric", hour: "2-digit", minute: "2-digit", month: "short" })}</span>
-                  <div>
-                    {item.status === "new" ? (
-                      <button onClick={() => setInboxStatus(item.id, "read")} type="button">
-                        읽음
-                      </button>
-                    ) : null}
-                    {item.status !== "done" ? (
-                      <button className="primary" onClick={() => setInboxStatus(item.id, "done")} type="button">
-                        완료
-                      </button>
-                    ) : (
-                      <span className="ffInboxDone">완료됨</span>
-                    )}
-                  </div>
-                </footer>
-              </div>
-            )) : reservationItems.map((item) => (
-              <div className={`ffInboxCard resv ${item.status}`} key={item.id}>
-                <header>
-                  <strong>{item.customer_name}</strong>
-                  <em className={item.source === "preview" ? "preview" : ""}>
-                    {item.reserved_date} {item.time_slot}
-                  </em>
-                </header>
-                <dl>
-                  <div>
-                    <dt>연락처</dt>
-                    <dd>{item.contact}</dd>
-                  </div>
-                  {item.memo ? (
-                    <div>
-                      <dt>요청</dt>
-                      <dd>{item.memo}</dd>
-                    </div>
-                  ) : null}
-                </dl>
-                <footer>
-                  <span>{new Date(item.created_at).toLocaleString("ko-KR", { day: "numeric", hour: "2-digit", minute: "2-digit", month: "short" })}</span>
-                  <div>
-                    {item.status === "requested" ? (
-                      <button className="primary" onClick={() => setReservationStatus(item.id, "confirmed")} type="button">
-                        확정
-                      </button>
-                    ) : null}
-                    {item.status === "confirmed" ? (
-                      <button className="primary" onClick={() => setReservationStatus(item.id, "done")} type="button">
-                        완료
-                      </button>
-                    ) : null}
-                    {item.status === "requested" || item.status === "confirmed" ? (
-                      <button onClick={() => setReservationStatus(item.id, "cancelled")} type="button">
-                        취소
-                      </button>
-                    ) : (
-                      <span className="ffInboxDone">{item.status === "done" ? "완료됨" : "취소됨"}</span>
-                    )}
-                  </div>
-                </footer>
-              </div>
-            ))}
-          </div>
-        ) : leftPanelMode === "products" ? (
-          <div className="ffProductPanel">
-            <div className="ffProductForm">
-              <input onChange={(event) => setNewProductName(event.target.value)} placeholder="상품명" value={newProductName} />
-              <input onChange={(event) => setNewProductPrice(event.target.value)} placeholder="가격 (원)" type="number" value={newProductPrice} />
-              <input onChange={(event) => setNewProductDesc(event.target.value)} placeholder="설명 (선택)" value={newProductDesc} />
-              <button disabled={!newProductName.trim() || !newProductPrice} onClick={() => void createProductItem()} type="button">
-                <Plus size={14} />
-                상품 추가
-              </button>
-            </div>
-            {productState === "error" ? <p className="ffInboxError">상품을 불러오지 못했습니다.</p> : null}
-            {productState === "ready" && productItems.length === 0 ? (
-              <div className="ffInboxEmpty">
-                <ShoppingBag size={16} />
-                <span>등록된 상품이 없습니다. 위에서 첫 상품을 추가하세요. 상품 그리드 위젯이 이 목록을 그대로 보여줍니다.</span>
-              </div>
-            ) : null}
-            {productItems.map((item) => (
-              <div className={item.active ? "ffProductRow" : "ffProductRow inactive"} key={item.id}>
-                <div>
-                  <strong>{item.name}</strong>
-                  <em>₩{item.price.toLocaleString("ko-KR")}</em>
-                  {item.description ? <p>{item.description}</p> : null}
-                </div>
-                <div className="ffProductRowActions">
-                  <button onClick={() => toggleProductActive(item)} title={item.active ? "판매 중지" : "판매 재개"} type="button">
-                    {item.active ? <Eye size={13} /> : <EyeOff size={13} />}
-                  </button>
-                  <button className="danger" onClick={() => removeProduct(item.id)} title="삭제" type="button">
-                    <Trash2 size={13} />
-                  </button>
-                </div>
-              </div>
-            ))}
           </div>
         ) : leftPanelMode === "ai" ? (
           <div className="ffAiPanel">
@@ -3701,13 +3716,14 @@ export function FreeformEditor() {
               ? `X ${selectedNode.x} · Y ${selectedNode.y} · W ${selectedNode.width} · H ${selectedNode.height}`
               : `${visibleNodes.length} objects on canvas`}
           </em>
+          <a className="ffAdminLink" href="/admin">관리</a>
           <button className="ffPublishButton" disabled={publishState === "publishing"} onClick={publishSite} type="button">
             {publishState === "published" ? <CheckCircle2 size={15} /> : <Rocket size={15} />}
             {publishState === "publishing" ? "Publishing" : "Publish"}
           </button>
         </div>
         <div
-          className={`${canvasMode === "code" ? "ffCanvas code" : "ffCanvas"}${frameDrag ? " panning" : isSpaceDown || activeTool === "hand" ? " spacePan" : ""}`}
+          className={`${canvasMode === "code" ? "ffCanvas code" : "ffCanvas"}${frameDrag ? " panning" : isSpaceDown || activeTool === "hand" ? " spacePan" : activeTool === "zoom" ? " zoomTool" : ""}`}
           ref={canvasRef}
           onContextMenu={(event) => openContextMenu(event)}
           onMouseDown={(event) => {
@@ -3715,10 +3731,20 @@ export function FreeformEditor() {
               return;
             }
 
+            if (activeTool === "zoom" && event.button === 0) {
+              zoomViewportAtPoint(getSteppedZoom(viewportRef.current.scale, event.altKey ? -1 : 1), event.clientX, event.clientY);
+              return;
+            }
+
             if (isSpaceDown || activeTool === "hand" || event.button === 1) {
               startFrameDrag(event);
             } else {
-              startMarquee(event);
+              if (editingImageId) {
+                setEditingImageId(null);
+                setImageCropDrag(null);
+              }
+              clearSelection();
+              setMarquee(null);
             }
           }}
         >
@@ -3743,6 +3769,29 @@ export function FreeformEditor() {
           <div className="ffFrameLabel" onMouseDown={startFrameDrag} title="Drag frame">
             {activePage.name}
           </div>
+          {canvasMode === "design" ? (
+            <div
+              className={frameResize ? "ffFrameResizeOverlay resizing" : "ffFrameResizeOverlay"}
+              style={{
+                height: activeCanvasSize.height * zoom,
+                width: activeCanvasSize.width * zoom
+              }}
+            >
+              {(["top", "right", "bottom", "left", "topLeft", "topRight", "bottomLeft", "bottomRight"] as FrameResizeHandle[]).map((handle) => (
+                <button
+                  aria-label={`Resize frame ${handle}`}
+                  className={`ffFrameResizeHandle ${handle}`}
+                  key={handle}
+                  onMouseDown={(event) => startFrameResize(handle, event)}
+                  style={{ transform: `scale(${1 / zoom})` }}
+                  type="button"
+                />
+              ))}
+              <span style={{ transform: `translateX(-50%) scale(${1 / zoom})` }}>
+                {activeCanvasSize.width} × {activeCanvasSize.height}
+              </span>
+            </div>
+          ) : null}
           <div
             className={`ffArtboard ${deviceMode}${frameDrag ? " draggingFrame" : ""}`}
             ref={artboardRef}
@@ -3774,11 +3823,14 @@ export function FreeformEditor() {
                   node.hidden ? null : (
                 <Rnd
                   bounds="parent"
-                  className={`${selectedIds.includes(node.id) ? "ffNode selected" : "ffNode"}${editingImageId === node.id ? " imageEditing" : ""}`}
+                  className={`${selectedIds.includes(node.id) ? "ffNode selected" : "ffNode"}${editingImageId === node.id ? " imageEditing" : ""}${activeResizeId === node.id ? " resizing" : ""}`}
                   disableDragging={node.locked || editingNodeId === node.id || editingImageId === node.id}
-                  dragGrid={[GRID_SIZE, GRID_SIZE]}
+                  dragGrid={[1, 1]}
                   enableResizing={Boolean(!node.locked && editingImageId !== node.id && selectedIds.length === 1 && selectedNode && node.id === selectedNode.id)}
                   key={node.id}
+                  lockAspectRatio={isShiftDown && selectedIds.length === 1 && selectedNode?.id === node.id}
+                  maxHeight={activeCanvasSize.height}
+                  maxWidth={activeCanvasSize.width}
                   onClick={(event: React.MouseEvent) => {
                     event.stopPropagation();
                     selectNode(node.id, event.shiftKey);
@@ -3789,22 +3841,8 @@ export function FreeformEditor() {
                   minHeight={getNodeMinSize(node).height}
                   minWidth={getNodeMinSize(node).width}
                   onResizeStart={() => startNodeResize(node)}
-                  onResize={(_, __, ref, ___, position) =>
-                    updateNodeLive(node.id, {
-                      width: Math.round(ref.offsetWidth),
-                      height: Math.round(ref.offsetHeight),
-                      x: Math.round(position.x),
-                      y: Math.round(position.y)
-                    })
-                  }
-                  onResizeStop={(_, __, ref, ___, position) =>
-                    updateNodeLive(node.id, {
-                      width: Math.round(ref.offsetWidth),
-                      height: Math.round(ref.offsetHeight),
-                      x: Math.round(position.x),
-                      y: Math.round(position.y)
-                    })
-                  }
+                  onResize={(event, __, ref, ___, position) => resizeNodeLive(node, event, ref, position)}
+                  onResizeStop={(event, __, ref, ___, position) => stopNodeResize(node, event, ref, position)}
                   position={{ x: node.x, y: node.y }}
                   resizeGrid={[1, 1]}
                   scale={zoom}
@@ -3963,13 +4001,63 @@ export function FreeformEditor() {
                       <span>손 도구</span>
                       <em>H</em>
                     </button>
+                    <button className={activeTool === "zoom" ? "active" : ""} onClick={() => { setActiveTool("zoom"); setToolMenu(null); }} type="button">
+                      <ZoomIn size={15} />
+                      <span>확대/축소</span>
+                      <em>K</em>
+                    </button>
                   </div>
                 ) : null}
               </div>
               <span className="ffToolSep" />
-              <button className="ffToolBtn" onClick={() => addNode("container")} title="프레임 (F)" type="button">
-                <Square size={18} />
-              </button>
+              <div className="ffToolGroup">
+                <button className="ffToolBtn" onClick={() => addNode("container")} title="프레임 (F)" type="button">
+                  <Square size={18} />
+                </button>
+                <button className="ffToolCaret" onClick={() => setToolMenu(toolMenu === "frame" ? null : "frame")} title="프레임 옵션" type="button">
+                  <ChevronDown size={12} />
+                </button>
+                {toolMenu === "frame" ? (
+                  <div className="ffToolMenu">
+                    <button onClick={() => { addNode("container"); setToolMenu(null); }} type="button">
+                      <Square size={15} />
+                      <span>프레임</span>
+                      <em>F</em>
+                    </button>
+                    <button onClick={() => { addShape("section"); setToolMenu(null); }} type="button">
+                      <LayoutTemplate size={15} />
+                      <span>섹션</span>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+              <div className="ffToolGroup">
+                <button className="ffToolBtn" onClick={() => addShape("rectangle")} title="사각형 (R)" type="button">
+                  <Square size={18} />
+                </button>
+                <button className="ffToolCaret" onClick={() => setToolMenu(toolMenu === "shape" ? null : "shape")} title="도형" type="button">
+                  <ChevronDown size={12} />
+                </button>
+                {toolMenu === "shape" ? (
+                  <div className="ffToolMenu">
+                    <button onClick={() => { addShape("rectangle"); setToolMenu(null); }} type="button">
+                      <Square size={15} />
+                      <span>사각형</span>
+                      <em>R</em>
+                    </button>
+                    <button onClick={() => { addShape("ellipse"); setToolMenu(null); }} type="button">
+                      <Circle size={15} />
+                      <span>타원</span>
+                      <em>O</em>
+                    </button>
+                    <button onClick={() => { addShape("line"); setToolMenu(null); }} type="button">
+                      <Minus size={15} />
+                      <span>선</span>
+                      <em>L</em>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
               <button className="ffToolBtn" onClick={() => addNode("text")} title="텍스트 (T)" type="button">
                 <Type size={18} />
               </button>
@@ -4587,8 +4675,8 @@ export function FreeformEditor() {
             </div>
             <div className="ffInspectorSubLabel">위치</div>
             <div className="ffInspectorRow">
-              <NumberField label="X" value={selectedNode.x} onChange={(value) => updateNode(selectedNode.id, { x: snap(value) })} />
-              <NumberField label="Y" value={selectedNode.y} onChange={(value) => updateNode(selectedNode.id, { y: snap(value) })} />
+              <NumberField label="X" value={selectedNode.x} onChange={(value) => updateNode(selectedNode.id, { x: Math.round(value) })} />
+              <NumberField label="Y" value={selectedNode.y} onChange={(value) => updateNode(selectedNode.id, { y: Math.round(value) })} />
               <button className="ffInspectorAux" title="절대 위치" type="button"><Frame size={15} /></button>
             </div>
             <div className="ffInspectorSubLabel">회전</div>
@@ -4631,8 +4719,8 @@ export function FreeformEditor() {
             ) : null}
             <div className="ffInspectorSubLabel">크기</div>
             <div className="ffInspectorRow">
-              <NumberField label="W" value={selectedNode.width} onChange={(value) => updateNode(selectedNode.id, { width: snap(value) })} />
-              <NumberField label="H" value={selectedNode.height} onChange={(value) => updateNode(selectedNode.id, { height: snap(value) })} />
+              <NumberField label="W" value={selectedNode.width} onChange={(value) => updateNode(selectedNode.id, { width: Math.max(getNodeMinSize(selectedNode).width, Math.round(value)) })} />
+              <NumberField label="H" value={selectedNode.height} onChange={(value) => updateNode(selectedNode.id, { height: Math.max(getNodeMinSize(selectedNode).height, Math.round(value)) })} />
               <button className="ffInspectorAux" title="비율 고정" type="button"><Link2 size={15} /></button>
             </div>
             <label className="ffInspectorCheckbox">
@@ -4711,7 +4799,7 @@ export function FreeformEditor() {
                 </div>
               </>
             ) : null}
-            <WidgetContentControls node={selectedNode} onChange={(text) => updateStyle(selectedNode.id, { text })} />
+            <WidgetContentControls node={selectedNode} pages={pagesForSave} onChange={(text) => updateStyle(selectedNode.id, { text })} />
             {getWidgetPresets(selectedNode.type).length > 0 ? (
               <div className="ffInspectorRow wide">
                 <div className="ffPresetButtons">
@@ -6307,6 +6395,13 @@ function parseMenuItems(value: string | undefined): MenuItem[] {
   });
 }
 
+function getPageMenuItems(pages: EditorPage[]): MenuItem[] {
+  return pages
+    .map((page) => page.name.trim() || page.path.trim())
+    .filter(Boolean)
+    .map((label) => ({ children: [], label }));
+}
+
 function getPairs(value: string | undefined, fallback: Array<[string, string]>) {
   const pairs = (value || "")
     .split(",")
@@ -6806,15 +6901,20 @@ function BorderControls({
   );
 }
 
-function WidgetContentControls({ node, onChange }: { node: EditorNode; onChange: (text: string) => void }) {
+function WidgetContentControls({ node, onChange, pages }: { node: EditorNode; onChange: (text: string) => void; pages: EditorPage[] }) {
+  const pageMenuItems = getPageMenuItems(pages);
+  const pageMenuText = serializeMenuItems(pageMenuItems);
+
   if (node.type === "header") {
     const [brand, links, action] = splitContent(node.style.text, ["WEBABLE", "Home,Shop>Flowers;Plants;Gifts,About,Contact", "Start"]);
+    const isPageMenu = serializeMenuItems(parseMenuItems(links)) === pageMenuText;
     return (
       <>
         <InspectorSectionTitle label="헤더" />
         <div className="ffInspectorRow wide">
           <InspectorField label="브랜드"><input value={brand} onChange={(event) => onChange(joinContentParts([event.target.value, links, action]))} /></InspectorField>
         </div>
+        <NavigationSourceButton disabled={pageMenuItems.length === 0} synced={isPageMenu} onClick={() => onChange(joinContentParts([brand, pageMenuText, action]))} />
         <MenuContentControls items={parseMenuItems(links)} onChange={(items) => onChange(joinContentParts([brand, serializeMenuItems(items), action]))} />
         <div className="ffInspectorRow wide">
           <InspectorField label="버튼"><input value={action} onChange={(event) => onChange(joinContentParts([brand, links, event.target.value]))} /></InspectorField>
@@ -6824,9 +6924,11 @@ function WidgetContentControls({ node, onChange }: { node: EditorNode; onChange:
   }
 
   if (node.type === "nav") {
+    const isPageMenu = serializeMenuItems(parseMenuItems(node.style.text)) === pageMenuText;
     return (
       <>
         <InspectorSectionTitle label="내비게이션" />
+        <NavigationSourceButton disabled={pageMenuItems.length === 0} synced={isPageMenu} onClick={() => onChange(pageMenuText)} />
         <MenuContentControls items={parseMenuItems(node.style.text)} onChange={(items) => onChange(serializeMenuItems(items))} />
       </>
     );
@@ -6910,6 +7012,25 @@ function WidgetContentControls({ node, onChange }: { node: EditorNode; onChange:
   }
 
   return null;
+}
+
+function NavigationSourceButton({
+  disabled,
+  onClick,
+  synced
+}: {
+  disabled: boolean;
+  onClick: () => void;
+  synced: boolean;
+}) {
+  return (
+    <div className="ffInspectorRow wide">
+      <button className={`ffSyncButton${synced ? " active" : ""}`} disabled={disabled || synced} onClick={onClick} type="button">
+        <Link2 size={14} />
+        {synced ? "페이지 목록과 동기화됨" : "페이지 목록에서 가져오기"}
+      </button>
+    </div>
+  );
 }
 
 function MenuContentControls({ items, onChange }: { items: MenuItem[]; onChange: (items: MenuItem[]) => void }) {

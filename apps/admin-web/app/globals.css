@@ -2209,7 +2209,7 @@ body {
 
 .ffLayerRow {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 26px 26px;
+  grid-template-columns: minmax(0, 1fr) 0 0;
   gap: 0;
   align-items: center;
   min-width: 0;
@@ -2265,6 +2265,7 @@ body {
 .ffLayerSelect {
   justify-content: flex-start;
   gap: 6px;
+  width: 100%;
   padding: 0 5px;
   font-size: 0.75rem;
   font-weight: 560;
@@ -2288,7 +2289,21 @@ body {
 .ffLayerIcon {
   justify-content: center;
   padding: 0;
+  width: 0;
+  overflow: hidden;
   opacity: 0;
+  pointer-events: none;
+}
+
+.ffLayerRow:hover,
+.ffLayerRow.active {
+  grid-template-columns: minmax(0, 1fr) 26px 26px;
+}
+
+.ffLayerRow:hover .ffLayerIcon,
+.ffLayerRow.active .ffLayerIcon {
+  width: 26px;
+  pointer-events: auto;
 }
 
 .ffLayerRow.active .ffLayerSelect,
@@ -2318,8 +2333,19 @@ body {
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ffLayerSelect .ffTreeToggle,
+.ffLayerSelect .ffTreeIndent,
+.ffLayerSelect svg {
+  flex: 0 0 auto;
+}
+
+.ffLayerSelect > span:not(.ffTreeToggle):not(.ffTreeIndent) {
+  flex: 1 1 auto;
 }
 
 .ffLayerNameInput {
@@ -2530,6 +2556,10 @@ body {
 
 .ffCanvas.spacePan {
   cursor: grab;
+}
+
+.ffCanvas.zoomTool {
+  cursor: zoom-in;
 }
 
 .ffCanvas.panning {
@@ -3016,6 +3046,121 @@ body {
   cursor: grabbing;
 }
 
+.ffFrameResizeOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  pointer-events: none;
+  transform-origin: top left;
+}
+
+.ffFrameResizeOverlay.resizing {
+  cursor: nwse-resize;
+}
+
+.ffFrameResizeOverlay span {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  padding: 4px 7px;
+  color: #ffffff;
+  background: #2563eb;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: top center;
+  white-space: nowrap;
+}
+
+.ffFrameResizeOverlay:hover span,
+.ffFrameResizeOverlay.resizing span {
+  opacity: 1;
+}
+
+.ffFrameResizeHandle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid #2563eb;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.22);
+  pointer-events: auto;
+  transform-origin: center;
+}
+
+.ffFrameResizeHandle.top,
+.ffFrameResizeHandle.bottom {
+  left: 50%;
+  width: 42px;
+  height: 10px;
+  margin-left: -21px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  cursor: ns-resize;
+}
+
+.ffFrameResizeHandle.left,
+.ffFrameResizeHandle.right {
+  top: 50%;
+  width: 10px;
+  height: 42px;
+  margin-top: -21px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  cursor: ew-resize;
+}
+
+.ffFrameResizeHandle.top {
+  top: -5px;
+}
+
+.ffFrameResizeHandle.right {
+  right: -5px;
+}
+
+.ffFrameResizeHandle.bottom {
+  bottom: -5px;
+}
+
+.ffFrameResizeHandle.left {
+  left: -5px;
+}
+
+.ffFrameResizeHandle.topLeft {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+
+.ffFrameResizeHandle.topRight {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+
+.ffFrameResizeHandle.bottomLeft {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+
+.ffFrameResizeHandle.bottomRight {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}
+
+.ffFrameResizeHandle:hover {
+  background: #2563eb;
+}
+
 .ffArtboard {
   position: relative;
   width: 1440px;
@@ -3067,6 +3212,11 @@ body {
   outline: 1px solid #1495ff;
   outline-offset: 0;
   box-shadow: none;
+}
+
+.ffNode.resizing {
+  outline-color: #1495ff;
+  box-shadow: 0 0 0 1px rgba(20, 149, 255, 0.18);
 }
 
 .ffNode.selected::after {
@@ -3589,7 +3739,8 @@ body {
   gap: 10px;
 }
 
-.ffGalleryWidget span {
+.ffGalleryWidget span,
+.ffGalleryWidget button {
   display: grid;
   place-items: center;
   min-width: 0;
@@ -3600,6 +3751,13 @@ body {
   background-size: 28px 28px;
   border: 1px solid #d0d0d0;
   border-radius: 6px;
+}
+
+.ffGalleryWidget button {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  cursor: zoom-in;
 }
 
 .ffGalleryWidget em {
@@ -5704,6 +5862,35 @@ body {
   background: #e9e9e9;
 }
 
+.freeformShell .ffSyncButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 32px;
+  color: #1f2937;
+  background: #f4f4f4;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.freeformShell .ffSyncButton:hover:not(:disabled) {
+  color: #111111;
+  background: #eaf3ff;
+  border-color: #bfdbfe;
+}
+
+.freeformShell .ffSyncButton.active,
+.freeformShell .ffSyncButton:disabled {
+  color: #2563eb;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  cursor: default;
+}
+
 /* Segment groups (정렬 · 회전) */
 .freeformShell .ffSegmentGroup {
   display: grid;
@@ -6889,24 +7076,32 @@ body {
   }
 }
 
-.webablePreviewPage .ffSliderWidget footer i {
+.webablePreviewPage .ffSliderWidget footer i,
+.publishedPage .ffSliderWidget footer i {
   cursor: pointer;
   opacity: 0.35;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.webablePreviewPage .ffSliderWidget footer i.active {
+.webablePreviewPage .ffSliderWidget footer i.active,
+.publishedPage .ffSliderWidget footer i.active {
   opacity: 1;
   transform: scaleX(1.7);
 }
 
-.webablePreviewPage .ffGalleryWidget span {
+.webablePreviewPage .ffGalleryWidget span,
+.webablePreviewPage .ffGalleryWidget button,
+.publishedPage .ffGalleryWidget span,
+.publishedPage .ffGalleryWidget button {
   cursor: zoom-in;
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 
-.webablePreviewPage .ffGalleryWidget span:hover {
+.webablePreviewPage .ffGalleryWidget span:hover,
+.webablePreviewPage .ffGalleryWidget button:hover,
+.publishedPage .ffGalleryWidget span:hover,
+.publishedPage .ffGalleryWidget button:hover {
   transform: translateY(-4px) scale(1.03);
   box-shadow: 0 18px 34px rgba(15, 23, 42, 0.16);
 }
@@ -6931,6 +7126,7 @@ body {
 }
 
 .wpLightbox figure {
+  position: relative;
   display: flex;
   align-items: flex-end;
   width: min(760px, 84vw);
@@ -6946,6 +7142,48 @@ body {
   color: #33415e;
   font-size: 13px;
   font-weight: 600;
+}
+
+.wpLightboxNav,
+.wpLightboxClose {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.wpLightboxNav {
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  color: #111111;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  font-size: 26px;
+  font-weight: 800;
+  transform: translateY(-50%);
+}
+
+.wpLightboxNav.prev {
+  left: -56px;
+}
+
+.wpLightboxNav.next {
+  right: -56px;
+}
+
+.wpLightboxClose {
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+  background: rgba(17, 17, 17, 0.72);
+  font-size: 20px;
+  line-height: 1;
 }
 
 @keyframes wpZoomIn {
@@ -8784,10 +9022,100 @@ body {
   font-weight: 500;
 }
 
+/* Figma-like compact layer tree: text owns the row, action icons float on hover. */
+.freeformShell .ffLayerRow,
+.freeformShell .ffLayerRow:hover,
+.freeformShell .ffLayerRow.active {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 28px;
+  padding: 0 6px;
+}
+
+.freeformShell .ffLayerRow.tree.child {
+  margin-left: 0;
+  padding-left: 14px;
+}
+
+.freeformShell .ffLayerRow.tree.child::before {
+  left: 8px;
+}
+
+.freeformShell .ffLayerSelect,
+.freeformShell .ffLayerRow.tree .ffLayerSelect,
+.freeformShell .ffLayerRow.tree.group .ffLayerSelect {
+  width: 100%;
+  height: 26px;
+  gap: 6px;
+  padding: 0 8px;
+  border-radius: 6px;
+}
+
+.freeformShell .ffLayerRow:hover .ffLayerSelect,
+.freeformShell .ffLayerRow.active .ffLayerSelect {
+  padding-right: 56px;
+}
+
+.freeformShell .ffLayerSelect .ffTreeToggle,
+.freeformShell .ffLayerSelect .ffTreeIndent,
+.freeformShell .ffLayerSelect > svg {
+  flex: 0 0 auto;
+}
+
+.freeformShell .ffLayerSelect .ffTreeIndent {
+  flex-basis: 10px;
+  width: 10px;
+}
+
+.freeformShell .ffLayerSelect .ffTreeIndent.compact {
+  display: none;
+}
+
+.freeformShell .ffLayerSelect > span:not(.ffTreeToggle):not(.ffTreeIndent) {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffLayerIcon {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: #f4f4f4;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.freeformShell .ffLayerIcon:nth-of-type(2) {
+  right: 30px;
+}
+
+.freeformShell .ffLayerIcon:nth-of-type(3) {
+  right: 6px;
+}
+
+.freeformShell .ffLayerRow:hover .ffLayerIcon,
+.freeformShell .ffLayerRow.active .ffLayerIcon {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.freeformShell .ffLayerIcon:hover {
+  background: #e6e6e6;
+}
+
 /* Figma-style bottom floating toolbar */
 .ffBottomBar {
   position: absolute;
-  bottom: 20px;
+  bottom: 52px;
   left: 50%;
   z-index: 40;
   display: flex;
@@ -8911,4 +9239,978 @@ body {
 
 .ffBottomBar .ffToolMenu button.active span {
   font-weight: 600;
+}
+
+/* ===== /admin backoffice ===== */
+.waShell {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  min-height: 100vh;
+  background: #f6f7f9;
+}
+
+.waSidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100vh;
+  padding: 18px 14px;
+  background: #ffffff;
+  border-right: 1px solid #e8e8ea;
+}
+
+.waBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.waBrandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.waBrand strong {
+  display: block;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.waBrand em {
+  color: #8b8b8b;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.waSidebar nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.waSidebar nav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #4b4b4b;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.waSidebar nav button:hover {
+  background: #f2f2f4;
+  color: #111111;
+}
+
+.waSidebar nav button.active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.waSidebar nav button span {
+  flex: 1;
+}
+
+.waSidebar nav button em {
+  min-width: 20px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+
+.waSidebar nav button.active em {
+  background: #ffffff;
+  color: #111111;
+}
+
+.waBackToEditor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #6b6b6b;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.waBackToEditor:hover {
+  background: #f2f2f4;
+  color: #111111;
+}
+
+.waMain {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  padding: 28px 34px 60px;
+}
+
+.waHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.waHeader h1 {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 850;
+}
+
+.waHeader p {
+  margin: 6px 0 0;
+  color: #7c7c82;
+  font-size: 13.5px;
+}
+
+.waHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.waHeaderActions button,
+.waHeaderActions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 15px;
+  border: 1px solid #e2e2e6;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.waHeaderActions button:hover,
+.waHeaderActions a:hover {
+  border-color: #111111;
+}
+
+.waHeaderActions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.waStatGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.waStatCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 22px;
+  border: 1px solid #e8e8ea;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.waStatCard span {
+  color: #7c7c82;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.waStatCard strong {
+  color: #111111;
+  font-size: 28px;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.waStatCard.accent {
+  border-color: #111111;
+  background: #111111;
+}
+
+.waStatCard.accent span {
+  color: #a3a3a8;
+}
+
+.waStatCard.accent strong {
+  color: #ffffff;
+}
+
+.waPanel {
+  padding: 22px 24px;
+  border: 1px solid #e8e8ea;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.waPanel h2 {
+  margin: 0 0 14px;
+  color: #111111;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.waEmpty {
+  margin: 28px 0;
+  color: #9a9aa0;
+  font-size: 13.5px;
+  text-align: center;
+}
+
+.waActivity {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.waActivity li {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 4px;
+  border-top: 1px solid #f1f1f3;
+}
+
+.waActivity li:first-child {
+  border-top: 0;
+}
+
+.waActivity em {
+  padding: 3px 0;
+  border-radius: 7px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+
+.waActivity em[data-kind="문의"] {
+  background: #e8f0fe;
+  color: #1d4ed8;
+}
+
+.waActivity em[data-kind="예약"] {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.waActivity em[data-kind="주문"] {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.waActivity strong {
+  overflow: hidden;
+  color: #111111;
+  font-size: 13.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.waActivity span {
+  overflow: hidden;
+  color: #7c7c82;
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.waActivity time {
+  color: #9a9aa0;
+  font-size: 12px;
+}
+
+.waTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.waTable th {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e8e8ea;
+  color: #8b8b90;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.waTable td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #f1f1f3;
+  color: #26262a;
+  font-size: 13.5px;
+  vertical-align: top;
+}
+
+.waTable tbody tr {
+  transition: background 0.12s ease;
+}
+
+.waTable tbody tr:hover {
+  background: #fafafb;
+}
+
+.waTable tr.isNew td {
+  background: #f6f9ff;
+}
+
+.waTable tr.isInactive td {
+  opacity: 0.55;
+}
+
+.waFields {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.waFields span {
+  font-size: 12.5px;
+}
+
+.waFields em {
+  color: #9a9aa0;
+  font-size: 11.5px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.waMuted {
+  color: #9a9aa0;
+  font-size: 12.5px;
+}
+
+.waPill {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.waPill.blue {
+  background: #e8f0fe;
+  color: #1d4ed8;
+}
+
+.waPill.green {
+  background: #d7f5e2;
+  color: #0c6b3d;
+}
+
+.waPill.amber {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.waPill.purple {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.waPill.gray {
+  background: #f0f0f2;
+  color: #6b6b70;
+}
+
+.waRowActions {
+  white-space: nowrap;
+}
+
+.waRowActions button {
+  margin-left: 6px;
+  padding: 6px 12px;
+  border: 1px solid #e2e2e6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #26262a;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.waRowActions button:hover {
+  border-color: #111111;
+}
+
+.waRowActions button.primary {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.waRowActions button.danger:hover {
+  border-color: #d64545;
+  background: #fdecec;
+  color: #d64545;
+}
+
+.waProductForm > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.8fr) minmax(0, 2fr) auto;
+  gap: 10px;
+}
+
+.waProductForm input {
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid #e2e2e6;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+}
+
+.waProductForm input:focus {
+  border-color: #111111;
+}
+
+.waProductForm button {
+  height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.waProductForm button:disabled {
+  background: #d8d8d8;
+  cursor: default;
+}
+
+/* Editor toolbar admin link */
+.ffAdminLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 13px;
+  border: 1px solid #d8d8d8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.ffAdminLink:hover {
+  border-color: #111111;
+}
+
+/* ===== Login page ===== */
+.waLoginPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f6f7f9;
+}
+
+.waLoginCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: min(360px, 90vw);
+  padding: 40px 32px 32px;
+  border: 1px solid #e8e8ea;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+}
+
+.waLoginCard strong {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.waLoginCard p {
+  margin: 0 0 8px;
+  color: #7c7c82;
+  font-size: 13px;
+}
+
+.waLoginCard input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #e2e2e6;
+  border-radius: 11px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.waLoginCard input:focus {
+  border-color: #111111;
+}
+
+.waLoginCard em {
+  align-self: flex-start;
+  color: #b3261e;
+  font-size: 12px;
+  font-style: normal;
+}
+
+.waLoginCard button {
+  width: 100%;
+  height: 44px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 11px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.waLoginCard button:disabled {
+  background: #d8d8d8;
+  cursor: default;
+}
+
+.waLogout {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #9a9aa0;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.waLogout:hover {
+  background: #fdecec;
+  color: #d64545;
+}
+
+/* ===== Dashboard v2 — Figma-grade ===== */
+.waStatGrid.v2 {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.waStatCard.v2 {
+  gap: 6px;
+  padding: 18px 20px 12px;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.waStatCard.v2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.waStatTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.waStatTop em {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0f0f2;
+  color: #55555c;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.waStatCard.v2.accent .waStatTop em {
+  background: rgba(255, 255, 255, 0.16);
+  color: #d5d5da;
+}
+
+.waStatCard.v2 strong {
+  font-size: 26px;
+}
+
+.waSpark {
+  width: 100%;
+  height: 30px;
+  margin-top: 2px;
+  color: #111111;
+}
+
+.waStatCard.v2.accent .waSpark {
+  color: #8ab4ff;
+}
+
+.waSparkLine {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.waSparkFill {
+  fill: currentColor;
+  opacity: 0.1;
+}
+
+.waDashGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.waDashGrid.bottom {
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+}
+
+.waPanelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.waPanelHead h2 {
+  margin: 0;
+}
+
+.waPanelHead > span {
+  color: #7c7c82;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.waBarChart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+  height: 210px;
+  padding-top: 8px;
+}
+
+.waBarCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  height: 100%;
+}
+
+.waBarCol > em {
+  height: 16px;
+  color: #26262a;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.waBarCol:hover > em {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.waBarTrack {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+}
+
+.waBar {
+  width: min(46px, 78%);
+  border-radius: 8px 8px 3px 3px;
+  background: linear-gradient(180deg, #111111 0%, #3d3d44 100%);
+  animation: waBarGrow 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  transition: filter 0.15s ease;
+}
+
+.waBarCol:hover .waBar {
+  filter: brightness(1.4);
+}
+
+.waBar.empty {
+  background: #ececef;
+  animation: none;
+}
+
+@keyframes waBarGrow {
+  from {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.waBarCol > span {
+  color: #9a9aa0;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.waBarCol > span.today {
+  color: #111111;
+  font-weight: 800;
+}
+
+.waTodoPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.waTodo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid #ececef;
+  border-radius: 12px;
+  background: #fafafb;
+  color: #26262a;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.waTodo:hover {
+  border-color: #111111;
+  background: #ffffff;
+  transform: translateX(2px);
+}
+
+.waTodo strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.waTodo.clear strong {
+  background: #e7e7ea;
+  color: #9a9aa0;
+}
+
+.waTodo span {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.waTodo svg {
+  color: #b9b9c0;
+}
+
+.waTodoHint {
+  margin: 6px 2px 0;
+  color: #9a9aa0;
+  font-size: 12px;
+}
+
+.waDonutLayout {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.waDonutWrap {
+  position: relative;
+  flex: none;
+  width: 132px;
+  height: 132px;
+}
+
+.waDonut {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg) scaleY(-1);
+}
+
+.waDonutTrack {
+  stroke: #f0f0f2;
+}
+
+.waDonutSeg {
+  stroke-linecap: butt;
+  transition: stroke-dasharray 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.waDonutSeg.amber {
+  stroke: #f59e0b;
+}
+
+.waDonutSeg.blue {
+  stroke: #2563eb;
+}
+
+.waDonutSeg.green {
+  stroke: #16a34a;
+}
+
+.waDonutSeg.gray {
+  stroke: #c7c7cd;
+}
+
+.waDonutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.waDonutCenter strong {
+  color: #111111;
+  font-size: 24px;
+  font-weight: 850;
+}
+
+.waDonutCenter span {
+  color: #9a9aa0;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.waDonutLegend {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.waDonutLegend li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.waDonutLegend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+}
+
+.waDonutLegend i.amber {
+  background: #f59e0b;
+}
+
+.waDonutLegend i.blue {
+  background: #2563eb;
+}
+
+.waDonutLegend i.green {
+  background: #16a34a;
+}
+
+.waDonutLegend i.gray {
+  background: #c7c7cd;
+}
+
+.waDonutLegend span {
+  flex: 1;
+  color: #55555c;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.waDonutLegend strong {
+  color: #111111;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.waMain > * {
+  animation: waRise 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.waMain > *:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.waMain > *:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.waMain > *:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+@keyframes waRise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .waDashGrid,
+  .waDashGrid.bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

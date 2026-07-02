@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createProduct, deleteProduct, listProducts, updateProduct } from "@/lib/commerceStore";
+import { isAuthorizedRequest } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -12,6 +13,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ message: "siteId is required." }, { status: 400 });
   }
 
+  if (scope === "all" && !isAuthorizedRequest(request)) {
+    return NextResponse.json({ message: "로그인이 필요합니다." }, { status: 401 });
+  }
+
   try {
     const products = await listProducts(siteId, scope !== "all");
     return NextResponse.json({ products });
@@ -22,6 +27,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!isAuthorizedRequest(request)) {
+    return NextResponse.json({ message: "로그인이 필요합니다." }, { status: 401 });
+  }
+
   const body = (await request.json().catch(() => ({}))) as { description?: string; imageUrl?: string; name?: string; price?: number; siteId?: string };
   const siteId = typeof body.siteId === "string" ? body.siteId.trim().slice(0, 80) : "";
   const name = typeof body.name === "string" ? body.name.trim().slice(0, 200) : "";
@@ -47,6 +56,10 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  if (!isAuthorizedRequest(request)) {
+    return NextResponse.json({ message: "로그인이 필요합니다." }, { status: 401 });
+  }
+
   const body = (await request.json().catch(() => ({}))) as { active?: boolean; description?: string; id?: string; name?: string; price?: number };
   const id = typeof body.id === "string" ? body.id : "";
 
@@ -75,6 +88,10 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  if (!isAuthorizedRequest(request)) {
+    return NextResponse.json({ message: "로그인이 필요합니다." }, { status: 401 });
+  }
+
   const id = new URL(request.url).searchParams.get("id") ?? "";
 
   if (!id) {
