@@ -1,9 +1,23 @@
 {
-  "id": "165d53f8-5c32-4ae8-ba9e-6c9248e86808",
+  "id": "cbe22d17-f366-413b-a9d1-b35723bdf923",
   "siteId": "webable-main",
   "siteName": "WEBABLE Demo Site",
-  "selectedId": "hero-bg",
+  "selectedId": "products-1782994029423",
   "selectedPageId": "home",
+  "canvasSizes": {
+    "desktop": {
+      "height": 1720,
+      "width": 1440
+    },
+    "tablet": {
+      "height": 1200,
+      "width": 768
+    },
+    "mobile": {
+      "height": 844,
+      "width": 390
+    }
+  },
   "pages": [
     {
       "id": "home",
@@ -14,13 +28,13 @@
           "id": "hero-bg",
           "name": "Hero container",
           "type": "container",
-          "x": 48,
-          "y": 52,
+          "x": 56,
+          "y": 128,
           "width": 760,
           "height": 420,
           "zIndex": 1,
           "style": {
-            "background": "#111827",
+            "background": "#111111",
             "radius": 18,
             "padding": 32,
             "border": "1px solid rgba(255,255,255,.12)"
@@ -30,8 +44,8 @@
           "id": "hero-title",
           "name": "Headline",
           "type": "text",
-          "x": 92,
-          "y": 118,
+          "x": 96,
+          "y": 120,
           "width": 520,
           "height": 142,
           "zIndex": 3,
@@ -56,7 +70,7 @@
             "text": "정기구독, 선물, 행사 연출까지 한 번에 예약할 수 있는 브랜드 사이트입니다.",
             "fontSize": 17,
             "fontWeight": 500,
-            "color": "#d1d5db",
+            "color": "#d7d7d7",
             "align": "left"
           }
         },
@@ -73,25 +87,424 @@
             "text": "상담 예약",
             "fontSize": 16,
             "fontWeight": 800,
-            "color": "#111827",
+            "color": "#111111",
             "background": "#ffffff",
             "radius": 12,
             "align": "center"
+          },
+          "interactions": [
+            {
+              "actions": [
+                {
+                  "kind": "page",
+                  "target": "about",
+                  "type": "navigate"
+                }
+              ],
+              "id": "ix-mr3eyfwz-0w8z7",
+              "trigger": {
+                "type": "click"
+              }
+            },
+            {
+              "actions": [
+                {
+                  "preset": "lift",
+                  "type": "hoverStyle"
+                }
+              ],
+              "id": "ix-mr3eygr4-5zyq0",
+              "trigger": {
+                "type": "hover"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ai-1782986707291-0-title",
+          "name": "hero.editorial 제목",
+          "type": "text",
+          "x": 96,
+          "y": 568,
+          "width": 1248,
+          "height": 72,
+          "zIndex": 5,
+          "style": {
+            "align": "left",
+            "color": "#111111",
+            "fontSize": 40,
+            "fontWeight": 850,
+            "text": "강남 프리미엄, 방문자가 바로 이해하고 행동하는 브랜드 사이트"
           }
         },
         {
-          "id": "hero-image",
-          "name": "Visual block",
-          "type": "image",
-          "x": 584,
-          "y": 112,
-          "width": 178,
-          "height": 280,
-          "zIndex": 2,
+          "id": "ai-1782986707291-0-body",
+          "name": "hero.editorial 본문",
+          "type": "text",
+          "x": 96,
+          "y": 656,
+          "width": 1100,
+          "height": 60,
+          "zIndex": 6,
           "style": {
-            "background": "#f4d7bc",
-            "radius": 18,
-            "border": "1px solid rgba(255,255,255,.26)"
+            "align": "left",
+            "color": "#374151",
+            "fontSize": 18,
+            "fontWeight": 500,
+            "text": "first-time customers을 위해 핵심 제안, 신뢰 요소, 예약/문의 동선을 한 화면에서 자연스럽게 연결합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-0-action",
+          "name": "hero.editorial 버튼",
+          "type": "button",
+          "x": 96,
+          "y": 736,
+          "width": 220,
+          "height": 54,
+          "zIndex": 7,
+          "style": {
+            "align": "center",
+            "background": "#1D4ED8",
+            "color": "#ffffff",
+            "fontSize": 16,
+            "fontWeight": 800,
+            "radius": 10,
+            "text": "상담 예약"
+          },
+          "interactions": [
+            {
+              "actions": [
+                {
+                  "kind": "page",
+                  "target": "about",
+                  "type": "navigate"
+                }
+              ],
+              "id": "ix-mr3fp5zb-c35y2",
+              "trigger": {
+                "type": "click"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ai-1782986707291-1-title",
+          "name": "feature.grid 제목",
+          "type": "text",
+          "x": 96,
+          "y": 864,
+          "width": 560,
+          "height": 72,
+          "zIndex": 8,
+          "style": {
+            "align": "left",
+            "color": "#111111",
+            "fontSize": 40,
+            "fontWeight": 850,
+            "text": "첫 게시에 필요한 콘텐츠와 전환 요소를 먼저 완성합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-1-body",
+          "name": "feature.grid 본문",
+          "type": "text",
+          "x": 96,
+          "y": 954,
+          "width": 1100,
+          "height": 60,
+          "zIndex": 9,
+          "style": {
+            "align": "left",
+            "color": "#374151",
+            "fontSize": 18,
+            "fontWeight": 500,
+            "text": "WEBABLE은 섹션 단위 편집, AI 카피 보정, SEO 초안, 게시 승인 흐름을 하나의 작업대에서 제공합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-2-title",
+          "name": "process.steps 제목",
+          "type": "text",
+          "x": 96,
+          "y": 1086,
+          "width": 1248,
+          "height": 72,
+          "zIndex": 10,
+          "style": {
+            "align": "left",
+            "color": "#111111",
+            "fontSize": 40,
+            "fontWeight": 850,
+            "text": "초안 생성부터 게시까지 끊기지 않는 제작 과정"
+          }
+        },
+        {
+          "id": "ai-1782986707291-2-body",
+          "name": "process.steps 본문",
+          "type": "text",
+          "x": 96,
+          "y": 1174,
+          "width": 1100,
+          "height": 60,
+          "zIndex": 11,
+          "style": {
+            "align": "left",
+            "color": "#374151",
+            "fontSize": 18,
+            "fontWeight": 500,
+            "text": "브랜드 입력, 섹션 검토, 문구 수정, SEO 확인, 게시 요청까지 한 흐름으로 이어집니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-3-title",
+          "name": "proof.metrics 제목",
+          "type": "text",
+          "x": 96,
+          "y": 1306,
+          "width": 1248,
+          "height": 72,
+          "zIndex": 12,
+          "style": {
+            "align": "center",
+            "color": "#111111",
+            "fontSize": 40,
+            "fontWeight": 850,
+            "text": "게시 후에도 성과를 바로 확인할 수 있게 설계합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-3-body",
+          "name": "proof.metrics 본문",
+          "type": "text",
+          "x": 96,
+          "y": 1394,
+          "width": 1100,
+          "height": 60,
+          "zIndex": 13,
+          "style": {
+            "align": "center",
+            "color": "#374151",
+            "fontSize": 18,
+            "fontWeight": 500,
+            "text": "첫 게시까지 걸린 시간, AI 제안 적용률, 전환 이벤트를 운영 지표로 추적합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-4-title",
+          "name": "cta.publish 제목",
+          "type": "text",
+          "x": 96,
+          "y": 1526,
+          "width": 1248,
+          "height": 72,
+          "zIndex": 14,
+          "style": {
+            "align": "center",
+            "color": "#111111",
+            "fontSize": 40,
+            "fontWeight": 850,
+            "text": "검토가 끝나면 안전하게 게시를 요청하세요."
+          }
+        },
+        {
+          "id": "ai-1782986707291-4-body",
+          "name": "cta.publish 본문",
+          "type": "text",
+          "x": 96,
+          "y": 1614,
+          "width": 1100,
+          "height": 60,
+          "zIndex": 15,
+          "style": {
+            "align": "center",
+            "color": "#374151",
+            "fontSize": 18,
+            "fontWeight": 500,
+            "text": "운영자 승인, 감사 로그, 롤백 기준을 갖춘 상태에서 사이트를 공개합니다."
+          }
+        },
+        {
+          "id": "ai-1782986707291-4-action",
+          "name": "cta.publish 버튼",
+          "type": "button",
+          "x": 1008,
+          "y": 1296,
+          "width": 220,
+          "height": 54,
+          "zIndex": 16,
+          "style": {
+            "align": "center",
+            "background": "#1D4ED8",
+            "color": "#ffffff",
+            "fontSize": 16,
+            "fontWeight": 800,
+            "radius": 10,
+            "text": "게시 요청"
+          }
+        },
+        {
+          "id": "nav-1782986892404",
+          "name": "Nav menu",
+          "type": "nav",
+          "x": 72,
+          "y": 32,
+          "width": 1032,
+          "height": 56,
+          "zIndex": 17,
+          "style": {
+            "align": "center",
+            "background": "#ffffff",
+            "border": "1px solid #d0d0d0",
+            "color": "#111111",
+            "fontSize": 15,
+            "fontWeight": 780,
+            "padding": 10,
+            "radius": 999,
+            "text": "Home,Shop>Flowers;Plants;Gifts,About,Contact"
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-0",
+          "name": "히어로 배경",
+          "type": "container",
+          "x": 80,
+          "y": 1736,
+          "width": 1280,
+          "height": 460,
+          "zIndex": 18,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "background": "#111111",
+            "radius": 24
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-1",
+          "name": "아이브로우",
+          "type": "text",
+          "x": 144,
+          "y": 1808,
+          "width": 320,
+          "height": 24,
+          "zIndex": 19,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "align": "left",
+            "color": "#9ca3af",
+            "fontSize": 13,
+            "fontWeight": 800,
+            "text": "NEW SEASON"
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-2",
+          "name": "히어로 제목",
+          "type": "text",
+          "x": 144,
+          "y": 1848,
+          "width": 640,
+          "height": 124,
+          "zIndex": 20,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "align": "left",
+            "color": "#ffffff",
+            "fontSize": 46,
+            "fontWeight": 850,
+            "text": "감각적인 브랜드 경험을 만드는 가장 빠른 방법"
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-3",
+          "name": "히어로 설명",
+          "type": "text",
+          "x": 144,
+          "y": 1984,
+          "width": 520,
+          "height": 52,
+          "zIndex": 21,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "align": "left",
+            "color": "#d1d5db",
+            "fontSize": 16,
+            "fontWeight": 500,
+            "text": "섹션 블록을 조합해 몇 분 만에 페이지를 완성하세요."
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-4",
+          "name": "히어로 버튼",
+          "type": "button",
+          "x": 144,
+          "y": 2072,
+          "width": 176,
+          "height": 52,
+          "zIndex": 22,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "align": "center",
+            "background": "#ffffff",
+            "color": "#111111",
+            "fontSize": 15,
+            "fontWeight": 800,
+            "radius": 12,
+            "text": "시작하기"
+          }
+        },
+        {
+          "id": "block-hero-dark-1782990161884-5",
+          "name": "히어로 이미지",
+          "type": "image",
+          "x": 848,
+          "y": 1792,
+          "width": 452,
+          "height": 348,
+          "zIndex": 23,
+          "groupId": "block-hero-dark-1782990161884",
+          "style": {
+            "background": "#27272a",
+            "border": "1px solid #3f3f46",
+            "radius": 16
+          }
+        },
+        {
+          "id": "form-1782992474400",
+          "name": "문의 폼",
+          "type": "form",
+          "x": 480,
+          "y": 440,
+          "width": 420,
+          "height": 360,
+          "zIndex": 24,
+          "style": {
+            "background": "#ffffff",
+            "border": "1px solid #d0d0d0",
+            "color": "#111111",
+            "fontSize": 18,
+            "fontWeight": 850,
+            "padding": 20,
+            "radius": 10,
+            "text": "Contact form|Name,Email,Message|Submit"
+          }
+        },
+        {
+          "id": "products-1782994029423",
+          "name": "상품 그리드",
+          "type": "products",
+          "x": 496,
+          "y": 456,
+          "width": 760,
+          "height": 320,
+          "zIndex": 25,
+          "style": {
+            "background": "#ffffff",
+            "border": "1px solid #d0d0d0",
+            "color": "#111111",
+            "padding": 14,
+            "radius": 10,
+            "text": "Signature:₩49,000,Bundle:₩89,000,Premium:₩129,000"
           }
         }
       ]
@@ -111,8 +524,8 @@
           "height": 360,
           "zIndex": 1,
           "style": {
-            "background": "#f8fafc",
-            "border": "1px solid #cbd5e1",
+            "background": "#f7f7f7",
+            "border": "1px solid #d0d0d0",
             "radius": 18
           }
         },
@@ -127,7 +540,7 @@
           "zIndex": 2,
           "style": {
             "align": "left",
-            "color": "#111827",
+            "color": "#111111",
             "fontSize": 42,
             "fontWeight": 850,
             "text": "브랜드의 감각과 운영 방식을 소개하세요"
@@ -144,7 +557,7 @@
           "zIndex": 2,
           "style": {
             "align": "left",
-            "color": "#475569",
+            "color": "#555555",
             "fontSize": 18,
             "fontWeight": 520,
             "text": "전문성, 제작 과정, 고객에게 제공하는 차별점을 짧고 설득력 있게 담을 수 있습니다."
@@ -167,8 +580,8 @@
           "height": 340,
           "zIndex": 1,
           "style": {
-            "background": "#111827",
-            "border": "1px solid #1f2937",
+            "background": "#111111",
+            "border": "1px solid #2a2a2a",
             "radius": 18
           }
         },
@@ -201,7 +614,7 @@
           "style": {
             "align": "center",
             "background": "#ffffff",
-            "color": "#111827",
+            "color": "#111111",
             "fontSize": 16,
             "fontWeight": 820,
             "radius": 12,
@@ -216,13 +629,13 @@
       "id": "hero-bg",
       "name": "Hero container",
       "type": "container",
-      "x": 48,
-      "y": 52,
+      "x": 56,
+      "y": 128,
       "width": 760,
       "height": 420,
       "zIndex": 1,
       "style": {
-        "background": "#111827",
+        "background": "#111111",
         "radius": 18,
         "padding": 32,
         "border": "1px solid rgba(255,255,255,.12)"
@@ -232,8 +645,8 @@
       "id": "hero-title",
       "name": "Headline",
       "type": "text",
-      "x": 92,
-      "y": 118,
+      "x": 96,
+      "y": 120,
       "width": 520,
       "height": 142,
       "zIndex": 3,
@@ -258,7 +671,7 @@
         "text": "정기구독, 선물, 행사 연출까지 한 번에 예약할 수 있는 브랜드 사이트입니다.",
         "fontSize": 17,
         "fontWeight": 500,
-        "color": "#d1d5db",
+        "color": "#d7d7d7",
         "align": "left"
       }
     },
@@ -275,27 +688,427 @@
         "text": "상담 예약",
         "fontSize": 16,
         "fontWeight": 800,
-        "color": "#111827",
+        "color": "#111111",
         "background": "#ffffff",
         "radius": 12,
         "align": "center"
+      },
+      "interactions": [
+        {
+          "actions": [
+            {
+              "kind": "page",
+              "target": "about",
+              "type": "navigate"
+            }
+          ],
+          "id": "ix-mr3eyfwz-0w8z7",
+          "trigger": {
+            "type": "click"
+          }
+        },
+        {
+          "actions": [
+            {
+              "preset": "lift",
+              "type": "hoverStyle"
+            }
+          ],
+          "id": "ix-mr3eygr4-5zyq0",
+          "trigger": {
+            "type": "hover"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-1782986707291-0-title",
+      "name": "hero.editorial 제목",
+      "type": "text",
+      "x": 96,
+      "y": 568,
+      "width": 1248,
+      "height": 72,
+      "zIndex": 5,
+      "style": {
+        "align": "left",
+        "color": "#111111",
+        "fontSize": 40,
+        "fontWeight": 850,
+        "text": "강남 프리미엄, 방문자가 바로 이해하고 행동하는 브랜드 사이트"
       }
     },
     {
-      "id": "hero-image",
-      "name": "Visual block",
-      "type": "image",
-      "x": 584,
-      "y": 112,
-      "width": 178,
-      "height": 280,
-      "zIndex": 2,
+      "id": "ai-1782986707291-0-body",
+      "name": "hero.editorial 본문",
+      "type": "text",
+      "x": 96,
+      "y": 656,
+      "width": 1100,
+      "height": 60,
+      "zIndex": 6,
       "style": {
-        "background": "#f4d7bc",
-        "radius": 18,
-        "border": "1px solid rgba(255,255,255,.26)"
+        "align": "left",
+        "color": "#374151",
+        "fontSize": 18,
+        "fontWeight": 500,
+        "text": "first-time customers을 위해 핵심 제안, 신뢰 요소, 예약/문의 동선을 한 화면에서 자연스럽게 연결합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-0-action",
+      "name": "hero.editorial 버튼",
+      "type": "button",
+      "x": 96,
+      "y": 736,
+      "width": 220,
+      "height": 54,
+      "zIndex": 7,
+      "style": {
+        "align": "center",
+        "background": "#1D4ED8",
+        "color": "#ffffff",
+        "fontSize": 16,
+        "fontWeight": 800,
+        "radius": 10,
+        "text": "상담 예약"
+      },
+      "interactions": [
+        {
+          "actions": [
+            {
+              "kind": "page",
+              "target": "about",
+              "type": "navigate"
+            }
+          ],
+          "id": "ix-mr3fp5zb-c35y2",
+          "trigger": {
+            "type": "click"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-1782986707291-1-title",
+      "name": "feature.grid 제목",
+      "type": "text",
+      "x": 96,
+      "y": 864,
+      "width": 560,
+      "height": 72,
+      "zIndex": 8,
+      "style": {
+        "align": "left",
+        "color": "#111111",
+        "fontSize": 40,
+        "fontWeight": 850,
+        "text": "첫 게시에 필요한 콘텐츠와 전환 요소를 먼저 완성합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-1-body",
+      "name": "feature.grid 본문",
+      "type": "text",
+      "x": 96,
+      "y": 954,
+      "width": 1100,
+      "height": 60,
+      "zIndex": 9,
+      "style": {
+        "align": "left",
+        "color": "#374151",
+        "fontSize": 18,
+        "fontWeight": 500,
+        "text": "WEBABLE은 섹션 단위 편집, AI 카피 보정, SEO 초안, 게시 승인 흐름을 하나의 작업대에서 제공합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-2-title",
+      "name": "process.steps 제목",
+      "type": "text",
+      "x": 96,
+      "y": 1086,
+      "width": 1248,
+      "height": 72,
+      "zIndex": 10,
+      "style": {
+        "align": "left",
+        "color": "#111111",
+        "fontSize": 40,
+        "fontWeight": 850,
+        "text": "초안 생성부터 게시까지 끊기지 않는 제작 과정"
+      }
+    },
+    {
+      "id": "ai-1782986707291-2-body",
+      "name": "process.steps 본문",
+      "type": "text",
+      "x": 96,
+      "y": 1174,
+      "width": 1100,
+      "height": 60,
+      "zIndex": 11,
+      "style": {
+        "align": "left",
+        "color": "#374151",
+        "fontSize": 18,
+        "fontWeight": 500,
+        "text": "브랜드 입력, 섹션 검토, 문구 수정, SEO 확인, 게시 요청까지 한 흐름으로 이어집니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-3-title",
+      "name": "proof.metrics 제목",
+      "type": "text",
+      "x": 96,
+      "y": 1306,
+      "width": 1248,
+      "height": 72,
+      "zIndex": 12,
+      "style": {
+        "align": "center",
+        "color": "#111111",
+        "fontSize": 40,
+        "fontWeight": 850,
+        "text": "게시 후에도 성과를 바로 확인할 수 있게 설계합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-3-body",
+      "name": "proof.metrics 본문",
+      "type": "text",
+      "x": 96,
+      "y": 1394,
+      "width": 1100,
+      "height": 60,
+      "zIndex": 13,
+      "style": {
+        "align": "center",
+        "color": "#374151",
+        "fontSize": 18,
+        "fontWeight": 500,
+        "text": "첫 게시까지 걸린 시간, AI 제안 적용률, 전환 이벤트를 운영 지표로 추적합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-4-title",
+      "name": "cta.publish 제목",
+      "type": "text",
+      "x": 96,
+      "y": 1526,
+      "width": 1248,
+      "height": 72,
+      "zIndex": 14,
+      "style": {
+        "align": "center",
+        "color": "#111111",
+        "fontSize": 40,
+        "fontWeight": 850,
+        "text": "검토가 끝나면 안전하게 게시를 요청하세요."
+      }
+    },
+    {
+      "id": "ai-1782986707291-4-body",
+      "name": "cta.publish 본문",
+      "type": "text",
+      "x": 96,
+      "y": 1614,
+      "width": 1100,
+      "height": 60,
+      "zIndex": 15,
+      "style": {
+        "align": "center",
+        "color": "#374151",
+        "fontSize": 18,
+        "fontWeight": 500,
+        "text": "운영자 승인, 감사 로그, 롤백 기준을 갖춘 상태에서 사이트를 공개합니다."
+      }
+    },
+    {
+      "id": "ai-1782986707291-4-action",
+      "name": "cta.publish 버튼",
+      "type": "button",
+      "x": 1008,
+      "y": 1296,
+      "width": 220,
+      "height": 54,
+      "zIndex": 16,
+      "style": {
+        "align": "center",
+        "background": "#1D4ED8",
+        "color": "#ffffff",
+        "fontSize": 16,
+        "fontWeight": 800,
+        "radius": 10,
+        "text": "게시 요청"
+      }
+    },
+    {
+      "id": "nav-1782986892404",
+      "name": "Nav menu",
+      "type": "nav",
+      "x": 72,
+      "y": 32,
+      "width": 1032,
+      "height": 56,
+      "zIndex": 17,
+      "style": {
+        "align": "center",
+        "background": "#ffffff",
+        "border": "1px solid #d0d0d0",
+        "color": "#111111",
+        "fontSize": 15,
+        "fontWeight": 780,
+        "padding": 10,
+        "radius": 999,
+        "text": "Home,Shop>Flowers;Plants;Gifts,About,Contact"
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-0",
+      "name": "히어로 배경",
+      "type": "container",
+      "x": 80,
+      "y": 1736,
+      "width": 1280,
+      "height": 460,
+      "zIndex": 18,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "background": "#111111",
+        "radius": 24
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-1",
+      "name": "아이브로우",
+      "type": "text",
+      "x": 144,
+      "y": 1808,
+      "width": 320,
+      "height": 24,
+      "zIndex": 19,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "align": "left",
+        "color": "#9ca3af",
+        "fontSize": 13,
+        "fontWeight": 800,
+        "text": "NEW SEASON"
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-2",
+      "name": "히어로 제목",
+      "type": "text",
+      "x": 144,
+      "y": 1848,
+      "width": 640,
+      "height": 124,
+      "zIndex": 20,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "align": "left",
+        "color": "#ffffff",
+        "fontSize": 46,
+        "fontWeight": 850,
+        "text": "감각적인 브랜드 경험을 만드는 가장 빠른 방법"
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-3",
+      "name": "히어로 설명",
+      "type": "text",
+      "x": 144,
+      "y": 1984,
+      "width": 520,
+      "height": 52,
+      "zIndex": 21,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "align": "left",
+        "color": "#d1d5db",
+        "fontSize": 16,
+        "fontWeight": 500,
+        "text": "섹션 블록을 조합해 몇 분 만에 페이지를 완성하세요."
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-4",
+      "name": "히어로 버튼",
+      "type": "button",
+      "x": 144,
+      "y": 2072,
+      "width": 176,
+      "height": 52,
+      "zIndex": 22,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "align": "center",
+        "background": "#ffffff",
+        "color": "#111111",
+        "fontSize": 15,
+        "fontWeight": 800,
+        "radius": 12,
+        "text": "시작하기"
+      }
+    },
+    {
+      "id": "block-hero-dark-1782990161884-5",
+      "name": "히어로 이미지",
+      "type": "image",
+      "x": 848,
+      "y": 1792,
+      "width": 452,
+      "height": 348,
+      "zIndex": 23,
+      "groupId": "block-hero-dark-1782990161884",
+      "style": {
+        "background": "#27272a",
+        "border": "1px solid #3f3f46",
+        "radius": 16
+      }
+    },
+    {
+      "id": "form-1782992474400",
+      "name": "문의 폼",
+      "type": "form",
+      "x": 480,
+      "y": 440,
+      "width": 420,
+      "height": 360,
+      "zIndex": 24,
+      "style": {
+        "background": "#ffffff",
+        "border": "1px solid #d0d0d0",
+        "color": "#111111",
+        "fontSize": 18,
+        "fontWeight": 850,
+        "padding": 20,
+        "radius": 10,
+        "text": "Contact form|Name,Email,Message|Submit"
+      }
+    },
+    {
+      "id": "products-1782994029423",
+      "name": "상품 그리드",
+      "type": "products",
+      "x": 496,
+      "y": 456,
+      "width": 760,
+      "height": 320,
+      "zIndex": 25,
+      "style": {
+        "background": "#ffffff",
+        "border": "1px solid #d0d0d0",
+        "color": "#111111",
+        "padding": 14,
+        "radius": 10,
+        "text": "Signature:₩49,000,Bundle:₩89,000,Premium:₩129,000"
       }
     }
   ],
-  "publishedAt": "2026-06-30T08:10:40.349Z"
+  "siteNodes": [],
+  "publishedAt": "2026-07-02T12:07:10.758Z"
 }

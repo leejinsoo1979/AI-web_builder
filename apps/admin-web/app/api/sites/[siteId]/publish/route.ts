@@ -23,13 +23,18 @@ type PublishedNode = {
     | "video"
     | "testimonial"
     | "pricing"
-    | "footer";
+    | "footer"
+    | "booking";
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number;
   hidden?: boolean;
+  interactions?: unknown[];
+  hiddenOnPageIds?: string[];
+  positionMode?: "fixed" | "normal" | "sticky";
+  scope?: "page" | "site";
   style?: Record<string, unknown>;
 };
 
@@ -63,6 +68,7 @@ export async function POST(
     pages?: PublishedPage[];
     selectedId?: string;
     selectedPageId?: string;
+    siteNodes?: PublishedNode[];
     siteName?: string;
   };
   const pages = Array.isArray(body.pages)
@@ -71,6 +77,7 @@ export async function POST(
         .map((page) => ({ ...page, nodes: page.nodes.filter(isPublishableNode) }))
     : [];
   const nodes = pages.length > 0 ? pages[0].nodes : Array.isArray(body.nodes) ? body.nodes.filter(isPublishableNode) : [];
+  const siteNodes = Array.isArray(body.siteNodes) ? body.siteNodes.filter(isPublishableNode) : [];
 
   if (nodes.length === 0 && pages.length === 0) {
     return NextResponse.json({ message: "No publishable nodes were provided." }, { status: 400 });
@@ -88,6 +95,7 @@ export async function POST(
     canvasSizes: normalizeCanvasSizes(body.canvasSizes),
     pages,
     nodes,
+    siteNodes,
     publishedAt
   };
 
@@ -132,7 +140,7 @@ function isPublishableNode(node: PublishedNode) {
     node &&
     typeof node.id === "string" &&
     typeof node.name === "string" &&
-    ["container", "text", "button", "image", "header", "nav", "gallery", "slider", "hero", "products", "form", "map", "video", "testimonial", "pricing", "footer"].includes(node.type) &&
+    ["container", "text", "button", "image", "header", "nav", "gallery", "slider", "hero", "products", "form", "map", "video", "testimonial", "pricing", "footer", "booking"].includes(node.type) &&
     Number.isFinite(node.x) &&
     Number.isFinite(node.y) &&
     Number.isFinite(node.width) &&

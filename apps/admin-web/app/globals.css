@@ -1,3 +1,6 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=Inter:wght@400;500;600;700;800;900&family=Lora:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap");
+
 :root {
   --bg: #ededed;
   --surface: #ffffff;
@@ -20,11 +23,18 @@
 
 html {
   min-width: 320px;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
   background: var(--bg);
 }
 
 body {
   margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
   color: var(--ink);
   font-family: var(--font-geist-sans), Arial, sans-serif;
   background: #ededed;
@@ -475,7 +485,7 @@ button:disabled {
   padding: 0 10px;
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 760;
+  font-weight: 620;
 }
 
 .canvasFrame {
@@ -1733,7 +1743,7 @@ body {
 .ffPanelHeader span {
   color: #64748b;
   font-size: 0.7rem;
-  font-weight: 680;
+  font-weight: 560;
 }
 
 .ffPanelTabs {
@@ -1758,7 +1768,7 @@ body {
   border: 0;
   border-radius: 5px;
   font-size: 0.74rem;
-  font-weight: 760;
+  font-weight: 640;
 }
 
 .ffPanelTabs button.active {
@@ -1846,7 +1856,7 @@ body {
 .ffPagesHeader span {
   color: #64748b;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 640;
   text-transform: uppercase;
 }
 
@@ -1906,7 +1916,7 @@ body {
   min-width: 0;
   overflow: hidden;
   font-size: 0.78rem;
-  font-weight: 760;
+  font-weight: 620;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1969,7 +1979,7 @@ body {
   min-width: 0;
   color: #2563eb;
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 640;
   text-transform: uppercase;
 }
 
@@ -2257,14 +2267,18 @@ body {
   gap: 6px;
   padding: 0 5px;
   font-size: 0.75rem;
-  font-weight: 620;
+  font-weight: 560;
+}
+
+.ffLayerRow .ffLayerSelect {
+  color: #6f6f6f;
 }
 
 .ffLayerRow.tree .ffLayerSelect {
   gap: 5px;
   padding: 0 5px;
   font-size: 0.75rem;
-  font-weight: 620;
+  font-weight: 560;
 }
 
 .ffLayerRow.tree.group .ffLayerSelect {
@@ -2511,6 +2525,10 @@ body {
   height: 100%;
   min-height: 0;
   background: #dbe2eb;
+  cursor: default;
+}
+
+.ffCanvas.spacePan {
   cursor: grab;
 }
 
@@ -2588,6 +2606,7 @@ body {
 .ffCodeEditorTop span {
   min-width: 0;
   overflow: hidden;
+  color: #d7d7d7;
   font-size: 12px;
   font-weight: 700;
   text-overflow: ellipsis;
@@ -2610,6 +2629,25 @@ body {
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
+}
+
+.ffCodeEditorTop button {
+  flex: 0 0 auto;
+  height: 24px;
+  padding: 0 8px;
+  color: #d8d8d8;
+  background: #242424;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ffCodeEditorTop button:disabled {
+  color: #8b8b8b;
+  cursor: not-allowed;
+  background: #242424;
+  border-color: #303030;
 }
 
 .ffOpenEditors {
@@ -2636,7 +2674,7 @@ body {
   width: 100%;
   height: 26px;
   padding: 0 14px;
-  color: #cccccc;
+  color: #e4e4e4;
   text-align: left;
   background: transparent;
   border: 0;
@@ -2649,7 +2687,7 @@ body {
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  color: #a3a3a3;
+  color: #bdbdbd;
   border-bottom: 1px solid #242424;
   font-size: 11px;
 }
@@ -2663,13 +2701,14 @@ body {
 .ffCodeSummary em,
 .ffCodeEditorTop em,
 .ffCodeFile em {
-  color: #8b8b8b;
+  color: #b3b3b3;
   font-style: normal;
 }
 
 .ffCodeFileList {
   display: grid;
-  padding: 2px 0 8px;
+  gap: 1px;
+  padding: 4px 6px 10px;
 }
 
 .ffCodeFolder summary {
@@ -2677,12 +2716,15 @@ body {
   grid-template-columns: 16px minmax(0, 1fr);
   align-items: center;
   gap: 4px;
-  height: 24px;
+  min-height: 26px;
   padding: 0 8px;
-  color: #cccccc;
+  color: #ededed;
   cursor: pointer;
   font-size: 12px;
+  font-weight: 650;
   list-style: none;
+  background: #202020;
+  border-radius: 4px;
 }
 
 .ffCodeFolder summary::-webkit-details-marker {
@@ -2690,11 +2732,15 @@ body {
 }
 
 .ffCodeFolder summary:hover {
-  background: #222222;
+  color: #ffffff;
+  background: #303033;
 }
 
 .ffCodeFolder > div {
-  padding-left: 14px;
+  display: grid;
+  gap: 1px;
+  padding-left: 12px;
+  padding-top: 1px;
 }
 
 .ffCodeFile {
@@ -2704,22 +2750,47 @@ body {
   gap: 6px;
   min-height: 28px;
   width: 100%;
-  padding: 0 7px;
-  color: #cccccc;
+  padding: 0 8px;
+  color: #eeeeee;
   text-align: left;
-  background: transparent;
+  background: #202020;
   border: 0;
-  border-radius: 0;
+  border-radius: 4px;
   font-size: 12px;
+  font-weight: 520;
 }
 
 .ffCodeFile:hover {
-  background: #222222;
+  color: #ffffff;
+  background: #303033;
 }
 
 .ffCodeFile.active {
   color: #ffffff;
-  background: #2a2a2a;
+  background: #094771;
+  box-shadow: inset 2px 0 0 #4fb8ff;
+}
+
+.ffCodeFile svg,
+.ffCodeFolder summary svg,
+.ffCodeOpenFile svg {
+  color: #d7d7d7;
+}
+
+.ffCodeFile em {
+  min-width: 18px;
+  padding: 1px 5px;
+  color: #f0f0f0;
+  text-align: center;
+  background: #343434;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.ffCodeFile.active em {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .ffCodeFile span {
@@ -2738,7 +2809,7 @@ body {
 
 .ffCodeEditor {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) 22px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto 22px;
   min-width: 0;
   min-height: 0;
   height: 100%;
@@ -2776,28 +2847,90 @@ body {
   box-shadow: inset 0 1px 0 #007acc;
 }
 
-.ffCodeEditor pre {
-  margin: 0;
+.ffCodeEditPane {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.ffCodeInputStack {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.ffCodeHighlight {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 6px 32px 40px 0;
+  overflow: hidden;
+  color: #d4d4d4;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.62;
+  pointer-events: none;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.ffCodeHighlight code {
+  display: block;
+  min-height: 19.44px;
+}
+
+.ffCodeLineGutter {
+  display: grid;
+  align-content: start;
+  min-width: 0;
   padding: 6px 0 40px;
+  color: #858585;
+  background: #1e1e1e;
+  font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.62;
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+
+.ffCodeLineGutter span {
+  display: block;
+  min-height: 19.44px;
+  padding-right: 18px;
+}
+
+.ffCodeTextArea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 6px 32px 40px 0;
+  color: transparent;
+  caret-color: #aeafad;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  resize: none;
+  white-space: pre;
   overflow: auto;
   font-family: var(--font-geist-mono), "SFMono-Regular", Consolas, monospace;
   font-size: 12px;
   line-height: 1.62;
+  tab-size: 2;
+  -webkit-text-fill-color: transparent;
 }
 
-.ffCodeEditor code {
-  display: grid;
-  grid-template-columns: 64px max-content;
-  min-height: 20px;
-  padding-right: 32px;
-  color: #d4d4d4;
-  white-space: pre;
-}
-
-.ffCodeEditor code:hover {
-  background: #242424;
+.ffCodeTextArea::selection {
+  background: rgba(0, 122, 204, 0.42);
 }
 
 .ffCodeLineNumber {
@@ -2809,6 +2942,21 @@ body {
 
 .ffCodeLineText {
   min-width: 0;
+}
+
+.ffCodeApplyMessage {
+  min-height: 24px;
+  padding: 5px 12px;
+  color: #89d185;
+  background: #1f2f1f;
+  border-top: 1px solid #284928;
+  font-size: 11px;
+}
+
+.ffCodeApplyMessage.error {
+  color: #f48771;
+  background: #3a1f1b;
+  border-top-color: #5a2a22;
 }
 
 .tok-comment {
@@ -2879,7 +3027,6 @@ body {
   box-shadow: 0 22px 60px rgba(15, 23, 42, 0.2);
   cursor: grab;
   transform-origin: top left;
-  will-change: transform;
 }
 
 .ffArtboard.draggingFrame {
@@ -3172,6 +3319,7 @@ body {
 }
 
 .ffImageNode {
+  position: relative;
   display: grid;
   place-items: center;
   background:
@@ -3179,19 +3327,132 @@ body {
     linear-gradient(135deg, #f8c6a3, #f4d7bc);
 }
 
-.ffImageNode span {
+.ffImageNode > span {
   width: 58%;
   aspect-ratio: 1;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.42);
 }
 
-.ffImageNode img,
-.publishedImageNode img {
+.ffImageMask,
+.publishedImageMask {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.ffImageCropImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: var(--webable-image-base-width, 100%);
+  height: var(--webable-image-base-height, 100%);
+  object-fit: fill;
+  transform: translate(-50%, -50%) translate(var(--webable-image-x, 0), var(--webable-image-y, 0)) scale(var(--webable-image-scale, 1));
+  transform-origin: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.publishedImageCropImage {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: translate(var(--webable-image-x, 0), var(--webable-image-y, 0)) scale(var(--webable-image-scale, 1));
+  transform-origin: center;
+  user-select: none;
+}
+
+.ffImageNode.editing {
+  overflow: visible;
+  cursor: grab;
+}
+
+.ffImageNode.editing:active {
+  cursor: grabbing;
+}
+
+.ffImageNode.editing .ffImageMask {
+  z-index: 2;
+  outline: 1px solid #0a84ff;
+  outline-offset: -1px;
+}
+
+.ffImageCropGhost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  display: block;
+  width: var(--webable-image-base-width, 100%);
+  height: var(--webable-image-base-height, 100%);
+  object-fit: fill;
+  opacity: 0.38;
+  pointer-events: none;
+  transform: translate(-50%, -50%) translate(var(--webable-image-x, 0), var(--webable-image-y, 0)) scale(var(--webable-image-scale, 1));
+  transform-origin: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ffImageCropOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border: 1px solid #0a84ff;
+  pointer-events: none;
+}
+
+.ffImageCropOverlay button {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid #0a84ff;
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(17, 17, 17, 0.2);
+  pointer-events: auto;
+}
+
+.ffImageCropOverlay .topLeft {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.ffImageCropOverlay .topRight {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.ffImageCropOverlay .bottomLeft {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.ffImageCropOverlay .bottomRight {
+  right: -5px;
+  bottom: -5px;
+  cursor: nwse-resize;
+}
+
+.ffImageCropOverlay em {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  color: #ffffff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  background: rgba(17, 17, 17, 0.72);
+  border-radius: 4px;
 }
 
 .ffHeaderWidget,
@@ -3213,7 +3474,7 @@ body {
 
 .ffHeaderWidget {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) auto auto;
+  grid-template-columns: minmax(120px, 1fr) minmax(0, 2fr) auto;
   align-items: center;
   gap: 22px;
 }
@@ -3231,9 +3492,19 @@ body {
 .ffNavWidget {
   display: inline-flex;
   align-items: center;
-  gap: 18px;
+  justify-content: var(--webable-menu-justify, center);
+  gap: 0;
+  width: 100%;
   min-width: 0;
   overflow: visible;
+}
+
+.ffMenuTrack {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .ffHeaderWidget nav .ffNavItem,
@@ -3308,7 +3579,7 @@ body {
 }
 
 .ffNavWidget {
-  justify-content: center;
+  justify-content: var(--webable-menu-justify, center);
 }
 
 .ffGalleryWidget {
@@ -3363,7 +3634,7 @@ body {
 .ffSliderWidget span {
   color: #d8d8d8;
   font-size: 0.78rem;
-  font-weight: 760;
+  font-weight: 620;
 }
 
 .ffSliderWidget section {
@@ -3553,11 +3824,29 @@ body {
   position: relative;
   display: grid;
   place-items: center;
+  overflow: hidden;
   background:
     linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px),
     linear-gradient(180deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px),
     #eeeeee;
   background-size: 34px 34px;
+}
+
+.ffMapWidget iframe,
+.ffVideoWidget iframe,
+.ffVideoWidget video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.ffArtboard .ffMapWidget iframe,
+.ffArtboard .ffVideoWidget iframe,
+.ffArtboard .ffVideoWidget video {
+  pointer-events: none;
 }
 
 .ffMapWidget span {
@@ -3573,11 +3862,19 @@ body {
   position: absolute;
   right: 18px;
   bottom: 16px;
+  z-index: 1;
+  padding: 4px 8px;
   color: #111111;
   font-size: 0.92rem;
+  background: rgba(255, 255, 255, 0.84);
+  border-radius: 5px;
 }
 
 .ffVideoWidget {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
   gap: 12px;
   color: #ffffff;
   background:
@@ -4225,8 +4522,8 @@ body {
 
 .publishedArtboard {
   position: relative;
-  width: 1440px;
-  height: 1600px;
+  width: var(--webable-desktop-width, 1440px);
+  height: var(--webable-desktop-height, 1600px);
   margin: 0 auto;
   overflow: hidden;
   background: #ffffff;
@@ -4234,6 +4531,71 @@ body {
 
 .publishedNode {
   position: absolute;
+  left: var(--webable-desktop-node-left, 0);
+  top: var(--webable-desktop-node-top, 0);
+  width: var(--webable-desktop-node-width, auto);
+  height: var(--webable-desktop-node-height, auto);
+}
+
+@media (max-width: 1023px) {
+  .publishedArtboard {
+    width: var(--webable-tablet-width, 768px);
+    height: var(--webable-tablet-height, 1200px);
+  }
+
+  .publishedNode {
+    left: var(--webable-tablet-node-left, var(--webable-desktop-node-left, 0));
+    top: var(--webable-tablet-node-top, var(--webable-desktop-node-top, 0));
+    width: var(--webable-tablet-node-width, var(--webable-desktop-node-width, auto));
+    height: var(--webable-tablet-node-height, var(--webable-desktop-node-height, auto));
+  }
+}
+
+@media (max-width: 767px) {
+  .publishedArtboard {
+    width: var(--webable-mobile-width, 390px);
+    height: var(--webable-mobile-height, 844px);
+  }
+
+  .publishedNode {
+    left: var(--webable-mobile-node-left, var(--webable-tablet-node-left, 0));
+    top: var(--webable-mobile-node-top, var(--webable-tablet-node-top, 0));
+    width: var(--webable-mobile-node-width, var(--webable-tablet-node-width, auto));
+    height: var(--webable-mobile-node-height, var(--webable-tablet-node-height, auto));
+  }
+}
+
+.publishedNode.is-lightbox-open,
+.webablePreviewNode.is-lightbox-open {
+  z-index: 10040 !important;
+}
+
+.publishedNode.is-lightbox-open .publishedImageNode,
+.webablePreviewNode.is-lightbox-open .publishedImageNode,
+.webablePreviewNode.is-lightbox-open .ffImageNode {
+  overflow: visible;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+}
+
+.publishedNode.is-menu-open,
+.webablePreviewNode.is-menu-open,
+.publishedNode.is-state-menu-open,
+.webablePreviewNode.is-state-menu-open {
+  z-index: 10030 !important;
+}
+
+.publishedNode.is-expanded,
+.webablePreviewNode.is-expanded,
+.publishedNode.is-state-expanded,
+.webablePreviewNode.is-state-expanded {
+  overflow: visible;
+}
+
+.publishedNode.is-submitted .ffFormWidget,
+.webablePreviewNode.is-submitted .ffFormWidget,
+.publishedNode.is-state-submitted .ffFormWidget,
+.webablePreviewNode.is-state-submitted .ffFormWidget {
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.28), 0 18px 45px rgba(15, 23, 42, 0.14);
 }
 
 .publishedTextNode,
@@ -4257,6 +4619,7 @@ body {
 }
 
 .publishedImageNode {
+  position: relative;
   display: grid;
   place-items: center;
   background:
@@ -4264,7 +4627,7 @@ body {
     linear-gradient(135deg, #f8c6a3, #f4d7bc);
 }
 
-.publishedImageNode span {
+.publishedImageNode > span {
   width: 58%;
   aspect-ratio: 1;
   border-radius: 999px;
@@ -4519,14 +4882,15 @@ body {
 
 .ffImageNode,
 .publishedImageNode {
+  position: relative;
   background:
     linear-gradient(135deg, #eeeeee 0 25%, transparent 25% 50%, #eeeeee 50% 75%, transparent 75%),
     #d8d8d8;
   background-size: 24px 24px;
 }
 
-.ffImageNode span,
-.publishedImageNode span {
+.ffImageNode > span,
+.publishedImageNode > span {
   background: rgba(255, 255, 255, 0.66);
 }
 
@@ -4746,4 +5110,3805 @@ body {
 .publishedNode .ffSliderWidget button,
 .publishedNode .ffVideoWidget button {
   color: inherit;
+}
+
+/* Figma-like right inspector — single coherent pass.
+   Row system: [control 1fr | control 1fr | aux icon 26px], 16px side padding,
+   38px fields on #f5f5f5, hairline #ececec full-bleed section dividers. */
+.freeformShell .ffInspector {
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: #1f1f1f;
+  background: #ffffff;
+  border-left: 1px solid #e4e4e4;
+}
+
+.freeformShell .ffInspectorTabs {
+  position: sticky;
+  top: 0;
+  z-index: 7;
+  display: flex;
+  flex: none;
+  gap: 4px;
+  height: 42px;
+  margin: 0;
+  padding: 0 8px;
+  background: #ffffff;
+  border-bottom: 1px solid #ececec;
+}
+
+.freeformShell .ffInspectorTabs button {
+  position: relative;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #8b8b8b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorTabs button.active {
+  color: #111111;
+}
+
+.freeformShell .ffInspectorTabs button.active::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  bottom: -1px;
+  left: 8px;
+  height: 2px;
+  background: #111111;
+}
+
+.freeformShell .ffInspectorObjectBar {
+  position: sticky;
+  top: 42px;
+  z-index: 7;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 12px 0 10px;
+  background: #ffffff;
+  border-bottom: 1px solid #ececec;
+}
+
+.freeformShell .ffInspectorObjectName {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #2a2a2a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorObjectName:hover {
+  background: #f5f5f5;
+}
+
+.freeformShell .ffInspectorObjectName span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffInspectorObjectName svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: #6f6f6f;
+}
+
+.freeformShell .ffInspectorObjectTools {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.freeformShell .ffInspectorObjectTools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #333333;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorObjectTools button:hover {
+  background: #f5f5f5;
+}
+
+.freeformShell .ffInspectorObjectTools svg {
+  width: 17px;
+  height: 17px;
+}
+
+.freeformShell .ffFigmaInspector {
+  padding: 0 0 32px;
+}
+
+.freeformShell .ffFrameSummary {
+  display: grid;
+  gap: 4px;
+  margin: 8px 16px 14px;
+  padding: 12px;
+  background: #f5f5f5;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+}
+
+.freeformShell .ffFrameSummary strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffFrameSummary span {
+  color: #777777;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.freeformShell .ffFrameDeviceGrid {
+  min-width: 0;
+}
+
+.freeformShell .ffFramePresetGrid {
+  display: grid;
+  gap: 6px;
+  margin: 0 16px 12px;
+}
+
+.freeformShell .ffFramePresetGrid button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 10px;
+  color: #1f1f1f;
+  text-align: left;
+  background: #f5f5f5;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.freeformShell .ffFramePresetGrid button:hover {
+  background: #eeeeee;
+}
+
+.freeformShell .ffFramePresetGrid button.active {
+  background: #ffffff;
+  border-color: #111111;
+}
+
+.freeformShell .ffFramePresetGrid span {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffFramePresetGrid em {
+  color: #777777;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.freeformShell .ffInspectorSectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  margin: 12px 0 0;
+  padding: 14px 16px 6px;
+  border-top: 1px solid #ececec;
+  color: #3d3d3d;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.freeformShell .ffFigmaInspector > .ffInspectorSectionTitle:first-child {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.freeformShell .ffInspectorSectionTitle::after {
+  content: none;
+}
+
+.freeformShell .ffInspectorSectionTitle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #6f6f6f;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorSectionTitle button:hover {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.freeformShell .ffInspectorSectionTools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.freeformShell .ffInspectorSectionTools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #444444;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorSectionTools button:hover {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.freeformShell .ffInspectorSubLabel {
+  margin: 10px 16px 6px;
+  color: #8c8c8c;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Row system */
+.freeformShell .ffInspectorRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 26px;
+  gap: 8px;
+  align-items: center;
+  margin: 0 16px 8px;
+}
+
+.freeformShell .ffInspectorRow.wide {
+  grid-template-columns: minmax(0, 1fr) 26px;
+}
+
+.freeformShell .ffInspectorRow.labels {
+  margin-bottom: 0;
+}
+
+.freeformShell .ffInspectorRow.labels .ffInspectorSubLabel {
+  margin: 6px 0 4px;
+}
+
+.freeformShell .ffInspectorAux {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorAux:hover {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.freeformShell .ffInspectorAux.active {
+  color: #0a84ff;
+  background: #e8f2ff;
+}
+
+/* Fields */
+.freeformShell .ffFigmaInspector .ffField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 38px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.freeformShell .ffFigmaInspector .ffField:focus-within {
+  border-color: #111111;
+  background: #ffffff;
+}
+
+.freeformShell .ffFigmaInspector .ffField > span {
+  flex: none;
+  min-width: 12px;
+  color: #8c8c8c;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+}
+
+.freeformShell .ffFigmaInspector .ffField input,
+.freeformShell .ffFigmaInspector .ffField select,
+.freeformShell .ffFigmaInspector .ffField textarea {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #2f2f2f;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+}
+
+.freeformShell .ffFigmaInspector .ffField select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.freeformShell .ffFigmaInspector .ffField input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.freeformShell .ffFigmaInspector .ffField input::-webkit-outer-spin-button,
+.freeformShell .ffFigmaInspector .ffField input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberField {
+  gap: 6px;
+  padding-right: 5px;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberField input {
+  text-align: right;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberStepper {
+  display: grid;
+  flex: none;
+  width: 16px;
+  height: 28px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberStepper button {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 14px;
+  padding: 0;
+  color: #6f6f6f;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberStepper button:hover {
+  color: #111111;
+  background: #e9e9e9;
+}
+
+.freeformShell .ffFigmaInspector .ffNumberStepper button:active {
+  background: #dddddd;
+}
+
+.freeformShell .ffFontDropdown {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.freeformShell .ffFontTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px 0 12px;
+  color: #1f1f1f;
+  background: #f5f5f5;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.freeformShell .ffFontTrigger:hover,
+.freeformShell .ffFontTrigger[aria-expanded="true"] {
+  background: #ffffff;
+  border-color: #111111;
+}
+
+.freeformShell .ffFontTrigger span {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffFontTrigger svg {
+  flex: none;
+  color: #6f6f6f;
+}
+
+.freeformShell .ffFontMenu {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  left: 0;
+  z-index: 40;
+  display: grid;
+  max-height: 320px;
+  padding: 6px;
+  overflow: auto;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  box-shadow: 0 16px 34px rgba(17, 17, 17, 0.16);
+}
+
+.freeformShell .ffFontMenu button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 9px;
+  color: #2f2f2f;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.freeformShell .ffFontMenu button:hover {
+  background: #f2f2f2;
+}
+
+.freeformShell .ffFontMenu button.active {
+  color: #ffffff;
+  background: #111111;
+}
+
+.freeformShell .ffFontMenu span {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffFontMenu em {
+  color: #8c8c8c;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.freeformShell .ffFontMenu button.active em {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.freeformShell .ffFigmaInspector .ffField:has(textarea) {
+  align-items: flex-start;
+  height: auto;
+  padding: 9px 10px;
+}
+
+.freeformShell .ffFigmaInspector .ffField textarea {
+  min-height: 56px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.freeformShell .ffInspectorStackRow {
+  display: grid;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.freeformShell .ffMiniDanger {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #777777;
+  background: #f6f6f6;
+  border: 0;
+  border-radius: 5px;
+}
+
+.freeformShell .ffMiniDanger:hover {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.freeformShell .ffAddItemButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 30px;
+  color: #333333;
+  background: #f4f4f4;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.freeformShell .ffAddItemButton:hover {
+  color: #111111;
+  background: #e9e9e9;
+}
+
+/* Segment groups (정렬 · 회전) */
+.freeformShell .ffSegmentGroup {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.freeformShell .ffSegmentGroup button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #f5f5f5;
+  box-shadow: 0 0 0 0.5px #ffffff;
+  color: #333333;
+  cursor: pointer;
+}
+
+.freeformShell .ffSegmentGroup button:hover {
+  background: #ececec;
+  color: #111111;
+}
+
+.freeformShell .ffSegmentGroup svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Flow track (흐름) + text align */
+.freeformShell .ffLayoutModeGrid {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 2px;
+  margin: 0;
+  padding: 2px;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.freeformShell .ffLayoutModeGrid button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #4b4b4b;
+  cursor: pointer;
+}
+
+.freeformShell .ffLayoutModeGrid button:hover {
+  color: #111111;
+}
+
+.freeformShell .ffLayoutModeGrid button.active {
+  border-color: #e3e3e3;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.08);
+  color: #111111;
+}
+
+.freeformShell .ffLayoutModeGrid svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Checkbox */
+.freeformShell .ffInspectorCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 6px 16px 14px;
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorCheckbox input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #111111;
+}
+
+/* 선택 색상 — swatch + hex | opacity split */
+.freeformShell .ffColorSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 0.9fr);
+  gap: 2px;
+}
+
+.freeformShell .ffColorSplit .ffField {
+  padding: 0;
+  border: 0;
+  border-radius: 10px 0 0 10px;
+  background: transparent;
+}
+
+.freeformShell .ffColorSplit .ffField:focus-within {
+  border: 0;
+  background: transparent;
+}
+
+.freeformShell .ffColorSplit .ffField > span {
+  display: none;
+}
+
+.freeformShell .ffColorSplit .ffColorControl {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 10px 0 0 10px;
+  background: #f5f5f5;
+}
+
+.freeformShell .ffColorSplit .ffColorControl:focus-within {
+  border-color: #111111;
+  background: #ffffff;
+}
+
+.freeformShell .ffColorSplit .ffColorSwatchButton {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.freeformShell .ffColorSplit .ffColorControl > input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+}
+
+.freeformShell .ffOpacityBox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 0 10px 10px 0;
+  background: #f5f5f5;
+}
+
+.freeformShell .ffOpacityBox input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 13px;
+  font-weight: 500;
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.freeformShell .ffOpacityBox input::-webkit-outer-spin-button,
+.freeformShell .ffOpacityBox input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.freeformShell .ffOpacityBox span {
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+.freeformShell .ffStrokeSection {
+  position: relative;
+}
+
+.freeformShell .ffStrokePopover {
+  position: absolute;
+  top: 44px;
+  right: calc(100% + 32px);
+  z-index: 30;
+  width: min(480px, calc(100vw - 360px));
+  padding: 0 32px 28px;
+  color: #1f1f1f;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(17, 17, 17, 0.18);
+}
+
+.freeformShell .ffStrokePopoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 78px;
+  border-bottom: 1px solid #ececec;
+}
+
+.freeformShell .ffStrokePopoverHeader strong {
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.freeformShell .ffStrokePopoverHeader button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: #1f1f1f;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.freeformShell .ffStrokePopoverHeader button:hover {
+  background: #f2f2f2;
+}
+
+.freeformShell .ffStrokeTabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  margin: 26px 0 28px;
+  padding: 2px;
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+.freeformShell .ffStrokeTabs button {
+  height: 44px;
+  color: #666666;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.freeformShell .ffStrokeTabs button.active {
+  color: #111111;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px #e2e2e2;
+}
+
+.freeformShell .ffStrokeTabs button:disabled {
+  color: #9a9a9a;
+  cursor: not-allowed;
+}
+
+.freeformShell .ffStrokeSettingRow {
+  display: grid;
+  grid-template-columns: 144px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  color: #777777;
+  font-size: 17px;
+  font-weight: 550;
+}
+
+.freeformShell .ffStrokeSettingRow > select,
+.freeformShell .ffStrokeSettingRow > .ffField {
+  min-height: 48px;
+}
+
+.freeformShell .ffStrokeSettingRow > select {
+  width: 100%;
+  padding: 0 16px;
+  color: #1f1f1f;
+  background: #ffffff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 650;
+  outline: none;
+}
+
+.freeformShell .ffStrokeCornerGroup {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+.freeformShell .ffStrokeCornerGroup button {
+  height: 48px;
+  color: #7a7a7a;
+  background: transparent;
+  border: 0;
+  box-shadow: 0 0 0 0.5px #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.freeformShell .ffStrokeCornerGroup button.active {
+  color: #111111;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px #e2e2e2;
+}
+
+@media (max-width: 980px) {
+  .freeformShell .ffStrokePopover {
+    position: static;
+    width: auto;
+    margin: 12px 16px 18px;
+    padding: 0 18px 20px;
+    border-radius: 18px;
+  }
+
+  .freeformShell .ffStrokeSettingRow {
+    grid-template-columns: 104px minmax(0, 1fr);
+    font-size: 14px;
+  }
+}
+
+/* Action row */
+.freeformShell .ffInspectorActionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 40px;
+  gap: 8px;
+  margin: 14px 16px 0;
+}
+
+.freeformShell .ffInspectorActionRow button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #1f1f1f;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.freeformShell .ffInspectorActionRow button:hover {
+  background: #ececec;
+}
+
+.freeformShell .ffInspectorActionRow .danger {
+  color: #d64545;
+}
+
+.freeformShell .ffInspectorActionRow .danger:hover {
+  background: #fdecec;
+}
+
+.freeformShell .ffInspectorActionRow svg {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+
+/* Presets / replace image */
+.freeformShell .ffFigmaInspector .ffPresetButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.freeformShell .ffFigmaInspector .ffPresetButtons button {
+  padding: 8px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #1f1f1f;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.freeformShell .ffFigmaInspector .ffPresetButtons button:hover {
+  background: #ececec;
+}
+
+.freeformShell .ffFigmaInspector .ffReplaceImage {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: #f5f5f5;
+  color: #1f1f1f;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.freeformShell .ffFigmaInspector .ffReplaceImage:hover {
+  background: #ececec;
+}
+
+.freeformShell .ffMultiInspector {
+  padding: 12px 16px;
+}
+
+.freeformShell .ffEmptyInspector {
+  margin: 16px;
+}
+
+/* Prevent macOS scroll chaining/bounce inside the editor shell. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.freeformShell,
+.ffCanvasWrap,
+.ffCanvas,
+.ffCodeWorkspace {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.ffPanel,
+.ffLayers,
+.ffInspector,
+.ffCodeSidebar,
+.ffCodeTextArea {
+  overscroll-behavior: contain;
+}
+
+.ffPanel,
+.ffLayers,
+.ffInspector {
+  height: 100vh;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Left rail — Figma-style section tabs (파일 / AI / 에셋) */
+.freeformShell .ffToolRail {
+  gap: 6px;
+}
+
+.ffRailSections {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  align-items: center;
+}
+
+.freeformShell .ffToolRail .ffRailTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #5d5d5d;
+  cursor: pointer;
+}
+
+.freeformShell .ffToolRail .ffRailTab span {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.freeformShell .ffToolRail .ffRailTab:hover {
+  background: #ececec;
+  color: #111111;
+}
+
+.freeformShell .ffToolRail .ffRailTab.active {
+  background: #e8f0fe;
+  color: #1d4ed8;
+}
+
+.ffRailDivider {
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin: 4px auto;
+  background: #dcdcdc;
+}
+
+/* File panel header — site name + dropdown menu */
+.ffFileHeader {
+  position: relative;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.ffFileName {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 8px 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #111111;
+  cursor: pointer;
+}
+
+.ffFileName:hover {
+  background: #ececec;
+}
+
+.ffFileName strong {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffFileName svg {
+  flex: none;
+  color: #6f6f6f;
+}
+
+.ffFileNameInput {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #111111;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+  outline: none;
+}
+
+.ffFileBadges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding-left: 6px;
+}
+
+.ffFileBadges em {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ffe9a8;
+  color: #7a5b00;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ffFileBadges em.published {
+  background: #d7f5e2;
+  color: #0c6b3d;
+}
+
+.ffFileBadges span {
+  color: #8b8b8b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ffMenuBackdrop {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+}
+
+.ffFileMenu {
+  position: absolute;
+  z-index: 31;
+  top: 42px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  min-width: 208px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #1e1e1e;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.ffFileMenu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #f1f1f1;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ffFileMenu button:hover {
+  background: #2f6fed;
+  color: #ffffff;
+}
+
+.ffFileMenu button:disabled {
+  color: #6f6f6f;
+  cursor: default;
+}
+
+.ffFileMenu button:disabled:hover {
+  background: transparent;
+  color: #6f6f6f;
+}
+
+.ffFileMenu button svg {
+  flex: none;
+  color: currentColor;
+  opacity: 0.75;
+}
+
+.ffFileMenu .danger:hover {
+  background: #b3261e;
+}
+
+.ffFileMenuDivider {
+  height: 1px;
+  margin: 6px 4px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Pages search + layers section header */
+.ffPageSearch {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 12px 8px;
+  padding: 0 9px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #ececec;
+  color: #8b8b8b;
+}
+
+.ffPageSearch:focus-within {
+  border-color: #111111;
+  background: #ffffff;
+}
+
+.ffPageSearch input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 12px;
+  outline: none;
+}
+
+.ffSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 10px 14px 6px;
+  border-top: 1px solid #e6e6e6;
+  color: #111111;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.ffSectionHeader em {
+  color: #8b8b8b;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* AI panel */
+.ffAiPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.ffAiHint {
+  margin: 0;
+  color: #6f6f6f;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ffAiBrief {
+  min-height: 96px;
+  padding: 10px 11px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #ececec;
+  color: #111111;
+  font-size: 13px;
+  line-height: 1.5;
+  outline: none;
+  resize: vertical;
+}
+
+.ffAiBrief:focus {
+  border-color: #111111;
+  background: #ffffff;
+}
+
+.ffAiGenerate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ffAiGenerate:hover {
+  background: #2b2b2b;
+}
+
+.ffAiGenerate:disabled {
+  background: #d8d8d8;
+  color: #8b8b8b;
+  cursor: default;
+}
+
+.ffAiMessage {
+  margin: 0;
+  color: #0c6b3d;
+  font-size: 12px;
+}
+
+.ffAiMessage.error {
+  color: #b3261e;
+}
+
+.ffAiProposal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.ffAiProposal header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ffAiProposal header strong {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffAiProposal header em {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ffe9a8;
+  color: #7a5b00;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ffAiProposal ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ffAiProposal li {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #ececec;
+}
+
+.ffAiProposal li span {
+  color: #8b8b8b;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.ffAiProposal li strong {
+  overflow: hidden;
+  color: #1f1f1f;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffAiMeta {
+  color: #8b8b8b;
+  font-size: 11.5px;
+}
+
+.ffAiActions {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.ffAiActions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #ececec;
+  color: #1f1f1f;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ffAiActions button:hover {
+  background: #e0e0e0;
+}
+
+.ffAiActions .primary {
+  background: #111111;
+  color: #ffffff;
+}
+
+.ffAiActions .primary:hover {
+  background: #2b2b2b;
+}
+
+/* Rail layout fix — flex column replaces the fixed grid rows so section tabs fit */
+.freeformShell .ffToolRail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 6px;
+  overflow: hidden;
+}
+
+.freeformShell .ffToolRail > span {
+  flex: 1;
+  min-height: 1px;
+}
+
+.freeformShell .ffToolRail > span.ffRailDivider {
+  flex: none;
+  width: 28px;
+  height: 1px;
+  min-height: 1px;
+}
+
+.freeformShell .ffToolRail .ffRailTab {
+  width: 50px;
+  height: 50px;
+  flex: none;
+}
+
+.freeformShell .ffToolRail .ffRailTab span {
+  flex: none;
+  min-height: 0;
+}
+
+.freeformShell .ffToolRail > button {
+  flex: none;
+}
+
+/* ===== Interactive preview (/preview) ===== */
+.webablePreviewPage {
+  min-height: 100vh;
+  padding: 0 0 90px;
+  background: #eef0f3;
+}
+
+.wpChrome {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 46px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid #e3e3e3;
+  backdrop-filter: blur(12px);
+}
+
+.wpChromeDots {
+  display: flex;
+  gap: 6px;
+}
+
+.wpChromeDots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.wpChromeDots i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.wpChromeDots i:nth-child(2) {
+  background: #febc2e;
+}
+
+.wpChromeDots i:nth-child(3) {
+  background: #28c840;
+}
+
+.wpChrome > strong {
+  color: #111111;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.wpChrome nav {
+  display: flex;
+  gap: 4px;
+}
+
+.wpChrome nav button {
+  padding: 5px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.wpChrome nav button:hover {
+  background: #ececec;
+  color: #111111;
+}
+
+.wpChrome nav button.active {
+  background: #111111;
+  color: #ffffff;
+}
+
+.wpChrome > em {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e8f0fe;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.webablePreviewStage {
+  display: flex;
+  justify-content: center;
+  padding: 30px 24px 0;
+  animation: wpPageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes wpPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.webablePreviewArtboard {
+  position: relative;
+  width: var(--webable-desktop-width, 1440px);
+  min-height: var(--webable-desktop-height, 1600px);
+  overflow: hidden;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.16);
+}
+
+.webablePreviewNode {
+  position: absolute;
+  left: var(--webable-desktop-node-left, 0);
+  top: var(--webable-desktop-node-top, 0);
+  width: var(--webable-desktop-node-width, auto);
+  height: var(--webable-desktop-node-height, auto);
+}
+
+@media (max-width: 1023px) {
+  .webablePreviewArtboard {
+    width: var(--webable-tablet-width, 768px);
+    min-height: var(--webable-tablet-height, 1200px);
+  }
+
+  .webablePreviewNode {
+    left: var(--webable-tablet-node-left, var(--webable-desktop-node-left, 0));
+    top: var(--webable-tablet-node-top, var(--webable-desktop-node-top, 0));
+    width: var(--webable-tablet-node-width, var(--webable-desktop-node-width, auto));
+    height: var(--webable-tablet-node-height, var(--webable-desktop-node-height, auto));
+  }
+}
+
+@media (max-width: 767px) {
+  .webablePreviewStage {
+    padding: 18px 0 0;
+  }
+
+  .webablePreviewArtboard {
+    width: var(--webable-mobile-width, 390px);
+    min-height: var(--webable-mobile-height, 844px);
+    border-radius: 0;
+  }
+
+  .webablePreviewNode {
+    left: var(--webable-mobile-node-left, var(--webable-tablet-node-left, 0));
+    top: var(--webable-mobile-node-top, var(--webable-tablet-node-top, 0));
+    width: var(--webable-mobile-node-width, var(--webable-tablet-node-width, auto));
+    height: var(--webable-mobile-node-height, var(--webable-tablet-node-height, auto));
+  }
+}
+
+.webablePreviewNode.wpHidden {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.webablePreviewNode.wpRevealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .webablePreviewNode.wpHidden {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.webablePreviewPage button {
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, filter 0.18s ease;
+}
+
+.webablePreviewPage button:hover {
+  transform: translateY(-1px);
+}
+
+.webablePreviewPage button:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.webablePreviewPage .publishedButtonNode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.webablePreviewPage .publishedButtonNode:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(17, 17, 17, 0.2);
+  filter: brightness(1.06);
+}
+
+.webablePreviewPage .publishedButtonNode:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.webablePreviewPage .ffNavItem {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.webablePreviewPage .ffNavItem:hover {
+  opacity: 0.72;
+}
+
+.webablePreviewPage .ffDropdown {
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.webablePreviewPage .ffDropdown em {
+  padding: 6px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.14s ease;
+}
+
+.webablePreviewPage .ffDropdown em:hover {
+  background: #f2f2f2;
+}
+
+.wpSlideText {
+  animation: wpSlideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes wpSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.webablePreviewPage .ffSliderWidget footer i {
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.webablePreviewPage .ffSliderWidget footer i.active {
+  opacity: 1;
+  transform: scaleX(1.7);
+}
+
+.webablePreviewPage .ffGalleryWidget span {
+  cursor: zoom-in;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+
+.webablePreviewPage .ffGalleryWidget span:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.16);
+}
+
+.wpLightbox {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 12, 0.74);
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+  animation: wpFadeIn 0.25s ease;
+}
+
+@keyframes wpFadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+.wpLightbox figure {
+  display: flex;
+  align-items: flex-end;
+  width: min(760px, 84vw);
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  padding: 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #cfd6df, #eceff3);
+  animation: wpZoomIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wpLightbox figcaption {
+  color: #33415e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@keyframes wpZoomIn {
+  from {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+}
+
+.webablePreviewPage .ffFormWidget input,
+.webablePreviewPage .ffFormWidget textarea {
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.webablePreviewPage .ffFormWidget input:focus,
+.webablePreviewPage .ffFormWidget textarea:focus {
+  border-color: #111111;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.webablePreviewPage .ffFormWidget button.wpFormDone {
+  background: #0c6b3d;
+  color: #ffffff;
+}
+
+.webablePreviewPage .ffVideoWidget {
+  cursor: pointer;
+}
+
+.webablePreviewPage .ffVideoWidget.wpPlaying {
+  background-image: linear-gradient(110deg, #15171c 32%, #2b313b 46%, #15171c 62%);
+  background-size: 220% 100%;
+  animation: wpShimmer 1.5s linear infinite;
+}
+
+@keyframes wpShimmer {
+  to {
+    background-position: -120% 0;
+  }
+}
+
+.webablePreviewPage .ffProductsWidget article,
+.webablePreviewPage .ffPricingWidget article {
+  cursor: pointer;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
+}
+
+.webablePreviewPage .ffProductsWidget article:hover,
+.webablePreviewPage .ffPricingWidget article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.13);
+}
+
+.webablePreviewPage .ffMapWidget span {
+  position: relative;
+}
+
+.webablePreviewPage .ffMapWidget span::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border: 2px solid rgba(37, 99, 235, 0.55);
+  border-radius: 50%;
+  animation: wpPing 1.8s ease-out infinite;
+}
+
+@keyframes wpPing {
+  0% {
+    opacity: 1;
+    transform: scale(0.55);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+.webablePreviewPage .ffTestimonialWidget {
+  animation: wpFloat 5.5s ease-in-out infinite;
+}
+
+@keyframes wpFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.wpFooterLink {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.wpFooterLink:hover {
+  opacity: 0.7;
+}
+
+.wpToast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  z-index: 95;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+  transform: translateX(-50%);
+  animation: wpToastIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes wpToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+}
+
+.webablePreviewMissing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #eef0f3;
+  text-align: center;
+}
+
+.webablePreviewMissing strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #111111;
+  font-size: 17px;
+}
+
+.webablePreviewMissing p {
+  margin: 0;
+  color: #6f6f6f;
+  font-size: 13px;
+}
+
+/* ===== Asset library thumbnails (new block kinds) ===== */
+.ffWidgetPreview.announce {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ffWidgetPreview.announce span:first-child {
+  width: 100%;
+  height: 10px;
+  border-radius: 3px;
+  background: #111111;
+}
+
+.ffWidgetPreview.announce span:nth-child(2),
+.ffWidgetPreview.announce span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.heroDark {
+  grid-template-columns: 1.6fr 1fr;
+  background: #16181d;
+  border-color: #2b2f36;
+}
+
+.ffWidgetPreview.heroDark span:first-child {
+  align-self: center;
+  height: 18px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #f5f5f5 40%, transparent 40%, transparent 60%, #6b7280 60%);
+}
+
+.ffWidgetPreview.heroDark span:nth-child(2) {
+  align-self: center;
+  height: 30px;
+  border-radius: 5px;
+  background: #3f4650;
+}
+
+.ffWidgetPreview.heroDark span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.heroLight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: #f8fafc;
+}
+
+.ffWidgetPreview.heroLight span:first-child {
+  width: 60%;
+  height: 9px;
+  border-radius: 3px;
+  background: #0f172a;
+}
+
+.ffWidgetPreview.heroLight span:nth-child(2) {
+  width: 42%;
+  height: 5px;
+  border-radius: 3px;
+  background: #cbd5e1;
+}
+
+.ffWidgetPreview.heroLight span:nth-child(3) {
+  width: 26%;
+  height: 9px;
+  border-radius: 4px;
+  background: #111111;
+}
+
+.ffWidgetPreview.features {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ffWidgetPreview.features span {
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.stats {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+.ffWidgetPreview.stats span {
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #e2e8f0 55%, #475569 55%);
+}
+
+.ffWidgetPreview.faq {
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.ffWidgetPreview.faq span {
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.logos {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+}
+
+.ffWidgetPreview.logos span {
+  height: 14px;
+  border-radius: 4px;
+  background: #d9dde2;
+}
+
+.ffWidgetPreview.sale {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #b91c1c;
+  border-color: #991b1b;
+}
+
+.ffWidgetPreview.sale span:first-child {
+  flex: 1.6;
+  height: 14px;
+  border-radius: 3px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.sale span:nth-child(2) {
+  flex: 0.8;
+  height: 12px;
+  border-radius: 6px;
+  background: #fecaca;
+}
+
+.ffWidgetPreview.sale span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.productFeature {
+  grid-template-columns: 1fr 1.2fr;
+}
+
+.ffWidgetPreview.productFeature span:first-child {
+  grid-row: span 2;
+  border-radius: 5px;
+  background: #d9dde2;
+}
+
+.ffWidgetPreview.productFeature span:nth-child(2) {
+  height: 9px;
+  border-radius: 3px;
+  background: #111111;
+}
+
+.ffWidgetPreview.productFeature span:nth-child(3) {
+  height: 7px;
+  border-radius: 3px;
+  background: #c3c9d1;
+}
+
+.ffWidgetPreview.newsletter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f1f5f9;
+}
+
+.ffWidgetPreview.newsletter span:first-child {
+  flex: 1.4;
+  height: 9px;
+  border-radius: 3px;
+  background: #0f172a;
+}
+
+.ffWidgetPreview.newsletter span:nth-child(2) {
+  flex: 1;
+  height: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.newsletter span:nth-child(3) {
+  flex: 0.6;
+  height: 14px;
+  border-radius: 4px;
+  background: #111111;
+}
+
+.ffWidgetPreview.ctaBanner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1d4ed8;
+  border-color: #1e40af;
+}
+
+.ffWidgetPreview.ctaBanner span:first-child {
+  flex: 1.6;
+  height: 11px;
+  border-radius: 3px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.ctaBanner span:nth-child(2) {
+  flex: 0.7;
+  height: 13px;
+  border-radius: 6px;
+  background: #bfdbfe;
+}
+
+.ffWidgetPreview.ctaBanner span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.heading {
+  display: flex;
+  align-items: center;
+}
+
+.ffWidgetPreview.heading span:first-child {
+  width: 75%;
+  height: 14px;
+  border-radius: 3px;
+  background: #111111;
+}
+
+.ffWidgetPreview.heading span:nth-child(2),
+.ffWidgetPreview.heading span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.paragraph {
+  grid-template-rows: repeat(3, 5px);
+  align-content: center;
+}
+
+.ffWidgetPreview.paragraph span {
+  border-radius: 3px;
+  background: #c3c9d1;
+}
+
+.ffWidgetPreview.paragraph span:nth-child(3) {
+  width: 65%;
+}
+
+.ffWidgetPreview.buttonPrimary,
+.ffWidgetPreview.buttonOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ffWidgetPreview.buttonPrimary span:first-child {
+  width: 56%;
+  height: 18px;
+  border-radius: 9px;
+  background: #111111;
+}
+
+.ffWidgetPreview.buttonOutline span:first-child {
+  width: 56%;
+  height: 18px;
+  border: 1.5px solid #9ca3af;
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+.ffWidgetPreview.buttonPrimary span:nth-child(2),
+.ffWidgetPreview.buttonPrimary span:nth-child(3),
+.ffWidgetPreview.buttonOutline span:nth-child(2),
+.ffWidgetPreview.buttonOutline span:nth-child(3) {
+  display: none;
+}
+
+.ffWidgetPreview.divider {
+  display: flex;
+  align-items: center;
+}
+
+.ffWidgetPreview.divider span:first-child {
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  background: #c3c9d1;
+}
+
+.ffWidgetPreview.divider span:nth-child(2),
+.ffWidgetPreview.divider span:nth-child(3) {
+  display: none;
+}
+
+/* Asset card description line */
+.ffWidgetCard em {
+  overflow: hidden;
+  color: #8b8b8b;
+  font-size: 10.5px;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Interaction inspector panel ===== */
+.ffInteractionPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 14px 28px;
+}
+
+.ffInteractionHero {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.ffInteractionHero span {
+  color: #767676;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ffInteractionHero strong {
+  color: #111111;
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.ffInteractionHero p {
+  margin: 0;
+  color: #5f5f5f;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ffInteractionHero em {
+  color: #8a8a8a;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ffInteractionPresets {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.ffInteractionPresets button {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 2px 8px;
+  align-items: center;
+  min-height: 50px;
+  padding: 8px 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #1f1f1f;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.ffInteractionPresets button small {
+  grid-row: span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #f2f2f2;
+  color: #4f4f4f;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.ffInteractionPresets button span {
+  color: #111111;
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+.ffInteractionPresets button em {
+  color: #737373;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.ffInteractionPresets button:hover {
+  border-color: #111111;
+  background: #f5f5f5;
+  transform: translateY(-1px);
+}
+
+.ffInteractionEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 26px 16px;
+  border: 1px dashed #d8d8d8;
+  border-radius: 12px;
+  color: #8b8b8b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.ffInteractionCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+.ffInteractionCard > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 8px 8px 10px;
+  background: #f2f2f2;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.ffInteractionCardTitle {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ffInteractionCardTitle strong {
+  color: #111111;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.ffInteractionCardTitle span {
+  overflow: hidden;
+  color: #777777;
+  font-size: 10.5px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffInteractionCard > header select {
+  flex: none;
+  width: 112px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 12.5px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+.ffInteractionCard > header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #8b8b8b;
+  cursor: pointer;
+}
+
+.ffInteractionCard > header button:hover {
+  background: #fdecec;
+  color: #d64545;
+}
+
+.ffInteractionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px;
+}
+
+.ffInteractionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ffInteractionRow > span {
+  flex: none;
+  width: 52px;
+  color: #8b8b8b;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.ffInteractionRow select,
+.ffInteractionRow input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 12.5px;
+  font-weight: 500;
+  outline: none;
+}
+
+.ffInteractionRow select {
+  cursor: pointer;
+}
+
+.ffInteractionRow select:focus,
+.ffInteractionRow input:focus {
+  border-color: #111111;
+}
+
+.ffInteractionRow input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.ffInteractionSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 7px;
+}
+
+.ffInteractionSplit .ffInteractionRow > span {
+  width: auto;
+}
+
+.ffInteractionChainItem {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.ffInteractionActionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 22px;
+  color: #555555;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ffInteractionActionHeader button,
+.ffInteractionAddAction {
+  border: 1px solid #dcdcdc;
+  background: #ffffff;
+  color: #222222;
+}
+
+.ffInteractionActionHeader button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+.ffInteractionAddAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ffInteractionCheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 60px;
+  color: #3f3f3f;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ffInteractionCheck input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #111111;
+}
+
+/* ===== Form inbox panel ===== */
+.ffInboxPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 12px 14px 28px;
+  overflow-y: auto;
+}
+
+.ffInboxToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ffInboxToolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ffInboxToolbar button:hover {
+  border-color: #111111;
+}
+
+.ffInboxToolbar span {
+  color: #8b8b8b;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.ffInboxError {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fdecec;
+  color: #b3261e;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ffInboxEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 30px 18px;
+  border: 1px dashed #d8d8d8;
+  border-radius: 12px;
+  color: #8b8b8b;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.ffInboxCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e5e5;
+  border-left: 3px solid #2563eb;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.ffInboxCard.read {
+  border-left-color: #d1d5db;
+}
+
+.ffInboxCard.done {
+  border-left-color: #16a34a;
+  opacity: 0.72;
+}
+
+.ffInboxCard > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px 6px;
+}
+
+.ffInboxCard > header strong {
+  overflow: hidden;
+  color: #111111;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ffInboxCard > header em {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #d7f5e2;
+  color: #0c6b3d;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ffInboxCard > header em.preview {
+  background: #e8f0fe;
+  color: #1d4ed8;
+}
+
+.ffInboxCard dl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0 12px 8px;
+}
+
+.ffInboxCard dl div {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ffInboxCard dt {
+  flex: none;
+  width: 56px;
+  color: #8b8b8b;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.ffInboxCard dd {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: break-word;
+  color: #1f1f1f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ffInboxCard > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #fafafa;
+  border-top: 1px solid #efefef;
+}
+
+.ffInboxCard > footer > span {
+  color: #8b8b8b;
+  font-size: 11px;
+}
+
+.ffInboxCard > footer div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ffInboxCard > footer button {
+  padding: 4px 10px;
+  border: 1px solid #e2e2e2;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #1f1f1f;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ffInboxCard > footer button:hover {
+  border-color: #111111;
+}
+
+.ffInboxCard > footer button.primary {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.ffInboxDone {
+  color: #16a34a;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.publishedFormWidget button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.publishedFormWidget .publishedFormDone {
+  background: #0c6b3d !important;
+  color: #ffffff !important;
+}
+
+/* ===== Booking widget ===== */
+.wbBookingWidget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+  padding: 22px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.wbBookingWidget > strong {
+  color: inherit;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.wbBookingWidget > p {
+  margin: -6px 0 0;
+  color: #6b7280;
+  font-size: 12.5px;
+}
+
+.wbBookingDates {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wbBookingDates button {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 44px;
+  padding: 7px 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.wbBookingDates button em {
+  color: #9ca3af;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.wbBookingDates button span {
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wbBookingDates button:hover {
+  border-color: #9ca3af;
+}
+
+.wbBookingDates button.active {
+  border-color: #111111;
+  background: #111111;
+}
+
+.wbBookingDates button.active em,
+.wbBookingDates button.active span {
+  color: #ffffff;
+}
+
+.wbBookingSlots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wbBookingSlots button {
+  height: 34px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.wbBookingSlots button:hover {
+  border-color: #9ca3af;
+}
+
+.wbBookingSlots button.active {
+  border-color: #111111;
+  background: #111111;
+  color: #ffffff;
+}
+
+.wbBookingSlots button.taken,
+.wbBookingSlots button:disabled {
+  background: #f3f4f6;
+  color: #c0c4cb;
+  text-decoration: line-through;
+  cursor: default;
+}
+
+.wbBookingFields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+}
+
+.wbBookingWidget input,
+.wbBookingWidget textarea {
+  padding: 9px 11px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.wbBookingWidget input:focus,
+.wbBookingWidget textarea:focus {
+  border-color: #111111;
+}
+
+.wbBookingWidget textarea {
+  min-height: 52px;
+  resize: none;
+}
+
+.wbBookingMessage {
+  margin: 0;
+  color: #0c6b3d;
+  font-size: 12px;
+}
+
+.wbBookingMessage.error {
+  color: #b3261e;
+}
+
+.wbBookingSubmit {
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.wbBookingSubmit:hover {
+  background: #2b2b2b;
+}
+
+.wbBookingSubmit:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.ffBookingMock {
+  pointer-events: none;
+}
+
+/* Inbox segment control */
+.ffInboxSegment {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2px;
+  padding: 2px;
+  border-radius: 10px;
+  background: #ececec;
+}
+
+.ffInboxSegment button {
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ffInboxSegment button.active {
+  border-color: #e0e0e0;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.06);
+  color: #111111;
+}
+
+.ffInboxCard.resv {
+  border-left-color: #f59e0b;
+}
+
+.ffInboxCard.resv.confirmed {
+  border-left-color: #2563eb;
+}
+
+.ffInboxCard.resv.done {
+  border-left-color: #16a34a;
+}
+
+.ffInboxCard.resv.cancelled {
+  border-left-color: #d1d5db;
+  opacity: 0.6;
+}
+
+.ffInboxCard.resv > header em {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ===== Shop widget (live products) ===== */
+.wbShopWidget {
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  overflow: auto;
+  background: #ffffff;
+}
+
+.wbShopEmpty {
+  margin: 24px 0;
+  color: #9ca3af;
+  font-size: 13px;
+  text-align: center;
+}
+
+.wbShopGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.wbShopGrid article {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.wbShopGrid article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.1);
+}
+
+.wbShopThumb {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f3f4f6;
+}
+
+.wbShopThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wbShopGrid strong {
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.wbShopGrid p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  overflow: hidden;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.wbShopGrid em {
+  color: #111111;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.wbShopGrid article button {
+  height: 34px;
+  margin-top: 2px;
+  border: 0;
+  border-radius: 9px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wbShopGrid article button:hover {
+  background: #2b2b2b;
+}
+
+.wbCheckoutOverlay {
+  position: fixed;
+  z-index: 96;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 12, 0.55);
+  backdrop-filter: blur(4px);
+  animation: wpFadeIn 0.2s ease;
+}
+
+.wbCheckout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(400px, 90vw);
+  padding: 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+  animation: wpZoomIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.wbCheckout > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wbCheckout > header strong {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.wbCheckout > header button {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 7px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.wbCheckoutQty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.wbCheckoutQty > span {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.wbCheckoutQty > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wbCheckoutQty > div button {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.wbCheckoutQty em {
+  min-width: 18px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+
+.wbCheckoutQty > strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.wbCheckout input {
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+}
+
+.wbCheckout input:focus {
+  border-color: #111111;
+}
+
+.wbShopMessage {
+  margin: 0;
+  color: #0c6b3d;
+  font-size: 12px;
+}
+
+.wbShopMessage.error {
+  color: #b3261e;
+}
+
+.wbCheckoutActions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.wbCheckoutActions button {
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.wbCheckoutActions button.toss {
+  background: #0064ff;
+}
+
+.wbCheckoutActions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Pay result pages */
+.wbPayResult {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #eef0f3;
+}
+
+.wbPayCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(420px, 90vw);
+  padding: 32px 28px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
+  text-align: center;
+}
+
+.wbPayCard strong {
+  color: #0c6b3d;
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.wbPayCard.error strong {
+  color: #b3261e;
+}
+
+.wbPayCard p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.wbPayCard button {
+  height: 42px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 10px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Product manager panel */
+.ffProductPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 12px 14px 28px;
+  overflow-y: auto;
+}
+
+.ffProductForm {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.ffProductForm input {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 12.5px;
+  outline: none;
+}
+
+.ffProductForm input:focus {
+  border-color: #111111;
+}
+
+.ffProductForm button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  border: 0;
+  border-radius: 9px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ffProductForm button:disabled {
+  background: #d8d8d8;
+  color: #8b8b8b;
+  cursor: default;
+}
+
+.ffProductRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.ffProductRow.inactive {
+  opacity: 0.55;
+}
+
+.ffProductRow strong {
+  display: block;
+  color: #111111;
+  font-size: 13px;
+}
+
+.ffProductRow em {
+  color: #111111;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.ffProductRow p {
+  margin: 3px 0 0;
+  color: #8b8b8b;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.ffProductRowActions {
+  display: flex;
+  flex: none;
+  gap: 4px;
+}
+
+.ffProductRowActions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #555555;
+  cursor: pointer;
+}
+
+.ffProductRowActions button:hover {
+  border-color: #111111;
+  color: #111111;
+}
+
+.ffProductRowActions .danger:hover {
+  border-color: #d64545;
+  background: #fdecec;
+  color: #d64545;
+}
+
+/* Inbox: 3-segment + order cards */
+.ffInboxSegment.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ffInboxCard.order {
+  border-left-color: #7c3aed;
+}
+
+.ffInboxCard.order.paid {
+  border-left-color: #2563eb;
+}
+
+.ffInboxCard.order.done {
+  border-left-color: #16a34a;
+}
+
+.ffInboxCard.order.cancelled {
+  border-left-color: #d1d5db;
+  opacity: 0.6;
+}
+
+.ffInboxCard.order > header em {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.ffInboxCard.order > header em.toss {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* Left sidebar typography polish */
+.freeformShell .ffToolRail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-template-rows: none;
+  gap: 7px;
+  overflow: hidden;
+}
+
+.freeformShell .ffRailSections {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  width: 100%;
+  flex: none;
+}
+
+.freeformShell .ffToolRail .ffRailTab {
+  width: 50px;
+  height: 46px;
+  gap: 2px;
+  color: #b7b7b7;
+}
+
+.freeformShell .ffToolRail .ffRailTab span {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+  color: currentColor;
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 1.15;
+  text-align: center;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.freeformShell .ffToolRail .ffRailTab.active {
+  color: #ffffff;
+  background: #222222;
+}
+
+.freeformShell .ffToolRail .ffRailTab:hover {
+  color: #ffffff;
+  background: #2a2a2a;
+}
+
+.freeformShell .ffFileName strong,
+.freeformShell .ffPanelHeader strong,
+.freeformShell .ffPagesHeader span,
+.freeformShell .ffPageSelect span,
+.freeformShell .ffPageSelect em,
+.freeformShell .ffWidgetCategories button,
+.freeformShell .ffWidgetCard strong,
+.freeformShell .ffWidgetCard em,
+.freeformShell .ffLayerTreeRoot,
+.freeformShell .ffLayerTreeRoot span,
+.freeformShell .ffLayerTreeRoot em,
+.freeformShell .ffLayerSelect,
+.freeformShell .ffLayerSelect span,
+.freeformShell .ffLayerSelect em,
+.freeformShell .ffMiniToolbar span,
+.freeformShell .ffWidgetSearch input,
+.freeformShell .ffPageSearch input {
+  letter-spacing: 0;
+}
+
+.freeformShell .ffFileName strong {
+  max-width: 196px;
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.freeformShell .ffPanelHeader strong {
+  color: #1f1f1f;
+  font-size: 13px;
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.freeformShell .ffPanelHeader span,
+.freeformShell .ffPagesHeader span,
+.freeformShell .ffFileBadges span,
+.freeformShell .ffMiniToolbar span {
+  color: #7a7a7a;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-transform: none;
+}
+
+.freeformShell .ffWidgetSearch input,
+.freeformShell .ffPageSearch input {
+  font-size: 12px;
+  font-weight: 450;
+}
+
+.freeformShell .ffWidgetCategories button {
+  height: 26px;
+  color: #555555;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.freeformShell .ffWidgetCard strong {
+  color: #222222;
+  font-size: 12px;
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.freeformShell .ffWidgetCard em {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #777777;
+  font-size: 10.5px;
+  font-weight: 450;
+  line-height: 1.25;
+  text-transform: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.freeformShell .ffPageRow {
+  min-width: 0;
+}
+
+.freeformShell .ffPageSelect {
+  gap: 6px;
+  min-width: 0;
+}
+
+.freeformShell .ffPageSelect span {
+  color: #2f2f2f;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.freeformShell .ffPageSelect em {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: #8a8a8a;
+  font-size: 10.5px;
+  font-weight: 450;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.freeformShell .ffPageRow.active {
+  background: #ededed;
+  border-color: #d8d8d8;
+}
+
+.freeformShell .ffPageRow.active .ffPageSelect,
+.freeformShell .ffPageRow.active .ffPageIcon,
+.freeformShell .ffPageRow.active .ffPageSelect span,
+.freeformShell .ffPageRow.active .ffPageSelect em {
+  color: #111111;
+}
+
+.freeformShell .ffLayerTreeRoot {
+  height: 26px;
+  color: #333333;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.freeformShell .ffLayerTreeRoot em {
+  color: #8a8a8a;
+  font-size: 10.5px;
+  font-weight: 450;
+}
+
+.freeformShell .ffLayerSelect,
+.freeformShell .ffLayerRow.tree .ffLayerSelect {
+  height: 24px;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 1.2;
+}
+
+.freeformShell .ffLayerRow.tree.group .ffLayerSelect {
+  color: #333333;
+  font-weight: 520;
+}
+
+.freeformShell .ffLayerSelect span {
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.freeformShell .ffLayerSelect em {
+  width: 16px;
+  height: 16px;
+  color: #777777;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Figma-style bottom floating toolbar */
+.ffBottomBar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transform: translateX(-50%);
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ffBottomBar .ffToolGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ffBottomBar .ffToolBtn,
+.ffBottomBar .ffToolCaret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #333333;
+  cursor: pointer;
+}
+
+.ffBottomBar .ffToolBtn {
+  width: 40px;
+  height: 40px;
+}
+
+.ffBottomBar .ffToolCaret {
+  width: 18px;
+  height: 40px;
+  color: #8a8a8a;
+}
+
+.ffBottomBar .ffToolBtn:hover,
+.ffBottomBar .ffToolCaret:hover {
+  background: #f2f2f2;
+  color: #111111;
+}
+
+.ffBottomBar .ffToolBtn.active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.ffBottomBar .ffToolBtn.active:hover {
+  background: #1d4ed8;
+}
+
+.ffBottomBar .ffToolSep {
+  width: 1px;
+  height: 24px;
+  margin: 0 6px;
+  background: #e6e6e6;
+}
+
+.ffBottomBar .ffToolMenu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+  padding: 6px;
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+}
+
+.ffBottomBar .ffToolMenu.wide {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.ffBottomBar .ffToolMenu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #e8e8e8;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ffBottomBar .ffToolMenu button:hover {
+  background: #2f6bff;
+  color: #ffffff;
+}
+
+.ffBottomBar .ffToolMenu button span {
+  flex: 1;
+  text-align: left;
+}
+
+.ffBottomBar .ffToolMenu button em {
+  color: #9a9a9a;
+  font-size: 12px;
+  font-style: normal;
+}
+
+.ffBottomBar .ffToolMenu button:hover em {
+  color: #e0e6ff;
+}
+
+.ffBottomBar .ffToolMenu button.active span {
+  font-weight: 600;
 }

@@ -21,13 +21,17 @@ type PublishedNode = {
     | "video"
     | "testimonial"
     | "pricing"
-    | "footer";
+    | "footer"
+    | "booking";
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number;
   hidden?: boolean;
+  hiddenOnPageIds?: string[];
+  positionMode?: "fixed" | "normal" | "sticky";
+  scope?: "page" | "site";
   style?: Record<string, unknown>;
 };
 
@@ -39,6 +43,7 @@ type PublishedSite = {
   };
   siteName: string;
   nodes: PublishedNode[];
+  siteNodes?: PublishedNode[];
   pages?: Array<{
     id: string;
     name: string;
@@ -65,7 +70,12 @@ export default async function PublishedSubPage({
   return (
     <main className="publishedPage">
       <PublishedNav pages={pages} siteId={siteId} />
-      <PublishedCanvas canvasSize={normalizePublishedCanvasSize(site.canvasSizes?.desktop)} nodes={currentPage.nodes} siteName={site.siteName} />
+      <PublishedCanvas
+        canvasSizes={site.canvasSizes}
+        nodes={[...(site.siteNodes || []).filter((node) => !node.hiddenOnPageIds?.includes(currentPage.id)), ...currentPage.nodes]}
+        pages={pages}
+        siteName={site.siteName}
+      />
     </main>
   );
 }

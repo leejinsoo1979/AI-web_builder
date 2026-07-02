@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import Link from "next/link";
+import { PublishedFormWidget } from "@/components/published/PublishedFormWidget";
+import { BookingWidget } from "@/components/published/BookingWidget";
+import { ShopWidget } from "@/components/published/ShopWidget";
+import { PublishedInteractionNode } from "@/components/published/PublishedInteractionNode";
+import type { Interaction } from "@webable/interaction-runtime";
 
 type PublishedNode = {
   id: string;
@@ -21,13 +26,18 @@ type PublishedNode = {
     | "video"
     | "testimonial"
     | "pricing"
-    | "footer";
+    | "footer"
+    | "booking";
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number;
   hidden?: boolean;
+  interactions?: Interaction[];
+  hiddenOnPageIds?: string[];
+  positionMode?: "fixed" | "normal" | "sticky";
+  scope?: "page" | "site";
   style?: {
     text?: string;
     fontSize?: number;
@@ -38,7 +48,17 @@ type PublishedNode = {
     align?: "left" | "center" | "right";
     padding?: number;
     border?: string;
+    borderOpacity?: number;
+    borderPosition?: "center" | "inside" | "outside";
+    fontFamily?: string;
+    imageOffsetX?: number;
+    imageOffsetY?: number;
+    imageScale?: number;
+    letterSpacing?: number;
+    lineHeight?: number;
     imageUrl?: string;
+    mapUrl?: string;
+    videoUrl?: string;
   };
 };
 
@@ -50,6 +70,7 @@ type PublishedSite = {
   };
   siteName: string;
   nodes: PublishedNode[];
+  siteNodes?: PublishedNode[];
   pages?: Array<{
     id: string;
     name: string;
@@ -93,31 +114,48 @@ export default async function PublishedPage({
   return (
     <main className="publishedPage">
       <PublishedNav pages={pages} siteId={siteId} />
-      <PublishedCanvas canvasSize={normalizePublishedCanvasSize(site.canvasSizes?.desktop)} nodes={currentPage.nodes} siteName={site.siteName} />
+      <PublishedCanvas
+        canvasSizes={site.canvasSizes}
+        nodes={[...(site.siteNodes || []).filter((node) => !node.hiddenOnPageIds?.includes(currentPage.id)), ...currentPage.nodes]}
+        pages={pages}
+        siteName={site.siteName}
+      />
     </main>
   );
 }
 
-export function PublishedCanvas({ canvasSize, nodes, siteName }: { canvasSize?: { height: number; width: number }; nodes: PublishedNode[]; siteName: string }) {
+export function PublishedCanvas({
+  canvasSizes,
+  nodes,
+  pages = [],
+  siteName
+}: {
+  canvasSizes?: PublishedSite["canvasSizes"];
+  nodes: PublishedNode[];
+  pages?: Array<{ id: string; name: string; path: string; nodes: PublishedNode[] }>;
+  siteName: string;
+}) {
   const visibleNodes = nodes.filter((node) => !node.hidden).sort((a, b) => a.zIndex - b.zIndex);
-  const size = normalizePublishedCanvasSize(canvasSize);
+  const responsiveSizes = normalizeResponsiveCanvasSizes(canvasSizes);
+  const pagePaths = Object.fromEntries(pages.map((page) => [page.id, page.path]));
 
   return (
-    <div className="publishedArtboard" aria-label={siteName} style={{ height: size.height, width: size.width }}>
+    <div className="publishedArtboard" aria-label={siteName} style={getResponsiveCanvasStyle(responsiveSizes)}>
       {visibleNodes.map((node) => (
-        <div
+        <PublishedInteractionNode
           className="publishedNode"
+          interactions={node.interactions}
           key={node.id}
+          nodeId={node.id}
+          pagePaths={pagePaths}
           style={{
-            height: node.height,
-            left: node.x,
-            top: node.y,
-            width: node.width,
-            zIndex: node.zIndex
+            position: node.positionMode === "fixed" ? "fixed" : node.positionMode === "sticky" ? "sticky" : undefined,
+            ...getResponsiveNodeStyle(node, responsiveSizes),
+            zIndex: node.positionMode === "fixed" || node.positionMode === "sticky" ? 10000 + node.zIndex : node.zIndex
           }}
         >
           <RenderPublishedNode node={node} />
-        </div>
+        </PublishedInteractionNode>
       ))}
     </div>
   );
@@ -146,15 +184,22 @@ export function PublishedNav({
 }
 
 function RenderPublishedNode({ node }: { node: PublishedNode }) {
+  const horizontalAlign = getTextHorizontalAlignment(node.style?.align);
+  const imageTransform = getImageCropTransform(node.style);
   const style = {
     background: node.style?.background,
-    border: node.style?.border,
     borderRadius: node.style?.radius,
     color: node.style?.color,
+    fontFamily: node.style?.fontFamily,
     fontSize: node.style?.fontSize,
     fontWeight: node.style?.fontWeight,
+    letterSpacing: typeof node.style?.letterSpacing === "number" ? node.style.letterSpacing : undefined,
+    lineHeight: node.style?.lineHeight,
     padding: node.style?.padding,
-    textAlign: node.style?.align
+    textAlign: node.style?.align,
+    ...getBorderRenderStyle(node.style),
+    ...horizontalAlign,
+    ...imageTransform
   } as React.CSSProperties;
 
   if (node.type === "text") {
@@ -176,7 +221,13 @@ function RenderPublishedNode({ node }: { node: PublishedNode }) {
   if (node.type === "image") {
     return (
       <div className="publishedImageNode" style={style}>
-        {node.style?.imageUrl ? <img alt={node.name} src={node.style.imageUrl} /> : <span />}
+        {node.style?.imageUrl ? (
+          <div className="publishedImageMask">
+            <img alt={node.name} className="publishedImageCropImage" src={node.style.imageUrl} />
+          </div>
+        ) : (
+          <span />
+        )}
       </div>
     );
   }
@@ -254,51 +305,43 @@ function RenderPublishedNode({ node }: { node: PublishedNode }) {
   }
 
   if (node.type === "products") {
-    const products = getPairs(node.style?.text, [
-      ["Signature", "₩49,000"],
-      ["Bundle", "₩89,000"],
-      ["Premium", "₩129,000"]
-    ]);
-    return (
-      <div className="ffProductsWidget" style={style}>
-        {products.map(([item, price]) => (
-          <article key={item}>
-            <span />
-            <strong>{item}</strong>
-            <em>{price}</em>
-          </article>
-        ))}
-      </div>
-    );
+    return <ShopWidget nodeId={node.id} style={style} />;
   }
 
   if (node.type === "form") {
     const form = getFormContent(node.style?.text);
-    return (
-      <div className="ffFormWidget" style={style}>
-        <strong>{form.title}</strong>
-        {form.fields.map((field) => (
-          <span key={field}>{field}</span>
-        ))}
-        <button type="button">{form.action}</button>
-      </div>
-    );
+    return <PublishedFormWidget action={form.action} fields={form.fields} nodeId={node.id} style={style} title={form.title} />;
+  }
+
+  if (node.type === "booking") {
+    const booking = splitContent(node.style?.text, ["방문 예약", "원하는 날짜와 시간을 선택하세요."]);
+    return <BookingWidget nodeId={node.id} style={style} subtitle={booking[1]} title={booking[0]} />;
   }
 
   if (node.type === "map") {
+    const mapUrl = getMapEmbedUrl(node.style?.mapUrl);
+
     return (
       <div className="ffMapWidget" style={style}>
-        <span />
+        {mapUrl ? <iframe loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapUrl} title={node.style?.text || node.name} /> : <span />}
         <strong>{node.style?.text || "Location map"}</strong>
       </div>
     );
   }
 
   if (node.type === "video") {
+    const video = getVideoEmbed(node.style?.videoUrl);
+
     return (
       <div className="ffVideoWidget" style={style}>
-        <button type="button">▶</button>
-        <strong>{node.style?.text || "Brand film"}</strong>
+        {video?.type === "iframe" ? <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen src={video.src} title={node.style?.text || node.name} /> : null}
+        {video?.type === "video" ? <video controls src={video.src} title={node.style?.text || node.name} /> : null}
+        {!video ? (
+          <>
+            <button type="button">▶</button>
+            <strong>{node.style?.text || "Brand film"}</strong>
+          </>
+        ) : null}
       </div>
     );
   }
@@ -348,9 +391,140 @@ function RenderPublishedNode({ node }: { node: PublishedNode }) {
   return <div className="publishedFrameNode" style={style} />;
 }
 
+function getTextHorizontalAlignment(align?: "left" | "center" | "right"): React.CSSProperties {
+  if (align === "center") {
+    return { "--webable-menu-justify": "center", justifyContent: "center", justifyItems: "center" } as React.CSSProperties;
+  }
+
+  if (align === "right") {
+    return { "--webable-menu-justify": "flex-end", justifyContent: "flex-end", justifyItems: "end" } as React.CSSProperties;
+  }
+
+  return { "--webable-menu-justify": "flex-start", justifyContent: "flex-start", justifyItems: "start" } as React.CSSProperties;
+}
+
+function getImageCropTransform(style?: PublishedNode["style"]): React.CSSProperties {
+  return {
+    "--webable-image-scale": style?.imageScale || 1,
+    "--webable-image-x": `${style?.imageOffsetX || 0}px`,
+    "--webable-image-y": `${style?.imageOffsetY || 0}px`
+  } as React.CSSProperties;
+}
+
+type ResponsiveCanvasSizes = {
+  desktop: { height: number; width: number };
+  mobile: { height: number; width: number };
+  tablet: { height: number; width: number };
+};
+
+function normalizeResponsiveCanvasSizes(value?: PublishedSite["canvasSizes"]): ResponsiveCanvasSizes {
+  return {
+    desktop: normalizePublishedCanvasSizeWithFallback(value?.desktop, { height: 1600, width: 1440 }),
+    mobile: normalizePublishedCanvasSizeWithFallback(value?.mobile, { height: 844, width: 390 }),
+    tablet: normalizePublishedCanvasSizeWithFallback(value?.tablet, { height: 1200, width: 768 })
+  };
+}
+
+function normalizePublishedCanvasSizeWithFallback(value: { height: number; width: number } | undefined, fallback: { height: number; width: number }) {
+  return {
+    height: clampPublishedSize(value?.height, fallback.height, 480, 5000),
+    width: clampPublishedSize(value?.width, fallback.width, 320, 2560)
+  };
+}
+
+function getResponsiveCanvasStyle(sizes: ResponsiveCanvasSizes): React.CSSProperties {
+  return {
+    "--webable-desktop-height": `${sizes.desktop.height}px`,
+    "--webable-desktop-width": `${sizes.desktop.width}px`,
+    "--webable-mobile-height": `${sizes.mobile.height}px`,
+    "--webable-mobile-width": `${sizes.mobile.width}px`,
+    "--webable-tablet-height": `${sizes.tablet.height}px`,
+    "--webable-tablet-width": `${sizes.tablet.width}px`
+  } as React.CSSProperties;
+}
+
+function getResponsiveNodeStyle(node: PublishedNode, sizes: ResponsiveCanvasSizes): React.CSSProperties {
+  const tabletX = sizes.tablet.width / sizes.desktop.width;
+  const tabletY = sizes.tablet.height / sizes.desktop.height;
+  const mobileX = sizes.mobile.width / sizes.desktop.width;
+  const mobileY = sizes.mobile.height / sizes.desktop.height;
+
+  return {
+    "--webable-desktop-node-height": `${node.height}px`,
+    "--webable-desktop-node-left": `${node.x}px`,
+    "--webable-desktop-node-top": `${node.y}px`,
+    "--webable-desktop-node-width": `${node.width}px`,
+    "--webable-mobile-node-height": `${Math.round(node.height * mobileY)}px`,
+    "--webable-mobile-node-left": `${Math.round(node.x * mobileX)}px`,
+    "--webable-mobile-node-top": `${Math.round(node.y * mobileY)}px`,
+    "--webable-mobile-node-width": `${Math.round(node.width * mobileX)}px`,
+    "--webable-tablet-node-height": `${Math.round(node.height * tabletY)}px`,
+    "--webable-tablet-node-left": `${Math.round(node.x * tabletX)}px`,
+    "--webable-tablet-node-top": `${Math.round(node.y * tabletY)}px`,
+    "--webable-tablet-node-width": `${Math.round(node.width * tabletX)}px`
+  } as React.CSSProperties;
+}
+
+function getBorderRenderStyle(style?: PublishedNode["style"]): React.CSSProperties {
+  const border = parseBorderValue(style?.border);
+
+  if (border.style === "none" || border.width <= 0) {
+    return { border: undefined, boxShadow: undefined, outline: undefined };
+  }
+
+  const color = withCssOpacity(border.color, style?.borderOpacity ?? 100);
+  const borderValue = `${border.width}px ${border.style} ${color}`;
+  const position = style?.borderPosition || "center";
+
+  if (position === "inside") {
+    return { border: undefined, boxShadow: `inset 0 0 0 ${border.width}px ${color}`, outline: undefined };
+  }
+
+  if (position === "outside") {
+    return { border: undefined, boxShadow: undefined, outline: borderValue, outlineOffset: 0 };
+  }
+
+  return { border: borderValue, boxShadow: undefined, outline: undefined };
+}
+
+function parseBorderValue(value: string | undefined) {
+  const input = value?.trim();
+
+  if (!input || input === "0" || input === "none") {
+    return { color: "#d4d4d4", style: "none", width: 0 };
+  }
+
+  return {
+    color: input.match(/#[0-9a-fA-F]{3,8}\b/)?.[0] || input.match(/rgba?\([^)]+\)/)?.[0] || "#d4d4d4",
+    style: input.match(/\b(solid|dashed|dotted|none)\b/)?.[1] || "solid",
+    width: Number(input.match(/(\d+(?:\.\d+)?)px/)?.[1] || 1)
+  };
+}
+
+function withCssOpacity(color: string, opacity: number) {
+  const parsed = parseCssColor(color);
+  const alpha = Math.min(1, Math.max(0, opacity / 100));
+  return `rgba(${parsed.r}, ${parsed.g}, ${parsed.b}, ${alpha})`;
+}
+
+function parseCssColor(color: string) {
+  if (color.startsWith("#")) {
+    const raw = color.slice(1);
+    const hex = raw.length === 3 ? raw.split("").map((item) => item + item).join("") : raw.padEnd(6, "0").slice(0, 6);
+    return {
+      r: Number.parseInt(hex.slice(0, 2), 16),
+      g: Number.parseInt(hex.slice(2, 4), 16),
+      b: Number.parseInt(hex.slice(4, 6), 16)
+    };
+  }
+
+  const rgb = color.match(/rgba?\(([^)]+)\)/)?.[1]?.split(",").map((part) => Number(part.trim()));
+  return { r: rgb?.[0] || 212, g: rgb?.[1] || 212, b: rgb?.[2] || 212 };
+}
+
 function MenuItems({ items }: { items: MenuItem[] }) {
   return (
-    <>
+    <span className="ffMenuTrack">
       {items.map((item) => (
         <span className={item.children.length > 0 ? "ffNavItem hasDropdown" : "ffNavItem"} key={item.label}>
           {item.label}
@@ -366,7 +540,7 @@ function MenuItems({ items }: { items: MenuItem[] }) {
           ) : null}
         </span>
       ))}
-    </>
+    </span>
   );
 }
 
@@ -447,6 +621,48 @@ function getFormContent(value: string | undefined) {
     fields: splitList(fields, ["Name", "Email", "Message"]).slice(0, 4),
     title
   };
+}
+
+function getMapEmbedUrl(value: string | undefined) {
+  const input = value?.trim();
+
+  if (!input) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(input)) {
+    return input;
+  }
+
+  return `https://www.google.com/maps?q=${encodeURIComponent(input)}&output=embed`;
+}
+
+function getVideoEmbed(value: string | undefined): { src: string; type: "iframe" | "video" } | null {
+  const input = value?.trim();
+
+  if (!input) {
+    return null;
+  }
+
+  const youtube = input.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{6,})/);
+  if (youtube?.[1]) {
+    return { src: `https://www.youtube.com/embed/${youtube[1]}`, type: "iframe" };
+  }
+
+  const vimeo = input.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo?.[1]) {
+    return { src: `https://player.vimeo.com/video/${vimeo[1]}`, type: "iframe" };
+  }
+
+  if (/\.(mp4|webm|ogg)(?:\?.*)?$/i.test(input)) {
+    return { src: input, type: "video" };
+  }
+
+  if (/^https?:\/\//i.test(input)) {
+    return { src: input, type: "iframe" };
+  }
+
+  return null;
 }
 
 export function normalizePublishedCanvasSize(value?: { height: number; width: number }) {
